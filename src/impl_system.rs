@@ -77,5 +77,7 @@ macro_rules! impl_oz_system {
             /// Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = weights::pallet_timestamp::WeightInfo<Runtime>;
         }
+
+        impl parachain_info::Config for Runtime {}
     };
 }
