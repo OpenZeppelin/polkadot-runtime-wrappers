@@ -6,12 +6,12 @@ macro_rules! impl_oz_system {
         use $crate::{RuntimeConstructs, SystemConstructs};
         println!("0");
         // Here we can work with the captured type and its generics
-        type Runtime = <$t* as RuntimeConstructs>::Runtime;
-        type RuntimeCall = <$t* as RuntimeConstructs>::RuntimeCall;
-        type RuntimeEvent = <$t* as RuntimeConstructs>::RuntimeEvent;
-        type PalletInfo = <$t* as RuntimeConstructs>::PalletInfo;
-        type RuntimeBlockLength = <$t* as RuntimeConstructs>::RuntimeBlockLength;
-        type RuntimeBlockWeights = <$t* as RuntimeConstructs>::RuntimeBlockWeights;
+        type Runtime = <$t as RuntimeConstructs>::Runtime;
+        type RuntimeCall = <$t as RuntimeConstructs>::RuntimeCall;
+        type RuntimeEvent = <$t as RuntimeConstructs>::RuntimeEvent;
+        type PalletInfo = <$t as RuntimeConstructs>::PalletInfo;
+        type RuntimeBlockLength = <$t as RuntimeConstructs>::RuntimeBlockLength;
+        type RuntimeBlockWeights = <$t as RuntimeConstructs>::RuntimeBlockWeights;
 
         println!("1");
 
