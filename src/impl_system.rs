@@ -246,5 +246,37 @@ macro_rules! impl_oz_system {
             /// Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = weights::pallet_balances::WeightInfo<Runtime>;
         }
+
+        impl pallet_utility::Config for Runtime {
+            type PalletsOrigin = OriginCaller;
+            type RuntimeCall = RuntimeCall;
+            type RuntimeEvent = RuntimeEvent;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::pallet_utility::WeightInfo<Runtime>;
+        }
+
+        parameter_types! {
+            pub const ReservedXcmpWeight: Weight = MAXIMUM_BLOCK_WEIGHT.saturating_div(4);
+            pub const ReservedDmpWeight: Weight = MAXIMUM_BLOCK_WEIGHT.saturating_div(4);
+            pub const RelayOrigin: AggregateMessageOrigin = AggregateMessageOrigin::Parent;
+        }
+
+        impl cumulus_pallet_parachain_system::Config for Runtime {
+            #[cfg(not(feature = "async-backing"))]
+            type CheckAssociatedRelayNumber = RelayNumberStrictlyIncreases;
+            #[cfg(feature = "async-backing")]
+            type CheckAssociatedRelayNumber = RelayNumberMonotonicallyIncreases;
+            type ConsensusHook = ConsensusHook;
+            type DmpQueue = frame_support::traits::EnqueueWithOrigin<MessageQueue, RelayOrigin>;
+            type OnSystemEvent = ();
+            type OutboundXcmpMessageSource = XcmpQueue;
+            type ReservedDmpWeight = ReservedDmpWeight;
+            type ReservedXcmpWeight = ReservedXcmpWeight;
+            type RuntimeEvent = RuntimeEvent;
+            type SelfParaId = parachain_info::Pallet<Runtime>;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::cumulus_pallet_parachain_system::WeightInfo<Runtime>;
+            type XcmpMessageHandler = XcmpQueue;
+        }
     };
 }

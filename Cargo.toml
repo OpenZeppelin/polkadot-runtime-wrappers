@@ -18,5 +18,3 @@ std = [
 	"frame-support/std",
 	"sp-version/std",
 ]
-async-backing = []
-experimental = []
