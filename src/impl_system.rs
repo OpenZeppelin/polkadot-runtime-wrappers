@@ -1,37 +1,9 @@
 //! OpenZeppelin System Pallets Wrapper
+// TODO: find println! for no_std, maybe logging
 
 #[macro_export]
 macro_rules! impl_oz_system {
     ($t:ty) => {
-        use $crate::{RuntimeConstructs, SystemConstructs};
-        println!("0");
-        // Here we can work with the captured type and its generics
-        type Runtime = <$t as RuntimeConstructs>::Runtime;
-        type RuntimeCall = <$t as RuntimeConstructs>::RuntimeCall;
-        type RuntimeEvent = <$t as RuntimeConstructs>::RuntimeEvent;
-        type PalletInfo = <$t as RuntimeConstructs>::PalletInfo;
-        type RuntimeBlockLength = <$t as RuntimeConstructs>::RuntimeBlockLength;
-        type RuntimeBlockWeights = <$t as RuntimeConstructs>::RuntimeBlockWeights;
-
-        println!("1");
-
-        use frame_support::{
-            derive_impl,
-            dispatch::DispatchClass,
-            parameter_types,
-            traits::{
-                AsEnsureOriginWithArg, ConstU32, ConstU64, Contains, EitherOfDiverse, InstanceFilter,
-                TransformOrigin,
-            },
-            weights::{ConstantMultiplier, Weight},
-            PalletId,
-        };
-        use frame_system::{
-            limits::{BlockLength, BlockWeights},
-            EnsureRoot, EnsureSigned,
-        };
-        println!("2");
-
         pub struct NormalFilter;
         impl Contains<RuntimeCall> for NormalFilter {
             fn contains(c: &RuntimeCall) -> bool {
@@ -48,7 +20,6 @@ macro_rules! impl_oz_system {
                 }
             }
         }
-        println!("2");
 
         /// The default types are being injected by [`derive_impl`](`frame_support::derive_impl`) from
         /// [`ParaChainDefaultConfig`](`struct@frame_system::config_preludes::ParaChainDefaultConfig`),
@@ -97,6 +68,5 @@ macro_rules! impl_oz_system {
             /// Runtime version.
             type Version = Version;
         }
-        println!("3");
     };
 }
