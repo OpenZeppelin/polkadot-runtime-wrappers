@@ -23,6 +23,33 @@ macro_rules! impl_oz_system {
             }
         }
 
+        frame_support::parameter_types!{
+             // This part is copied from Substrate's `bin/node/runtime/src/lib.rs`.
+            //  The `RuntimeBlockLength` and `RuntimeBlockWeights` exist here because the
+            // `DeletionWeightLimit` and `DeletionQueueDepth` depend on those to parameterize
+            // the lazy contract deletion.
+            pub RuntimeBlockLength: BlockLength =
+            BlockLength::max_with_normal_ratio(MAX_BLOCK_LENGTH, NORMAL_DISPATCH_RATIO);
+            pub RuntimeBlockWeights: BlockWeights = BlockWeights::builder()
+                .base_block(BlockExecutionWeight::get())
+                .for_class(DispatchClass::all(), |weights| {
+                    weights.base_extrinsic = ExtrinsicBaseWeight::get();
+                })
+                .for_class(DispatchClass::Normal, |weights| {
+                    weights.max_total = Some(NORMAL_DISPATCH_RATIO * MAXIMUM_BLOCK_WEIGHT);
+                })
+                .for_class(DispatchClass::Operational, |weights| {
+                    weights.max_total = Some(MAXIMUM_BLOCK_WEIGHT);
+                    // Operational transactions have some extra reserved space, so that they
+                    // are included even if block reached `MAXIMUM_BLOCK_WEIGHT`.
+                    weights.reserved = Some(
+                        MAXIMUM_BLOCK_WEIGHT - NORMAL_DISPATCH_RATIO * MAXIMUM_BLOCK_WEIGHT
+                    );
+                })
+                .avg_block_initialization(AVERAGE_ON_INITIALIZE_RATIO)
+                .build_or_panic();
+        }
+
         /// The default types are being injected by [`derive_impl`](`frame_support::derive_impl`) from
         /// [`ParaChainDefaultConfig`](`struct@frame_system::config_preludes::ParaChainDefaultConfig`),
         /// but overridden as needed.
@@ -31,7 +58,7 @@ macro_rules! impl_oz_system {
             /// The data to be stored in an account.
             type AccountData = pallet_balances::AccountData<Balance>;
             /// The identifier used to distinguish between accounts.
-            type AccountId = AccountId;
+            type AccountId = <$t as SystemConfig>::AccountId;
             /// The basic call filter to use in dispatchable.
             type BaseCallFilter = NormalFilter;
             /// The block type.
@@ -48,7 +75,7 @@ macro_rules! impl_oz_system {
             type Hash = Hash;
             /// The lookup mechanism to get account ID from whatever is passed in
             /// dispatchers.
-            type Lookup = AccountIdLookup<AccountId, ()>;
+            type Lookup = AccountIdLookup<Self::AccountId, ()>;
             /// The maximum number of consumers allowed on a single account.
             type MaxConsumers = ConstU32<16>;
             /// The index type for storing how many extrinsics an account has signed.
@@ -63,12 +90,10 @@ macro_rules! impl_oz_system {
             type RuntimeEvent = RuntimeEvent;
             /// The ubiquitous origin type.
             type RuntimeOrigin = RuntimeOrigin;
-            /// TODO: PASS IN AS INPUT
             /// This is used as an identifier of the chain. 42 is the generic substrate prefix.
-            type SS58Prefix = SS58Prefix;
-            /// TODO: PASS IN AS INPUT
+            type SS58Prefix = <$t as SystemConfig>::SS58Prefix;
             /// Runtime version.
-            type Version = Version;
+            type Version = <$t as SystemConfig>::Version;
         }
     };
 }

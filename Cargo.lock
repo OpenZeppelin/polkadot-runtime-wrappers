@@ -2795,6 +2795,7 @@ dependencies = [
  "pallet-timestamp",
  "parity-scale-codec",
  "scale-info",
+ "sp-version",
 ]
 
 [[package]]
