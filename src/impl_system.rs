@@ -1,5 +1,7 @@
 //! OpenZeppelin System Pallets Wrapper
 // TODO: find println! for no_std, maybe logging
+// TODO: add other pallets for system groupings
+// TODO: goal is to make generic for runtimes so do not rely too much on context exposed in runtime (current code does)
 
 #[macro_export]
 macro_rules! impl_oz_system {
