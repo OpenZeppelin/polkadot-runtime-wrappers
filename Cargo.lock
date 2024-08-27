@@ -2165,21 +2165,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b15813163c1d831bf4a13c3610c05c0d03b39feb07f7e09fa234dac9b15aaf39"
 
 [[package]]
-name = "oz-wrappers"
-version = "0.0.1"
-dependencies = [
- "cumulus-pallet-parachain-system",
- "frame-support",
- "frame-support-procedural",
- "frame-system",
- "pallet-balances",
- "pallet-proxy",
- "pallet-timestamp",
- "parity-scale-codec",
- "scale-info",
-]
-
-[[package]]
 name = "pallet-asset-rate"
 version = "7.0.0"
 source = "git+https://github.com/paritytech/polkadot-sdk?tag=polkadot-v1.10.0#7049c3c98836b3e9253f6aaa69b6bf3d622e3962"
@@ -2795,6 +2780,21 @@ dependencies = [
  "sp-std 14.0.0 (git+https://github.com/paritytech/polkadot-sdk?tag=polkadot-v1.10.0)",
  "staging-xcm",
  "staging-xcm-executor",
+]
+
+[[package]]
+name = "polkadot-runtime-wrappers"
+version = "0.0.1"
+dependencies = [
+ "cumulus-pallet-parachain-system",
+ "frame-support",
+ "frame-support-procedural",
+ "frame-system",
+ "pallet-balances",
+ "pallet-proxy",
+ "pallet-timestamp",
+ "parity-scale-codec",
+ "scale-info",
 ]
 
 [[package]]

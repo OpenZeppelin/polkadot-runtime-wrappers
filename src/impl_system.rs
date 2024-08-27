@@ -2,7 +2,19 @@
 
 #[macro_export]
 macro_rules! impl_oz_system {
-	($runtime:ty, $pallet_info:ty, $runtime_call:ty, $runtime_event:ty) => {
+    ($t:ty) => {
+        use $crate::{RuntimeConstructs, SystemConstructs};
+        println!("0");
+        // Here we can work with the captured type and its generics
+        type Runtime = <$t* as RuntimeConstructs>::Runtime;
+        type RuntimeCall = <$t* as RuntimeConstructs>::RuntimeCall;
+        type RuntimeEvent = <$t* as RuntimeConstructs>::RuntimeEvent;
+        type PalletInfo = <$t* as RuntimeConstructs>::PalletInfo;
+        type RuntimeBlockLength = <$t* as RuntimeConstructs>::RuntimeBlockLength;
+        type RuntimeBlockWeights = <$t* as RuntimeConstructs>::RuntimeBlockWeights;
+
+        println!("1");
+
         use frame_support::{
             derive_impl,
             dispatch::DispatchClass,
@@ -18,45 +30,15 @@ macro_rules! impl_oz_system {
             limits::{BlockLength, BlockWeights},
             EnsureRoot, EnsureSigned,
         };
-
-        parameter_types! {
-            pub const Version: RuntimeVersion = VERSION;
-
-            // This part is copied from Substrate's `bin/node/runtime/src/lib.rs`.
-            //  The `RuntimeBlockLength` and `RuntimeBlockWeights` exist here because the
-            // `DeletionWeightLimit` and `DeletionQueueDepth` depend on those to parameterize
-            // the lazy contract deletion.
-            pub RuntimeBlockLength: BlockLength =
-                BlockLength::max_with_normal_ratio(MAX_BLOCK_LENGTH, NORMAL_DISPATCH_RATIO);
-            pub RuntimeBlockWeights: BlockWeights = BlockWeights::builder()
-                .base_block(BlockExecutionWeight::get())
-                .for_class(DispatchClass::all(), |weights| {
-                    weights.base_extrinsic = ExtrinsicBaseWeight::get();
-                })
-                .for_class(DispatchClass::Normal, |weights| {
-                    weights.max_total = Some(NORMAL_DISPATCH_RATIO * MAXIMUM_BLOCK_WEIGHT);
-                })
-                .for_class(DispatchClass::Operational, |weights| {
-                    weights.max_total = Some(MAXIMUM_BLOCK_WEIGHT);
-                    // Operational transactions have some extra reserved space, so that they
-                    // are included even if block reached `MAXIMUM_BLOCK_WEIGHT`.
-                    weights.reserved = Some(
-                        MAXIMUM_BLOCK_WEIGHT - NORMAL_DISPATCH_RATIO * MAXIMUM_BLOCK_WEIGHT
-                    );
-                })
-                .avg_block_initialization(AVERAGE_ON_INITIALIZE_RATIO)
-                .build_or_panic();
-            // generic substrate prefix. For more info, see: [Polkadot Accounts In-Depth](https://wiki.polkadot.network/docs/learn-account-advanced#:~:text=The%20address%20format%20used%20in,belonging%20to%20a%20specific%20network)
-            pub const SS58Prefix: u16 = 42;
-        }
+        println!("2");
 
         pub struct NormalFilter;
-        impl Contains<$runtime_call> for NormalFilter {
-            fn contains(c: &$runtime_call) -> bool {
+        impl Contains<RuntimeCall> for NormalFilter {
+            fn contains(c: &RuntimeCall) -> bool {
                 match c {
                     // We filter anonymous proxy as they make "reserve" inconsistent
                     // See: https://github.com/paritytech/polkadot-sdk/blob/v1.9.0-rc2/substrate/frame/proxy/src/lib.rs#L260
-                    $runtime_call::Proxy(method) => !matches!(
+                    RuntimeCall::Proxy(method) => !matches!(
                         method,
                         pallet_proxy::Call::create_pure { .. }
                             | pallet_proxy::Call::kill_pure { .. }
@@ -66,12 +48,13 @@ macro_rules! impl_oz_system {
                 }
             }
         }
+        println!("2");
 
         /// The default types are being injected by [`derive_impl`](`frame_support::derive_impl`) from
         /// [`ParaChainDefaultConfig`](`struct@frame_system::config_preludes::ParaChainDefaultConfig`),
         /// but overridden as needed.
         #[derive_impl(frame_system::config_preludes::ParaChainDefaultConfig as frame_system::DefaultConfig)]
-        impl frame_system::Config for $runtime {
+        impl frame_system::Config for Runtime {
             /// The data to be stored in an account.
             type AccountData = pallet_balances::AccountData<Balance>;
             /// The identifier used to distinguish between accounts.
@@ -100,13 +83,13 @@ macro_rules! impl_oz_system {
             /// The action to take on a Runtime Upgrade
             type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
             /// Converts a module to an index of this module in the runtime.
-            type PalletInfo = $pallet_info;
+            type PalletInfo = PalletInfo;
             /// The aggregated dispatch type that is available for extrinsics.
-            type RuntimeCall = $runtime_call;
+            type RuntimeCall = RuntimeCall;
             /// The ubiquitous event type.
-            type RuntimeEvent = $runtime_event;
+            type RuntimeEvent = RuntimeEvent;
             /// The ubiquitous origin type.
-            type RuntimeOrigin = $runtime_origin;
+            type RuntimeOrigin = RuntimeOrigin;
             /// TODO: PASS IN AS INPUT
             /// This is used as an identifier of the chain. 42 is the generic substrate prefix.
             type SS58Prefix = SS58Prefix;
@@ -114,5 +97,6 @@ macro_rules! impl_oz_system {
             /// Runtime version.
             type Version = Version;
         }
-    }
+        println!("3");
+    };
 }
