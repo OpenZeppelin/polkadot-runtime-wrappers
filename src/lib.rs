@@ -9,4 +9,6 @@ pub trait SystemConfig {
     type AccountId;
     type SS58Prefix;
     type Version: Get<RuntimeVersion>;
+    type ScheduleOrigin;
+    type PreimageOrigin;
 }

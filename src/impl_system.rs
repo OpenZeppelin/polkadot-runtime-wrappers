@@ -79,5 +79,49 @@ macro_rules! impl_oz_system {
         }
 
         impl parachain_info::Config for Runtime {}
+
+        parameter_types! {
+            pub MaximumSchedulerWeight: frame_support::weights::Weight = Perbill::from_percent(80) *
+                RuntimeBlockWeights::get().max_block;
+            pub const MaxScheduledRuntimeCallsPerBlock: u32 = 50;
+        }
+
+        impl pallet_scheduler::Config for Runtime {
+            type MaxScheduledPerBlock = MaxScheduledRuntimeCallsPerBlock;
+            type MaximumWeight = MaximumSchedulerWeight;
+            type OriginPrivilegeCmp = frame_support::traits::EqualPrivilegeOnly;
+            type PalletsOrigin = OriginCaller;
+            type Preimages = Preimage;
+            type RuntimeCall = RuntimeCall;
+            type RuntimeEvent = RuntimeEvent;
+            type RuntimeOrigin = RuntimeOrigin;
+            type ScheduleOrigin = <$t as SystemConfig>::ScheduleOrigin;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::pallet_scheduler::WeightInfo<Runtime>;
+        }
+
+        parameter_types! {
+            pub const PreimageBaseDeposit: Balance = deposit(2, 64);
+            pub const PreimageByteDeposit: Balance = deposit(0, 1);
+            pub const PreimageHoldReason: RuntimeHoldReason = RuntimeHoldReason::Preimage(pallet_preimage::HoldReason::Preimage);
+        }
+
+        impl pallet_preimage::Config for Runtime {
+            type Consideration = frame_support::traits::fungible::HoldConsideration<
+                AccountId,
+                Balances,
+                PreimageHoldReason,
+                frame_support::traits::LinearStoragePrice<
+                    PreimageBaseDeposit,
+                    PreimageByteDeposit,
+                    Balance,
+                >,
+            >;
+            type Currency = Balances;
+            type ManagerOrigin = <$t as SystemConfig>::PreimageOrigin;
+            type RuntimeEvent = RuntimeEvent;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::pallet_preimage::WeightInfo<Runtime>;
+        }
     };
 }
