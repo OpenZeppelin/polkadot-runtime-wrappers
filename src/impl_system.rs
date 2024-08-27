@@ -1,7 +1,4 @@
 //! OpenZeppelin System Pallets Wrapper
-// TODO: find println! for no_std, maybe logging
-// TODO: add other pallets for system groupings
-// TODO: goal is to make generic for runtimes so do not rely too much on context exposed in runtime (current code does)
 
 #[macro_export]
 macro_rules! impl_oz_system {
@@ -21,33 +18,6 @@ macro_rules! impl_oz_system {
                     _ => true,
                 }
             }
-        }
-
-        frame_support::parameter_types!{
-             // This part is copied from Substrate's `bin/node/runtime/src/lib.rs`.
-            //  The `RuntimeBlockLength` and `RuntimeBlockWeights` exist here because the
-            // `DeletionWeightLimit` and `DeletionQueueDepth` depend on those to parameterize
-            // the lazy contract deletion.
-            pub RuntimeBlockLength: BlockLength =
-            BlockLength::max_with_normal_ratio(MAX_BLOCK_LENGTH, NORMAL_DISPATCH_RATIO);
-            pub RuntimeBlockWeights: BlockWeights = BlockWeights::builder()
-                .base_block(BlockExecutionWeight::get())
-                .for_class(DispatchClass::all(), |weights| {
-                    weights.base_extrinsic = ExtrinsicBaseWeight::get();
-                })
-                .for_class(DispatchClass::Normal, |weights| {
-                    weights.max_total = Some(NORMAL_DISPATCH_RATIO * MAXIMUM_BLOCK_WEIGHT);
-                })
-                .for_class(DispatchClass::Operational, |weights| {
-                    weights.max_total = Some(MAXIMUM_BLOCK_WEIGHT);
-                    // Operational transactions have some extra reserved space, so that they
-                    // are included even if block reached `MAXIMUM_BLOCK_WEIGHT`.
-                    weights.reserved = Some(
-                        MAXIMUM_BLOCK_WEIGHT - NORMAL_DISPATCH_RATIO * MAXIMUM_BLOCK_WEIGHT
-                    );
-                })
-                .avg_block_initialization(AVERAGE_ON_INITIALIZE_RATIO)
-                .build_or_panic();
         }
 
         /// The default types are being injected by [`derive_impl`](`frame_support::derive_impl`) from
@@ -94,6 +64,18 @@ macro_rules! impl_oz_system {
             type SS58Prefix = <$t as SystemConfig>::SS58Prefix;
             /// Runtime version.
             type Version = <$t as SystemConfig>::Version;
+        }
+
+        impl pallet_timestamp::Config for Runtime {
+            #[cfg(feature = "experimental")]
+            type MinimumPeriod = ConstU64<0>;
+            #[cfg(not(feature = "experimental"))]
+            type MinimumPeriod = ConstU64<{ SLOT_DURATION / 2 }>;
+            /// A timestamp: milliseconds since the unix epoch.
+            type Moment = u64;
+            type OnTimestampSet = Aura;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::pallet_timestamp::WeightInfo<Runtime>;
         }
     };
 }
