@@ -160,6 +160,11 @@ use frame_system::{EnsureRoot, EnsureSigned};
 
 ### The whole Runtime configuration is now free of boilerplate, and focuses on each runtime's specific business logic:
 
+1. no more 10s or 100s of pallet config configurations.
+2. no more 10s or 100s of runtime api implementations.
+3. no more a long intimidating list of pallet lists for constructing the runtime.
+4. no more 100s of lines of `use` statements.
+
 ```rust
 use oz_pallets::{
 		OzConfig,
