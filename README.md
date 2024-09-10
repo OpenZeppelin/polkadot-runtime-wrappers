@@ -1,3 +1,3 @@
 # polkadot-runtime-wrappers
 
-Wrappers with Sensible Defaults for constructing Polkadot Parachain Runtimes
+Wrappers with sensible defaults for constructing Polkadot Parachain Runtimes

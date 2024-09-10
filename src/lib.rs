@@ -1,5 +1,6 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
+mod construct_runtime;
 mod impl_system;
 
 use frame_support::pallet_prelude::Get;
