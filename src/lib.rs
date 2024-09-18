@@ -4,6 +4,8 @@ mod api;
 mod construct_runtime;
 mod system;
 
+pub use construct_runtime::GENERIC_RUNTIME_PALLET_INDICES;
+
 use frame_support::pallet_prelude::Get;
 use sp_version::RuntimeVersion;
 
