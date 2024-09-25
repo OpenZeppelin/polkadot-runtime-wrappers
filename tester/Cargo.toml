@@ -1,0 +1,16 @@
+[package]
+name = "tester"
+authors = [ "OpenZeppelin" ]
+description = "Macro tester"
+edition = "2021"
+license = "GPL-3.0-only"
+repository = "https://github.com/OpenZeppelin/polkadot-runtime-wrappers"
+version = "0.0.1"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = "2.0"
+quote = "1.0"
+proc-macro2 = "1.0"

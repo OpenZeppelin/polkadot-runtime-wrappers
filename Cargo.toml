@@ -9,6 +9,7 @@ readme = "README.md"
 version = "0.0.1"
 
 [dependencies]
+tester = { path = "tester" }
 frame-support = { git = "https://github.com/paritytech/polkadot-sdk", default-features = false, tag = "polkadot-v1.10.0" }
 scale-info = { version = "2.10.0", default-features = false }
 sp-std = { git = "https://github.com/paritytech/polkadot-sdk", default-features = false, tag = "polkadot-v1.10.0" }

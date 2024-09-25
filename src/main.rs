@@ -4,8 +4,6 @@ mod api;
 mod construct_runtime;
 mod system;
 
-pub use construct_runtime::GENERIC_RUNTIME_PALLET_INDICES;
-
 use frame_support::pallet_prelude::Get;
 use sp_version::RuntimeVersion;
 
@@ -15,4 +13,14 @@ pub trait SystemConfig {
     type Version: Get<RuntimeVersion>;
     type ScheduleOrigin;
     type PreimageOrigin;
+}
+
+use tester::test_macro_output;
+
+fn main() {
+    println!("{}", to_pascal_case!(frame_system));
+    println!("{}", pallet_id!(frame_system));
+    test_macro_output! {
+        pallet_id!(frame_system);
+    }
 }
