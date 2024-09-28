@@ -1,6 +1,5 @@
 //! Runtime API
 
-// TODO: add inputs, identify items not hardcoded
 #[macro_export]
 macro_rules! impl_openzeppelin_runtime_apis {
     () => {
