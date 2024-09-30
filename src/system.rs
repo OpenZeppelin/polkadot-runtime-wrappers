@@ -222,7 +222,6 @@ macro_rules! impl_openzeppelin_system {
         }
 
         parameter_types! {
-            pub const ExistentialDeposit: Balance = EXISTENTIAL_DEPOSIT;
             pub const MaxFreezes: u32 = 0;
             pub const MaxLocks: u32 = 50;
             pub const MaxReserves: u32 = 50;
@@ -233,7 +232,7 @@ macro_rules! impl_openzeppelin_system {
             /// The type for recording an account's balance.
             type Balance = Balance;
             type DustRemoval = ();
-            type ExistentialDeposit = ExistentialDeposit;
+            type ExistentialDeposit = <$t as SystemConfig>::ExistentialDeposit;
             type FreezeIdentifier = ();
             type MaxFreezes = MaxFreezes;
             type MaxLocks = MaxLocks;

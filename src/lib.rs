@@ -2,6 +2,7 @@
 #![feature(associated_type_defaults)]
 
 mod api;
+mod assets;
 mod consensus;
 mod runtime;
 mod system;
@@ -13,6 +14,7 @@ pub trait SystemConfig {
     type AccountId;
     type SS58Prefix;
     type Version: Get<RuntimeVersion>;
+    type ExistentialDeposit;
     type ScheduleOrigin;
     type PreimageOrigin;
 }
@@ -24,4 +26,12 @@ pub trait ConsensusConfig {
     type MaxInvulnerables = ConstU32<20>;
     type MinEligibleCollators = ConstU32<20>;
     type CollatorSelectionUpdateOrigin;
+}
+
+pub trait AssetsConfig {
+    type ApprovalDeposit;
+    type AssetAccountDeposit;
+    type AssetDeposit;
+    type CreateOrigin;
+    type ForceOrigin;
 }
