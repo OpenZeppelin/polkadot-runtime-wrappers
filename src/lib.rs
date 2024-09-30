@@ -1,10 +1,12 @@
 #![cfg_attr(not(feature = "std"), no_std)]
+#![feature(associated_type_defaults)]
 
 mod api;
+mod consensus;
 mod runtime;
 mod system;
 
-use frame_support::pallet_prelude::Get;
+use frame_support::pallet_prelude::{ConstU32, Get};
 use sp_version::RuntimeVersion;
 
 pub trait SystemConfig {
@@ -13,4 +15,13 @@ pub trait SystemConfig {
     type Version: Get<RuntimeVersion>;
     type ScheduleOrigin;
     type PreimageOrigin;
+}
+
+pub trait ConsensusConfig {
+    type DisabledValidators = ();
+    type MaxAuthorities = ConstU32<100_000>;
+    type MaxCandidates = ConstU32<100>;
+    type MaxInvulnerables = ConstU32<20>;
+    type MinEligibleCollators = ConstU32<20>;
+    type CollatorSelectionUpdateOrigin;
 }
