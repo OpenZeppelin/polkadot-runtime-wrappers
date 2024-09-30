@@ -1,4 +1,4 @@
-//! Runtime API
+//! Runtime API wrapper macros
 
 #[macro_export]
 macro_rules! impl_openzeppelin_runtime_apis {

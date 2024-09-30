@@ -1,8 +1,8 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 mod api;
+mod runtime;
 mod system;
-// mod runtime; // ignore for now, come back to this
 
 use frame_support::pallet_prelude::Get;
 use sp_version::RuntimeVersion;

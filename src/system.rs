@@ -1,4 +1,4 @@
-//! OpenZeppelin System Pallets Wrapper
+//! System pallet groupings wrapper
 
 #[macro_export]
 macro_rules! impl_oz_system {
