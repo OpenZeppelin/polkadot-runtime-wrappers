@@ -1,7 +1,7 @@
 //! System pallet groupings wrapper
 
 #[macro_export]
-macro_rules! impl_oz_system {
+macro_rules! impl_openzeppelin_system {
     ($t:ty) => {
         pub struct NormalFilter;
         impl Contains<RuntimeCall> for NormalFilter {
