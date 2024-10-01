@@ -5,6 +5,7 @@ mod api;
 mod assets;
 mod consensus;
 pub mod exclude;
+pub use exclude::*;
 mod runtime;
 mod system;
 
@@ -44,5 +45,5 @@ pub trait AssetsConfig {
 }
 
 pub fn main() {
-    println!("{}", impl_openzeppelin_example!(()));
+    println!("{}", impl_for_runtime!(frame_support, ()));
 }

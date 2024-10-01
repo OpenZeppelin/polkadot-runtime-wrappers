@@ -1,25 +1,33 @@
 //! Exclude macros
+use frame_support::traits::Contains;
 
 pub trait ExampleConfig {
-    type ExcludedPallets = ();
+    type ExcludedPallets: Contains<Vec<u8>>;
 }
 
-impl ExampleConfig for () {}
+pub struct ExcludedPallets;
+impl Contains<Vec<u8>> for ExcludedPallets {
+    fn contains(i: &Vec<u8>) -> bool {
+        vec!["frame_support".as_bytes().to_vec()].contains(&i)
+    }
+}
+
+impl ExampleConfig for () {
+    type ExcludedPallets = ExcludedPallets;
+}
 
 #[macro_export]
-macro_rules! impl_openzeppelin_example {
-    ($t:ty) => {
-        maybe_impl_config!(frame_support, $t)
+macro_rules! impl_for_runtime {
+    ($pallet:ident, $t:ty) => {
+        maybe_impl_config!($pallet, $t)
     };
 }
 
-// Implement the Config trait only if the pallet is NOT in the exclusion list.
 #[macro_export]
 macro_rules! maybe_impl_config {
     ($pallet_name:ident, $t:ty) => {{
-        let fake_excluded_list = ("frame_support");
-        let excluded = fake_excluded_list.contains(&stringify!($pallet_name));
-        // let excluded = <<$t as ExampleConfig >::ExcludedPallets as ::frame_support::traits::Contains<_>>::contains(&stringify!($pallet_name).as_bytes().to_vec());
+        let config: Vec<u8> = stringify!($pallet_name).as_bytes().to_vec();
+        let excluded = <<$t as ExampleConfig>::ExcludedPallets as ::frame_support::traits::Contains<_>>::contains(&config);
         if !excluded {
             impl_config!(pallet_timestamp)
         } else {
