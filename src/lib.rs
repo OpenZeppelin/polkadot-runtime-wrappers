@@ -43,7 +43,3 @@ pub trait AssetsConfig {
     // tuple of pallets to exclude from implementations
     type ExcludeList = ();
 }
-
-// pub fn main() {
-//     println!("{}", impl_for_runtime!(frame_support, ()));
-// }

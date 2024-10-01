@@ -1,7 +1,7 @@
 //! Exclude macros
 use frame_support::traits::Contains;
-use sp_std::vec::Vec;
 use sp_std::vec;
+use sp_std::vec::Vec;
 
 pub trait ExampleConfig {
     type ExcludedPallets: Contains<Vec<u8>>;
@@ -21,7 +21,7 @@ impl ExampleConfig for () {
 #[macro_export]
 macro_rules! impl_for_runtime {
     ($pallet:ident, $t:ty) => {
-        maybe_impl_config!($pallet, $t)
+        $crate::maybe_impl_config!($pallet, $t);
     };
 }
 
@@ -31,9 +31,10 @@ macro_rules! maybe_impl_config {
         let config: Vec<u8> = stringify!($pallet_name).as_bytes().to_vec();
         let excluded = <<$t as ExampleConfig>::ExcludedPallets as ::frame_support::traits::Contains<_>>::contains(&config);
         if !excluded {
-            impl_config!(pallet_timestamp)
+            $crate::impl_config!(pallet_timestamp)
         } else {
-            "EXCLUDED SUCCESSFULLY"
+            //"EXCLUDED SUCCESSFULLY"
+            {}
         }
     }};
 }
@@ -41,13 +42,13 @@ macro_rules! maybe_impl_config {
 #[macro_export]
 macro_rules! impl_config {
     (pallet_timestamp) => {
-        "impl pallet_timestamp::Config for Runtime {
+        impl pallet_timestamp::Config for Runtime {
             type MinimumPeriod = ConstU64<{ SLOT_DURATION / 2 }>;
             /// A timestamp: milliseconds since the unix epoch.
             type Moment = u64;
             type OnTimestampSet = Aura;
             /// Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = weights::pallet_timestamp::WeightInfo<Runtime>;
-        }"
+        }
     };
 }
