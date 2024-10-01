@@ -4,6 +4,7 @@
 mod api;
 mod assets;
 mod consensus;
+pub mod exclude;
 mod runtime;
 mod system;
 
@@ -40,4 +41,8 @@ pub trait AssetsConfig {
     type ForceOrigin;
     // tuple of pallets to exclude from implementations
     type ExcludeList = ();
+}
+
+pub fn main() {
+    println!("{}", impl_openzeppelin_example!(()));
 }
