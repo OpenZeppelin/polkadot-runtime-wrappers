@@ -1,5 +1,7 @@
 //! Exclude macros
 use frame_support::traits::Contains;
+use sp_std::vec::Vec;
+use sp_std::vec;
 
 pub trait ExampleConfig {
     type ExcludedPallets: Contains<Vec<u8>>;

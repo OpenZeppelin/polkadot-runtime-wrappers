@@ -44,6 +44,6 @@ pub trait AssetsConfig {
     type ExcludeList = ();
 }
 
-pub fn main() {
-    println!("{}", impl_for_runtime!(frame_support, ()));
-}
+// pub fn main() {
+//     println!("{}", impl_for_runtime!(frame_support, ()));
+// }
