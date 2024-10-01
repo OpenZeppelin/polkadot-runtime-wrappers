@@ -17,6 +17,8 @@ pub trait SystemConfig {
     type ExistentialDeposit;
     type ScheduleOrigin;
     type PreimageOrigin;
+    // tuple of pallets to exclude from implementations
+    type ExcludeList = ();
 }
 
 pub trait ConsensusConfig {
@@ -26,6 +28,8 @@ pub trait ConsensusConfig {
     type MaxInvulnerables = ConstU32<20>;
     type MinEligibleCollators = ConstU32<20>;
     type CollatorSelectionUpdateOrigin;
+    // tuple of pallets to exclude from implementations
+    type ExcludeList = ();
 }
 
 pub trait AssetsConfig {
@@ -34,4 +38,6 @@ pub trait AssetsConfig {
     type AssetDeposit;
     type CreateOrigin;
     type ForceOrigin;
+    // tuple of pallets to exclude from implementations
+    type ExcludeList = ();
 }
