@@ -4,6 +4,7 @@
 mod api;
 mod assets;
 mod consensus;
+mod governance;
 mod runtime;
 mod system;
 
@@ -39,5 +40,19 @@ pub trait AssetsConfig {
     type CreateOrigin;
     type ForceOrigin;
     // tuple of pallets to exclude from implementations
+    type ExcludeList = ();
+}
+
+pub trait GovernanceConfig {
+    type ProposalBond;
+    type ProposalBondMinimum;
+    type ProposalBondMaximum;
+    type MaxApprovals = ConstU32<100>;
+    type SpendPeriod;
+    type PayoutSpendPeriod;
+    type VoteLockingPeriod;
+    type TreasuryInteriorLocation;
+    type TreasuryPalletId;
+    type TreasuryApproveOrigin;
     type ExcludeList = ();
 }
