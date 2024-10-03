@@ -31,31 +31,26 @@ macro_rules! impl_openzeppelin_governance {
             >;
             type Beneficiary = Beneficiary;
             type BeneficiaryLookup = IdentityLookup<Self::Beneficiary>;
-            // TODO
-            type Burn = ();
-            // TODO
-            type BurnDestination = ();
+            type Burn = <$t as GovernanceConfig>::TreasuryBurn;
+            type BurnDestination = <$t as GovernanceConfig>::TreasuryBurnDestination;
             type Currency = Balances;
-            type MaxApprovals = <$t as GovernanceConfig>::MaxApprovals;
-            // TODO
-            type OnSlash = Treasury;
+            type MaxApprovals = <$t as GovernanceConfig>::TreasuryMaxApprovals;
+            type OnSlash = <$t as GovernanceConfig>::TreasuryOnSlash;
             type PalletId = <$t as GovernanceConfig>::TreasuryPalletId;
             // TODO:
             #[cfg(feature = "runtime-benchmarks")]
             type Paymaster = PayWithEnsure<TreasuryPaymaster, OpenHrmpChannel<BenchmarkParaId>>;
             #[cfg(not(feature = "runtime-benchmarks"))]
             type Paymaster = TreasuryPaymaster;
-            type PayoutPeriod = <$t as GovernanceConfig>::PayoutSpendPeriod;
-            type ProposalBond = <$t as GovernanceConfig>::ProposalBond;
-            type ProposalBondMaximum = <$t as GovernanceConfig>::ProposalBondMaximum;
-            type ProposalBondMinimum = <$t as GovernanceConfig>::ProposalBondMinimum;
-            // TODO
-            type RejectOrigin = EitherOfDiverse<EnsureRoot<AccountId>, Treasurer>;
+            type PayoutPeriod = <$t as GovernanceConfig>::TreasuryPayoutSpendPeriod;
+            type ProposalBond = <$t as GovernanceConfig>::TreasuryProposalBond;
+            type ProposalBondMaximum = <$t as GovernanceConfig>::TreasuryProposalBondMaximum;
+            type ProposalBondMinimum = <$t as GovernanceConfig>::TreasuryProposalBondMinimum;
+            type RejectOrigin = <$t as GovernanceConfig>::TreasuryRejectOrigin;
             type RuntimeEvent = RuntimeEvent;
-            type SpendFunds = ();
-            // TODO
-            type SpendOrigin = TreasurySpender;
-            type SpendPeriod = <$t as GovernanceConfig>::SpendPeriod;
+            type SpendFunds = <$t as GovernanceConfig>::TreasurySpendFunds;
+            type SpendOrigin = <$t as GovernanceConfig>::TreasurySpendOrigin;
+            type SpendPeriod = <$t as GovernanceConfig>::TreasurySpendPeriod;
             /// Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = weights::pallet_treasury::WeightInfo<Runtime>;
         }

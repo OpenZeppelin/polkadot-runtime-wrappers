@@ -44,15 +44,21 @@ pub trait AssetsConfig {
 }
 
 pub trait GovernanceConfig {
-    type ProposalBond;
-    type ProposalBondMinimum;
-    type ProposalBondMaximum;
-    type MaxApprovals = ConstU32<100>;
-    type SpendPeriod;
-    type PayoutSpendPeriod;
-    type VoteLockingPeriod;
+    type TreasuryBurn = ();
+    type TreasurySpendFunds = ();
+    type TreasuryBurnDestination = ();
+    type TreasuryMaxApprovals = ConstU32<100>;
     type TreasuryInteriorLocation;
     type TreasuryPalletId;
+    type TreasuryProposalBond;
+    type TreasuryProposalBondMinimum;
+    type TreasuryProposalBondMaximum;
+    type TreasurySpendPeriod;
+    type TreasuryPayoutSpendPeriod;
+    type TreasuryOnSlash;
     type TreasuryApproveOrigin;
+    type TreasuryRejectOrigin;
+    type TreasurySpendOrigin;
+    type ConvictionVoteLockingPeriod;
     type ExcludeList = ();
 }
