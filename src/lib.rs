@@ -58,5 +58,7 @@ pub trait GovernanceConfig {
     type TreasuryRejectOrigin;
     type TreasurySpendOrigin;
     type ConvictionVoteLockingPeriod;
+    type DispatchWhitelistedOrigin;
+    type WhitelistOrigin;
     type ExcludeList = ();
 }

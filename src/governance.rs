@@ -54,5 +54,30 @@ macro_rules! impl_openzeppelin_governance {
             /// Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = weights::pallet_treasury::WeightInfo<Runtime>;
         }
+
+        impl pallet_conviction_voting::Config for Runtime {
+            type Currency = Balances;
+            type MaxTurnout = frame_support::traits::tokens::currency::ActiveIssuanceOf<
+                Balances,
+                Self::AccountId,
+            >;
+            // TODO expose
+            type MaxVotes = ConstU32<512>;
+            type Polls = Referenda;
+            type RuntimeEvent = RuntimeEvent;
+            type VoteLockingPeriod = <$t as GovernanceConfig>::ConvictionVoteLockingPeriod;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::pallet_conviction_voting::WeightInfo<Runtime>;
+        }
+
+        impl pallet_whitelist::Config for Runtime {
+            type DispatchWhitelistedOrigin = <$t as GovernanceConfig>::DispatchWhitelistedOrigin;
+            type Preimages = Preimage;
+            type RuntimeCall = RuntimeCall;
+            type RuntimeEvent = RuntimeEvent;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::pallet_whitelist::WeightInfo<Runtime>;
+            type WhitelistOrigin = <$t as GovernanceConfig>::WhitelistOrigin;
+        }
     };
 }
