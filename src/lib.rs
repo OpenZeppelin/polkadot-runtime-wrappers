@@ -1,11 +1,9 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 #![feature(associated_type_defaults)]
 
-mod api;
 mod assets;
 mod consensus;
 mod governance;
-mod runtime;
 mod system;
 
 use frame_support::pallet_prelude::{ConstU32, Get};
