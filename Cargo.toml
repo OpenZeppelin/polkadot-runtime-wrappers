@@ -11,7 +11,6 @@ version = "0.0.1"
 [dependencies]
 frame-support = { git = "https://github.com/paritytech/polkadot-sdk", default-features = false, tag = "polkadot-v1.10.0" }
 scale-info = { version = "2.10.0", default-features = false }
-sp-api = { git = "https://github.com/paritytech/polkadot-sdk", default-features = false, tag = "polkadot-v1.10.0" }
 sp-std = { git = "https://github.com/paritytech/polkadot-sdk", default-features = false, tag = "polkadot-v1.10.0" }
 sp-version = { git = "https://github.com/paritytech/polkadot-sdk", default-features = false, tag = "polkadot-v1.10.0" }
 
@@ -20,7 +19,6 @@ default = [ "std" ]
 std = [
 	"frame-support/std",
 	"scale-info/std",
-	"sp-api/std",
 	"sp-std/std",
 	"sp-version/std",
 ]
