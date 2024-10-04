@@ -5,6 +5,7 @@ mod assets;
 mod consensus;
 mod governance;
 mod system;
+mod xcm;
 
 use frame_support::pallet_prelude::{ConstU32, Get};
 use sp_version::RuntimeVersion;
@@ -16,8 +17,6 @@ pub trait SystemConfig {
     type ExistentialDeposit;
     type ScheduleOrigin;
     type PreimageOrigin;
-    // tuple of pallets to exclude from implementations
-    type ExcludeList = ();
 }
 
 pub trait ConsensusConfig {
@@ -27,8 +26,6 @@ pub trait ConsensusConfig {
     type MaxInvulnerables = ConstU32<20>;
     type MinEligibleCollators = ConstU32<20>;
     type CollatorSelectionUpdateOrigin;
-    // tuple of pallets to exclude from implementations
-    type ExcludeList = ();
 }
 
 pub trait AssetsConfig {
@@ -37,8 +34,6 @@ pub trait AssetsConfig {
     type AssetDeposit;
     type CreateOrigin;
     type ForceOrigin;
-    // tuple of pallets to exclude from implementations
-    type ExcludeList = ();
 }
 
 pub trait GovernanceConfig {
@@ -69,5 +64,12 @@ pub trait GovernanceConfig {
     type ReferendaSubmissionDeposit;
     type ReferendaSubmitOrigin;
     type ReferendaUndecidingTimeout;
-    type ExcludeList = ();
+}
+
+pub trait XcmConfig {
+    type MessageQueueHeapSize;
+    type MessageQueueMaxStale;
+    type MessageQueueServiceWeight;
+    type XcmpQueueControllerOrigin;
+    type XcmpQueueMaxInboundSuspended;
 }
