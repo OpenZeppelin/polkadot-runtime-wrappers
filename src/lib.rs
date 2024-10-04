@@ -72,4 +72,7 @@ pub trait XcmConfig {
     type MessageQueueServiceWeight;
     type XcmpQueueControllerOrigin;
     type XcmpQueueMaxInboundSuspended;
+    type XcmAdminOrigin;
+    type SendXcmOrigin;
+    type ExecuteXcmOrigin;
 }
