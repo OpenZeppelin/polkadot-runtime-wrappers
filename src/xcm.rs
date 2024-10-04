@@ -38,7 +38,11 @@ macro_rules! impl_openzeppelin_xcm {
             type ChannelInfo = ParachainSystem;
             type ControllerOrigin = <$t as XcmConfig>::XcmpQueueControllerOrigin;
             type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
+            // TODO
+            type MaxActiveOutboundChannels = ConstU32<128>;
             type MaxInboundSuspended = <$t as XcmConfig>::XcmpQueueMaxInboundSuspended;
+            // TODO
+            type MaxPageSize = ConstU32<{ 1 << 16 }>;
             /// Ensure that this value is not set to null (or NoPriceForMessageDelivery) to prevent spamming
             type PriceForSiblingDelivery = PriceForSiblingParachainDelivery;
             type RuntimeEvent = RuntimeEvent;
@@ -202,6 +206,7 @@ macro_rules! impl_openzeppelin_xcm {
             // Teleporting is disabled.
             type UniversalLocation = UniversalLocation;
             type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
+            type XcmRecorder = PolkadotXcm;
             type XcmSender = XcmRouter;
         }
 

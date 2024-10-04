@@ -94,10 +94,7 @@ macro_rules! impl_openzeppelin_system {
         }
 
         impl pallet_timestamp::Config for Runtime {
-            #[cfg(feature = "experimental")]
             type MinimumPeriod = ConstU64<0>;
-            #[cfg(not(feature = "experimental"))]
-            type MinimumPeriod = ConstU64<{ SLOT_DURATION / 2 }>;
             /// A timestamp: milliseconds since the unix epoch.
             type Moment = u64;
             type OnTimestampSet = Aura;
@@ -221,6 +218,7 @@ macro_rules! impl_openzeppelin_system {
             type WeightInfo = weights::pallet_proxy::WeightInfo<Runtime>;
         }
 
+        // TODO
         parameter_types! {
             pub const MaxFreezes: u32 = 0;
             pub const MaxLocks: u32 = 50;

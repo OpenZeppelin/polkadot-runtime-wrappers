@@ -21,7 +21,8 @@ macro_rules! impl_openzeppelin_governance {
         }
 
         impl pallet_treasury::Config for Runtime {
-            type ApproveOrigin = <$t as GovernanceConfig>::TreasuryApproveOrigin;
+            // TODO remove
+            //type ApproveOrigin = <$t as GovernanceConfig>::TreasuryApproveOrigin;
             type AssetKind = AssetKind;
             type BalanceConverter = frame_support::traits::tokens::UnityAssetBalanceConversion;
             #[cfg(feature = "runtime-benchmarks")]
@@ -35,16 +36,18 @@ macro_rules! impl_openzeppelin_governance {
             type BurnDestination = <$t as GovernanceConfig>::TreasuryBurnDestination;
             type Currency = Balances;
             type MaxApprovals = <$t as GovernanceConfig>::TreasuryMaxApprovals;
-            type OnSlash = <$t as GovernanceConfig>::TreasuryOnSlash;
+            // TODO remove
+            //type OnSlash = <$t as GovernanceConfig>::TreasuryOnSlash;
             type PalletId = <$t as GovernanceConfig>::TreasuryPalletId;
             #[cfg(feature = "runtime-benchmarks")]
             type Paymaster = PayWithEnsure<TreasuryPaymaster, OpenHrmpChannel<BenchmarkParaId>>;
             #[cfg(not(feature = "runtime-benchmarks"))]
             type Paymaster = TreasuryPaymaster;
             type PayoutPeriod = <$t as GovernanceConfig>::TreasuryPayoutSpendPeriod;
-            type ProposalBond = <$t as GovernanceConfig>::TreasuryProposalBond;
-            type ProposalBondMaximum = <$t as GovernanceConfig>::TreasuryProposalBondMaximum;
-            type ProposalBondMinimum = <$t as GovernanceConfig>::TreasuryProposalBondMinimum;
+            // TODO remove
+            // type ProposalBond = <$t as GovernanceConfig>::TreasuryProposalBond;
+            // type ProposalBondMaximum = <$t as GovernanceConfig>::TreasuryProposalBondMaximum;
+            // type ProposalBondMinimum = <$t as GovernanceConfig>::TreasuryProposalBondMinimum;
             type RejectOrigin = <$t as GovernanceConfig>::TreasuryRejectOrigin;
             type RuntimeEvent = RuntimeEvent;
             type SpendFunds = <$t as GovernanceConfig>::TreasurySpendFunds;
