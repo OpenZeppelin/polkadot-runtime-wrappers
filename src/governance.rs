@@ -37,7 +37,6 @@ macro_rules! impl_openzeppelin_governance {
             type MaxApprovals = <$t as GovernanceConfig>::TreasuryMaxApprovals;
             type OnSlash = <$t as GovernanceConfig>::TreasuryOnSlash;
             type PalletId = <$t as GovernanceConfig>::TreasuryPalletId;
-            // TODO:
             #[cfg(feature = "runtime-benchmarks")]
             type Paymaster = PayWithEnsure<TreasuryPaymaster, OpenHrmpChannel<BenchmarkParaId>>;
             #[cfg(not(feature = "runtime-benchmarks"))]
@@ -61,8 +60,7 @@ macro_rules! impl_openzeppelin_governance {
                 Balances,
                 Self::AccountId,
             >;
-            // TODO expose
-            type MaxVotes = ConstU32<512>;
+            type MaxVotes = <$t as GovernanceConfig>::ConvictionMaxVotes;
             type Polls = Referenda;
             type RuntimeEvent = RuntimeEvent;
             type VoteLockingPeriod = <$t as GovernanceConfig>::ConvictionVoteLockingPeriod;
@@ -78,6 +76,34 @@ macro_rules! impl_openzeppelin_governance {
             /// Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = weights::pallet_whitelist::WeightInfo<Runtime>;
             type WhitelistOrigin = <$t as GovernanceConfig>::WhitelistOrigin;
+        }
+
+        impl pallet_custom_origins::Config for Runtime {}
+
+        parameter_types! {
+            pub const MaxBalance: Balance = Balance::MAX;
+        }
+        pub type TreasurySpender = EitherOf<EnsureRootWithSuccess<AccountId, MaxBalance>, Spender>;
+
+        impl pallet_referenda::Config for Runtime {
+            type AlarmInterval = <$t as GovernanceConfig>::ReferendaAlarmInterval;
+            type CancelOrigin = <$t as GovernanceConfig>::ReferendaCancelOrigin;
+            type Currency = Balances;
+            type KillOrigin = <$t as GovernanceConfig>::ReferendaKillOrigin;
+            type MaxQueued = <$t as GovernanceConfig>::ReferendaMaxQueued;
+            type Preimages = Preimage;
+            type RuntimeCall = RuntimeCall;
+            type RuntimeEvent = RuntimeEvent;
+            type Scheduler = Scheduler;
+            type Slash = <$t as GovernanceConfig>::ReferendaSlash;
+            type SubmissionDeposit = <$t as GovernanceConfig>::ReferendaSubmissionDeposit;
+            type SubmitOrigin = <$t as GovernanceConfig>::ReferendaSubmitOrigin;
+            type Tally = pallet_conviction_voting::TallyOf<Runtime>;
+            type Tracks = tracks::TracksInfo;
+            type UndecidingTimeout = <$t as GovernanceConfig>::ReferendaUndecidingTimeout;
+            type Votes = pallet_conviction_voting::VotesOf<Runtime>;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::pallet_referenda::WeightInfo<Runtime>;
         }
     };
 }

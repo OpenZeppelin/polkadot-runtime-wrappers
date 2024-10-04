@@ -58,7 +58,16 @@ pub trait GovernanceConfig {
     type TreasuryRejectOrigin;
     type TreasurySpendOrigin;
     type ConvictionVoteLockingPeriod;
+    type ConvictionMaxVotes = ConstU32<512>;
     type DispatchWhitelistedOrigin;
     type WhitelistOrigin;
+    type ReferendaAlarmInterval;
+    type ReferendaCancelOrigin;
+    type ReferendaKillOrigin;
+    type ReferendaMaxQueued = ConstU32<20>;
+    type ReferendaSlash;
+    type ReferendaSubmissionDeposit;
+    type ReferendaSubmitOrigin;
+    type ReferendaUndecidingTimeout;
     type ExcludeList = ();
 }
