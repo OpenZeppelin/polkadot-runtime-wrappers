@@ -43,13 +43,8 @@ pub trait GovernanceConfig {
     type TreasuryMaxApprovals = ConstU32<100>;
     type TreasuryInteriorLocation;
     type TreasuryPalletId;
-    type TreasuryProposalBond;
-    type TreasuryProposalBondMinimum;
-    type TreasuryProposalBondMaximum;
     type TreasurySpendPeriod;
     type TreasuryPayoutSpendPeriod;
-    type TreasuryOnSlash;
-    type TreasuryApproveOrigin;
     type TreasuryRejectOrigin;
     type TreasurySpendOrigin;
     type ConvictionVoteLockingPeriod;
