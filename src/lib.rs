@@ -24,7 +24,7 @@ pub trait ConsensusConfig {
     type MaxAuthorities = ConstU32<100_000>;
     type MaxCandidates = ConstU32<100>;
     type MaxInvulnerables = ConstU32<20>;
-    type MinEligibleCollators = ConstU32<20>;
+    type MinEligibleCollators = ConstU32<4>;
     type CollatorSelectionUpdateOrigin;
 }
 
