@@ -54,3 +54,11 @@ macro_rules! impl_openzeppelin_assets {
         }
     };
 }
+
+
+pub fn pallet_name_list() -> Vec<(&'static str, &'static str)> {
+    vec![
+        ("Assets", "pallet_assets"),
+        ("TransactionPayment", "pallet_transaction_payment")
+    ]
+}
