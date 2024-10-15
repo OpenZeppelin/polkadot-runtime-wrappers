@@ -98,3 +98,12 @@ macro_rules! impl_openzeppelin_governance {
         }
     };
 }
+
+pub const PALLET_NAMES: [(&'static str, &'static str); 6] = [
+    ("Sudo", "pallet_sudo"),
+    ("Treasury", "pallet_treasury"),
+    ("ConvictionVoting", "pallet_conviction_voting"),
+    ("Whitelist", "pallet_whitelist"),
+    ("Origins", "pallet_custom_origins"),
+    ("Referenda", "pallet_referenda"),
+];
