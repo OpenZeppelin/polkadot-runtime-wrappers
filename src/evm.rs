@@ -102,3 +102,10 @@ macro_rules! impl_openzeppelin_evm {
         }
     };
 }
+
+pub const PALLET_NAMES: [(&'static str, &'static str); 4] = [
+    ("Ethereum", "pallet_ethereum"),
+    ("EVM", "pallet_evm"),
+    ("BaseFee", "pallet_base_fee"),
+    ("EVMChainId", "pallet_evm_chain_id"),
+];

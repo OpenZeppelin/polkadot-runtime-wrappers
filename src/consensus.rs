@@ -92,3 +92,11 @@ macro_rules! impl_openzeppelin_consensus {
         }
     };
 }
+
+pub const PALLET_NAMES: [(&'static str, &'static str); 5] = [
+    ("Authorship", "pallet_authorship"),
+    ("Aura", "pallet_aura"),
+    ("AuraExt", "cumulus_pallet_aura_ext"),
+    ("CollatorSelection", "pallet_collator_selection"),
+    ("Session", "pallet_session"),
+];
