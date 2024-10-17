@@ -3,6 +3,7 @@
 
 mod assets;
 mod consensus;
+mod evm;
 mod governance;
 mod system;
 mod xcm;
@@ -76,4 +77,9 @@ pub trait XcmConfig {
     type XcmpQueueControllerOrigin;
     type XcmpQueueMaxInboundSuspended;
     type XcmAdminOrigin;
+}
+
+pub trait EvmConfig {
+    type AddressMapping;
+    type FindAuthor;
 }
