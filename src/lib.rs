@@ -62,12 +62,16 @@ pub trait GovernanceConfig {
 }
 
 pub trait XcmConfig {
+    type LocationToAccountId;
+    type LocalOriginToLocation;
+    type AssetTransactors;
+    type XcmOriginToTransactDispatchOrigin;
+    type FeeManager;
+    type Trader;
     type MessageQueueHeapSize;
     type MessageQueueMaxStale;
     type MessageQueueServiceWeight;
     type XcmpQueueControllerOrigin;
     type XcmpQueueMaxInboundSuspended;
     type XcmAdminOrigin;
-    type SendXcmOrigin;
-    type ExecuteXcmOrigin;
 }
