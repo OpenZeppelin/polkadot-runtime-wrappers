@@ -14,8 +14,8 @@ macro_rules! impl_openzeppelin_assets {
             type ApprovalDeposit = <$t as AssetsConfig>::ApprovalDeposit;
             type AssetAccountDeposit = <$t as AssetsConfig>::ApprovalDeposit;
             type AssetDeposit = <$t as AssetsConfig>::AssetDeposit;
-            type AssetId = u32;
-            type AssetIdParameter = parity_scale_codec::Compact<u32>;
+            type AssetId = <$t as AssetsConfig>::AssetId;
+            type AssetIdParameter = parity_scale_codec::Compact<<$t as AssetsConfig>::AssetId>;
             type Balance = Balance;
             #[cfg(feature = "runtime-benchmarks")]
             type BenchmarkHelper = ();

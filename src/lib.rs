@@ -32,6 +32,8 @@ pub trait AssetsConfig {
     type ApprovalDeposit;
     type AssetAccountDeposit;
     type AssetDeposit;
+    type AssetId;
+    type BenchmarkHelper = ();
     type CreateOrigin;
     type ForceOrigin;
 }
