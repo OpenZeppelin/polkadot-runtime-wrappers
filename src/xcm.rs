@@ -164,6 +164,9 @@ macro_rules! impl_openzeppelin_xcm {
             type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
             /// Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = weights::pallet_xcm::WeightInfo<Runtime>;
+            #[cfg(feature = "runtime-benchmarks")]
+            type XcmExecuteFilter = Everything;
+            #[cfg(not(feature = "runtime-benchmarks"))]
             type XcmExecuteFilter = Nothing;
             // ^ Disable dispatchable execute on the XCM pallet.
             // Needs to be `Everything` for local testing.
