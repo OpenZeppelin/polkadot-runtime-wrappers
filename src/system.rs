@@ -279,7 +279,7 @@ macro_rules! impl_openzeppelin_system {
             type Currency = Balances;
             type DepositBase = DepositBase;
             type DepositFactor = DepositFactor;
-            type MaxSignatories = MaxSignatories;
+            type MaxSignatories = <$t as SystemConfig>::MaxSignatories;
             type RuntimeCall = RuntimeCall;
             type RuntimeEvent = RuntimeEvent;
             /// Rerun benchmarks if you are making changes to runtime configuration.
