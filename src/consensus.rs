@@ -53,3 +53,12 @@ macro_rules! impl_openzeppelin_consensus {
         }
     };
 }
+
+pub fn pallet_name_list() -> Vec<(&'static str, &'static str)> {
+    vec![
+        ("Authorship", "pallet_authorship"),
+        ("Aura", "pallet_aura"),
+        ("AuraExt", "cumulus_pallet_aura_ext"),
+        ("CollatorSelection", "pallet_collator_selection"),
+    ]
+}

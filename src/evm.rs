@@ -78,3 +78,12 @@ macro_rules! impl_openzeppelin_evm {
         }
     };
 }
+
+pub fn pallet_name_list() -> Vec<(&'static str, &'static str)> {
+    vec![
+        ("Ethereum", "pallet_ethereum"),
+        ("EVM", "pallet_evm"),
+        ("BaseFee", "pallet_base_fee"),
+        ("EVMChainId", "pallet_evm_chain_id"),
+    ]
+}

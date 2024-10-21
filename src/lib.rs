@@ -1,12 +1,12 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 #![feature(associated_type_defaults)]
 
-mod assets;
-mod consensus;
-mod evm;
-mod governance;
-mod system;
-mod xcm;
+pub mod assets;
+pub mod consensus;
+pub mod evm;
+pub mod governance;
+pub mod system;
+pub mod xcm;
 
 use frame_support::traits::{ConstU32, Get};
 use sp_version::RuntimeVersion;

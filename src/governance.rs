@@ -98,3 +98,14 @@ macro_rules! impl_openzeppelin_governance {
         }
     };
 }
+
+pub fn pallet_name_list() -> Vec<(&'static str, &'static str)> {
+    vec![
+        ("Sudo", "pallet_sudo"),
+        ("Treasury", "pallet_treasury"),
+        ("ConvictionVoting", "pallet_conviction_voting"),
+        ("Whitelist", "pallet_whitelist"),
+        ("Origins", "pallet_custom_origins"),
+        ("Referenda", "pallet_referenda"),
+    ]
+}

@@ -180,3 +180,12 @@ macro_rules! impl_openzeppelin_xcm {
         }
     };
 }
+
+pub fn pallet_name_list() -> Vec<(&'static str, &'static str)> {
+    vec![
+        ("MessageQueue", "pallet_message_queue"),
+        ("XcmpQueue", "cumulus_pallet_xcmp_queue"),
+        ("PolkadotXcm", "pallet_xcm"),
+        ("CumulusXcm", "cumulus_pallet_xcm"),
+    ]
+}
