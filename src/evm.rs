@@ -26,8 +26,7 @@ macro_rules! impl_openzeppelin_evm {
             type AddressMapping = <$t as EvmConfig>::AddressMapping;
             type BlockGasLimit = BlockGasLimit;
             type BlockHashMapping = pallet_ethereum::EthereumBlockHashMapping<Self>;
-            // TODO
-            type CallOrigin = EnsureAccountId20;
+            type CallOrigin = <$t as EvmConfig>::CallOrigin;
             type ChainId = EVMChainId;
             type Currency = Balances;
             type FeeCalculator = BaseFee;
@@ -36,10 +35,8 @@ macro_rules! impl_openzeppelin_evm {
             type GasWeightMapping = pallet_evm::FixedGasWeightMapping<Self>;
             type OnChargeTransaction = EVMCurrencyAdapter<Balances, ()>;
             type OnCreate = ();
-            // TODO
-            type PrecompilesType = OpenZeppelinPrecompiles<Self>;
-            // TODO
-            type PrecompilesValue = PrecompilesValue;
+            type PrecompilesType = <$t as EvmConfig>::PrecompilesType;
+            type PrecompilesValue = <$t as EvmConfig>::PrecompilesValue;
             type Runner = pallet_evm::runner::stack::Runner<Self>;
             type RuntimeEvent = RuntimeEvent;
             type SuicideQuickClearLimit = SuicideQuickClearLimit;
@@ -47,8 +44,7 @@ macro_rules! impl_openzeppelin_evm {
             /// Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = weights::pallet_evm::WeightInfo<Self>;
             type WeightPerGas = WeightPerGas;
-            // TODO
-            type WithdrawOrigin = EnsureAccountId20;
+            type WithdrawOrigin = <$t as EvmConfig>::WithdrawOrigin;
         }
 
         impl pallet_evm_chain_id::Config for Runtime {}

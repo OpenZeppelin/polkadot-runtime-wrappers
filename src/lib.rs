@@ -91,4 +91,8 @@ pub trait XcmConfig {
 pub trait EvmConfig {
     type AddressMapping;
     type FindAuthor;
+    type CallOrigin;
+    type WithdrawOrigin;
+    type PrecompilesType;
+    type PrecompilesValue;
 }
