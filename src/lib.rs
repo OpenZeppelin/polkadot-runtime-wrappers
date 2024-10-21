@@ -7,6 +7,7 @@ pub mod evm;
 pub mod governance;
 pub mod system;
 pub mod xcm;
+mod benchmarks;
 
 use frame_support::pallet_prelude::{ConstU32, Get};
 use sp_version::RuntimeVersion;
