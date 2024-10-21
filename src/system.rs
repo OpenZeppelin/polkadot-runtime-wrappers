@@ -272,7 +272,6 @@ macro_rules! impl_openzeppelin_system {
             pub const DepositBase: Balance = deposit(1, 88);
             // Additional storage item size of 32 bytes.
             pub const DepositFactor: Balance = deposit(0, 32);
-            pub const MaxSignatories: u16 = 100;
         }
 
         impl pallet_multisig::Config for Runtime {
