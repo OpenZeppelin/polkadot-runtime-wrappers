@@ -74,7 +74,7 @@ macro_rules! impl_openzeppelin_system {
             /// dispatchers.
             type Lookup = AccountIdLookup<Self::AccountId, ()>;
             /// The maximum number of consumers allowed on a single account.
-            type MaxConsumers = ConstU32<16>;
+            type MaxConsumers = <$t as SystemConfig>::MaxConsumers;
             /// The index type for storing how many extrinsics an account has signed.
             type Nonce = Nonce;
             /// The action to take on a Runtime Upgrade
@@ -149,8 +149,6 @@ macro_rules! impl_openzeppelin_system {
         }
 
         parameter_types! {
-            pub const MaxProxies: u32 = 32;
-            pub const MaxPending: u32 = 32;
             pub const ProxyDepositBase: Balance = deposit(1, 40);
             pub const AnnouncementDepositBase: Balance = deposit(1, 48);
             pub const ProxyDepositFactor: Balance = deposit(0, 33);
@@ -207,8 +205,8 @@ macro_rules! impl_openzeppelin_system {
             type AnnouncementDepositFactor = AnnouncementDepositFactor;
             type CallHasher = BlakeTwo256;
             type Currency = Balances;
-            type MaxPending = MaxPending;
-            type MaxProxies = MaxProxies;
+            type MaxPending = <$t as SystemConfig>::MaxPendingProxies;
+            type MaxProxies = <$t as SystemConfig>::MaxProxies;
             type ProxyDepositBase = ProxyDepositBase;
             type ProxyDepositFactor = ProxyDepositFactor;
             type ProxyType = ProxyType;
@@ -218,13 +216,6 @@ macro_rules! impl_openzeppelin_system {
             type WeightInfo = weights::pallet_proxy::WeightInfo<Runtime>;
         }
 
-        // TODO
-        parameter_types! {
-            pub const MaxFreezes: u32 = 0;
-            pub const MaxLocks: u32 = 50;
-            pub const MaxReserves: u32 = 50;
-        }
-
         impl pallet_balances::Config for Runtime {
             type AccountStore = System;
             /// The type for recording an account's balance.
@@ -232,9 +223,9 @@ macro_rules! impl_openzeppelin_system {
             type DustRemoval = ();
             type ExistentialDeposit = <$t as SystemConfig>::ExistentialDeposit;
             type FreezeIdentifier = ();
-            type MaxFreezes = MaxFreezes;
-            type MaxLocks = MaxLocks;
-            type MaxReserves = MaxReserves;
+            type MaxFreezes = <$t as SystemConfig>::MaxFreezes;
+            type MaxLocks = <$t as SystemConfig>::MaxLocks;
+            type MaxReserves = <$t as SystemConfig>::MaxReserves;
             type ReserveIdentifier = [u8; 8];
             /// The ubiquitous event type.
             type RuntimeEvent = RuntimeEvent;

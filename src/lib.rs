@@ -18,6 +18,12 @@ pub trait SystemConfig {
     type ExistentialDeposit;
     type ScheduleOrigin;
     type PreimageOrigin;
+    type MaxConsumers = ConstU32<16>;
+    type MaxPendingProxies = ConstU32<32>;
+    type MaxProxies = ConstU32<32>;
+    type MaxFreezes = ConstU32<0>;
+    type MaxLocks = ConstU32<50>;
+    type MaxReserves = ConstU32<50>;
 }
 
 pub trait ConsensusConfig {
