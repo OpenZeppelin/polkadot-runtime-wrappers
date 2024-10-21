@@ -8,7 +8,7 @@ mod governance;
 mod system;
 mod xcm;
 
-use frame_support::traits::{ConstU16, ConstU32, Get};
+use frame_support::traits::{ConstU32, Get};
 use sp_version::RuntimeVersion;
 
 pub trait SystemConfig {
@@ -19,7 +19,7 @@ pub trait SystemConfig {
     type ScheduleOrigin;
     type PreimageOrigin;
     type MaxConsumers = ConstU32<16>;
-    type MaxSignatories = ConstU16<100>;
+    type MaxSignatories = ConstU32<100>;
     type MaxPendingProxies = ConstU32<32>;
     type MaxProxies = ConstU32<32>;
     type MaxFreezes = ConstU32<0>;
