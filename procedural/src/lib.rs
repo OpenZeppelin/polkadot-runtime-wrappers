@@ -76,6 +76,7 @@ fn parse_abstraction(item: ItemStruct, index: &mut u32) -> proc_macro2::TokenStr
         Abstractions::Consensus => construct_consensus(index),
         Abstractions::Governance => construct_governance(index),
         Abstractions::XCM => construct_xcm(index),
+        Abstractions::EVM => construct_evm(index),
     }
 }
 
@@ -130,6 +131,18 @@ fn construct_assets(index: &mut u32) -> proc_macro2::TokenStream {
 fn construct_system(index: &mut u32) -> proc_macro2::TokenStream {
     let mut res = quote! {};
     for (name, module) in polkadot_runtime_wrappers::system::pallet_name_list() {
+        res.extend(construct_pallet(
+            index,
+            construct_ident(name),
+            construct_ident(module),
+        ));
+    }
+    res
+}
+
+fn construct_evm(index: &mut u32) -> proc_macro2::TokenStream {
+    let mut res = quote! {};
+    for (name, module) in polkadot_runtime_wrappers::evm::pallet_name_list() {
         res.extend(construct_pallet(
             index,
             construct_ident(name),

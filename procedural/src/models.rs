@@ -3,7 +3,7 @@ use proc_macro2::Ident;
 pub enum Abstractions {
     Assets,
     XCM,
-    // EVM,
+    EVM,
     System,
     Governance,
     Consensus,
@@ -21,6 +21,8 @@ impl TryFrom<Ident> for Abstractions {
             Ok(Abstractions::Assets)
         } else if value == "XCM" {
             Ok(Abstractions::XCM)
+        } else if value == "EVM" {
+            Ok(Abstractions::EVM)
         } else if value == "System" {
             Ok(Abstractions::System)
         } else if value == "Governance" {
