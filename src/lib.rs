@@ -84,6 +84,8 @@ pub trait XcmConfig {
     type XcmpQueueControllerOrigin;
     type XcmpQueueMaxInboundSuspended;
     type XcmAdminOrigin;
+    type MaxActiveOutboundChannels = ConstU32<128>;
+    type MaxPageSize = ConstU32<{ 1 << 16 }>;
 }
 
 pub trait EvmConfig {

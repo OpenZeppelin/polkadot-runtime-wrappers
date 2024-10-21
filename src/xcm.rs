@@ -29,7 +29,7 @@ macro_rules! impl_openzeppelin_xcm {
 
         parameter_types! {
             /// The asset ID for the asset that we use to pay for message delivery fees.
-            pub FeeAssetId: AssetId = AssetId(RelayLocation::get());
+            pub FeeAssetId: AssetId = AssetId(Location::parent());
             /// The base fee for the message delivery fees. Kusama is based for the reference.
             pub const ToSiblingBaseDeliveryFee: u128 = CENTS.saturating_mul(3);
         }
@@ -38,11 +38,9 @@ macro_rules! impl_openzeppelin_xcm {
             type ChannelInfo = ParachainSystem;
             type ControllerOrigin = <$t as XcmConfig>::XcmpQueueControllerOrigin;
             type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
-            // TODO
-            type MaxActiveOutboundChannels = ConstU32<128>;
+            type MaxActiveOutboundChannels = <$t as XcmConfig>::MaxActiveOutboundChannels;
             type MaxInboundSuspended = <$t as XcmConfig>::XcmpQueueMaxInboundSuspended;
-            // TODO
-            type MaxPageSize = ConstU32<{ 1 << 16 }>;
+            type MaxPageSize = <$t as XcmConfig>::MaxPageSize;
             /// Ensure that this value is not set to null (or NoPriceForMessageDelivery) to prevent spamming
             type PriceForSiblingDelivery = PriceForSiblingParachainDelivery;
             type RuntimeEvent = RuntimeEvent;
@@ -55,8 +53,6 @@ macro_rules! impl_openzeppelin_xcm {
         }
 
         parameter_types! {
-            // TODO: pass in as parameter
-            pub const RelayLocation: Location = Location::parent();
             pub PlaceholderAccount: AccountId = PolkadotXcm::check_account();
             pub UniversalLocation: InteriorLocation = Parachain(ParachainInfo::parachain_id().into()).into();
         }
