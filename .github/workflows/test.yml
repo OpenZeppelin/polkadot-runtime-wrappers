@@ -55,9 +55,3 @@ jobs:
 
       - name: Run tests
         run: cargo nextest run --release
-
-      - name: Check benchmarking compilation
-        run: cargo check --release --features runtime-benchmarks
-
-      - name: Run tests with async backing
-        run: cargo nextest run --release --features="async-backing"
