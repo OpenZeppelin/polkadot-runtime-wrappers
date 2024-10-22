@@ -1,0 +1,182 @@
+//! XCM pallet groupings wrapper
+
+#[macro_export]
+macro_rules! impl_openzeppelin_xcm {
+    ($t:ty) => {
+        impl pallet_message_queue::Config for Runtime {
+            type HeapSize = <$t as XcmConfig>::MessageQueueHeapSize;
+            type IdleMaxServiceWeight = <$t as XcmConfig>::MessageQueueServiceWeight;
+            type MaxStale = <$t as XcmConfig>::MessageQueueMaxStale;
+            #[cfg(feature = "runtime-benchmarks")]
+            type MessageProcessor = pallet_message_queue::mock_helpers::NoopMessageProcessor<
+                cumulus_primitives_core::AggregateMessageOrigin,
+            >;
+            #[cfg(not(feature = "runtime-benchmarks"))]
+            type MessageProcessor = ProcessXcmMessage<
+                AggregateMessageOrigin,
+                xcm_executor::XcmExecutor<XcmExecutorConfig>,
+                RuntimeCall,
+            >;
+            // The XCMP queue pallet is only ever able to handle the `Sibling(ParaId)` origin:
+            type QueueChangeHandler = NarrowOriginToSibling<XcmpQueue>;
+            type QueuePausedQuery = NarrowOriginToSibling<XcmpQueue>;
+            type RuntimeEvent = RuntimeEvent;
+            type ServiceWeight = <$t as XcmConfig>::MessageQueueServiceWeight;
+            type Size = u32;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::pallet_message_queue::WeightInfo<Runtime>;
+        }
+
+        parameter_types! {
+            /// The asset ID for the asset that we use to pay for message delivery fees.
+            pub FeeAssetId: AssetId = AssetId(Location::parent());
+            /// The base fee for the message delivery fees. Kusama is based for the reference.
+            pub const ToSiblingBaseDeliveryFee: u128 = CENTS.saturating_mul(3);
+        }
+
+        impl cumulus_pallet_xcmp_queue::Config for Runtime {
+            type ChannelInfo = ParachainSystem;
+            type ControllerOrigin = <$t as XcmConfig>::XcmpQueueControllerOrigin;
+            type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
+            type MaxActiveOutboundChannels = <$t as XcmConfig>::MaxActiveOutboundChannels;
+            type MaxInboundSuspended = <$t as XcmConfig>::XcmpQueueMaxInboundSuspended;
+            type MaxPageSize = <$t as XcmConfig>::MaxPageSize;
+            /// Ensure that this value is not set to null (or NoPriceForMessageDelivery) to prevent spamming
+            type PriceForSiblingDelivery = PriceForSiblingParachainDelivery;
+            type RuntimeEvent = RuntimeEvent;
+            type VersionWrapper = ();
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::cumulus_pallet_xcmp_queue::WeightInfo<Runtime>;
+            // Enqueue XCMP messages from siblings for later processing.
+            type XcmpQueue =
+                TransformOrigin<MessageQueue, AggregateMessageOrigin, ParaId, ParaIdToSibling>;
+        }
+
+        parameter_types! {
+            pub PlaceholderAccount: AccountId = PolkadotXcm::check_account();
+            pub UniversalLocation: InteriorLocation = Parachain(ParachainInfo::parachain_id().into()).into();
+        }
+
+        parameter_types! {
+            // One XCM operation is 1_000_000_000 weight - almost certainly a conservative estimate.
+            pub const UnitWeightCost: Weight = Weight::from_parts(1_000_000_000, 64 * 1024);
+            pub const MaxInstructions: u32 = 100;
+            pub const MaxAssetsIntoHolding: u32 = 64;
+        }
+
+        pub struct ParentOrParentsExecutivePlurality;
+        impl Contains<Location> for ParentOrParentsExecutivePlurality {
+            fn contains(location: &Location) -> bool {
+                matches!(location.unpack(), (1, []) | (1, [Plurality { id: BodyId::Executive, .. }]))
+            }
+        }
+
+        pub type Barrier = TrailingSetTopicAsId<
+            DenyThenTry<
+                DenyReserveTransferToRelayChain,
+                (
+                    TakeWeightCredit,
+                    WithComputedOrigin<
+                        (
+                            AllowTopLevelPaidExecutionFrom<Everything>,
+                            AllowExplicitUnpaidExecutionFrom<ParentOrParentsExecutivePlurality>,
+                            // ^^^ Parent and its exec plurality get free execution
+                        ),
+                        UniversalLocation,
+                        ConstU32<8>,
+                    >,
+                ),
+            >,
+        >;
+
+        pub struct XcmExecutorConfig;
+        impl xcm_executor::Config for XcmExecutorConfig {
+            type Aliasers = Nothing;
+            type AssetClaims = PolkadotXcm;
+            type AssetExchanger = ();
+            type AssetLocker = ();
+            // How to withdraw and deposit an asset.
+            type AssetTransactor = <$t as XcmConfig>::AssetTransactors;
+            type AssetTrap = PolkadotXcm;
+            type Barrier = Barrier;
+            type CallDispatcher = RuntimeCall;
+            /// When changing this config, keep in mind, that you should collect fees.
+            type FeeManager = <$t as XcmConfig>::FeeManager;
+            type HrmpChannelAcceptedHandler = ();
+            type HrmpChannelClosingHandler = ();
+            type HrmpNewChannelOpenRequestHandler = ();
+            /// Please, keep these two configs (`IsReserve` and `IsTeleporter`) mutually exclusive
+            type IsReserve = NativeAsset;
+            type IsTeleporter = ();
+            type MaxAssetsIntoHolding = MaxAssetsIntoHolding;
+            type MessageExporter = ();
+            type OriginConverter = <$t as XcmConfig>::XcmOriginToTransactDispatchOrigin;
+            type PalletInstancesInfo = AllPalletsWithSystem;
+            type ResponseHandler = PolkadotXcm;
+            type RuntimeCall = RuntimeCall;
+            type SafeCallFilter = Everything;
+            type SubscriptionService = PolkadotXcm;
+            type Trader = <$t as XcmConfig>::Trader;
+            type TransactionalProcessor = FrameTransactionalProcessor;
+            type UniversalAliases = Nothing;
+            // Teleporting is disabled.
+            type UniversalLocation = UniversalLocation;
+            type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
+            type XcmRecorder = PolkadotXcm;
+            type XcmSender = XcmRouter;
+        }
+
+        /// The means for routing XCM messages which are not for local execution into
+        /// the right message queues.
+        pub type XcmRouter = WithUniqueTopic<(
+            // Two routers - use UMP to communicate with the relay chain:
+            cumulus_primitives_utility::ParentAsUmp<ParachainSystem, (), ()>,
+            // ..and XCMP to communicate with the sibling chains.
+            XcmpQueue,
+        )>;
+
+        parameter_types! {
+            pub const MaxLockers: u32 = 8;
+            pub const MaxRemoteLockConsumers: u32 = 0;
+        }
+
+        impl pallet_xcm::Config for Runtime {
+            type AdminOrigin = <$t as XcmConfig>::XcmAdminOrigin;
+            // ^ Override for AdvertisedXcmVersion default
+            type AdvertisedXcmVersion = pallet_xcm::CurrentXcmVersion;
+            type Currency = Balances;
+            type CurrencyMatcher = ();
+            type ExecuteXcmOrigin = EnsureXcmOrigin<RuntimeOrigin, <$t as XcmConfig>::LocalOriginToLocation>;
+            type MaxLockers = MaxLockers;
+            type MaxRemoteLockConsumers = MaxRemoteLockConsumers;
+            type RemoteLockConsumerIdentifier = ();
+            type RuntimeCall = RuntimeCall;
+            type RuntimeEvent = RuntimeEvent;
+            type RuntimeOrigin = RuntimeOrigin;
+            type SendXcmOrigin = EnsureXcmOrigin<RuntimeOrigin, <$t as XcmConfig>::LocalOriginToLocation>;
+            type SovereignAccountOf = <$t as XcmConfig>::LocationToAccountId;
+            type TrustedLockers = ();
+            type UniversalLocation = UniversalLocation;
+            type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
+            type WeightInfo = weights::pallet_xcm::WeightInfo<Runtime>;
+            #[cfg(feature = "runtime-benchmarks")]
+            type XcmExecuteFilter = Everything;
+            #[cfg(not(feature = "runtime-benchmarks"))]
+            type XcmExecuteFilter = Nothing;
+            // ^ Disable dispatchable execute on the XCM pallet.
+            // Needs to be `Everything` for local testing.
+            type XcmExecutor = XcmExecutor<XcmExecutorConfig>;
+            type XcmReserveTransferFilter = Nothing;
+            type XcmRouter = XcmRouter;
+            type XcmTeleportFilter = Nothing;
+
+            const VERSION_DISCOVERY_QUEUE_SIZE: u32 = 100;
+        }
+
+        impl cumulus_pallet_xcm::Config for Runtime {
+            type RuntimeEvent = RuntimeEvent;
+            type XcmExecutor = XcmExecutor<XcmExecutorConfig>;
+        }
+    };
+}
