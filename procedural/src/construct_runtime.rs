@@ -78,68 +78,50 @@ fn parse_abstraction(
 }
 
 fn construct_xcm(index: &mut u32) -> proc_macro2::TokenStream {
-    let mut res = quote! {};
-    for (name, module) in polkadot_runtime_wrappers::xcm::pallet_name_list() {
-        res.extend(construct_pallet(
-            index,
-            construct_ident(name),
-            construct_ident(module),
-        ));
-    }
-    res
+    construct_abstraction(
+        index,
+        polkadot_runtime_wrappers::xcm::pallet_name_list().as_slice(),
+    )
 }
 
 fn construct_governance(index: &mut u32) -> proc_macro2::TokenStream {
-    let mut res = quote! {};
-    for (name, module) in polkadot_runtime_wrappers::governance::pallet_name_list() {
-        res.extend(construct_pallet(
-            index,
-            construct_ident(name),
-            construct_ident(module),
-        ));
-    }
-    res
+    construct_abstraction(
+        index,
+        polkadot_runtime_wrappers::governance::pallet_name_list().as_slice(),
+    )
 }
 
 fn construct_consensus(index: &mut u32) -> proc_macro2::TokenStream {
-    let mut res = quote! {};
-    for (name, module) in polkadot_runtime_wrappers::consensus::pallet_name_list() {
-        res.extend(construct_pallet(
-            index,
-            construct_ident(name),
-            construct_ident(module),
-        ));
-    }
-    res
+    construct_abstraction(
+        index,
+        polkadot_runtime_wrappers::consensus::pallet_name_list().as_slice(),
+    )
 }
 
 fn construct_evm(index: &mut u32) -> proc_macro2::TokenStream {
-    let mut res = quote! {};
-    for (name, module) in polkadot_runtime_wrappers::evm::pallet_name_list() {
-        res.extend(construct_pallet(
-            index,
-            construct_ident(name),
-            construct_ident(module),
-        ));
-    }
-    res
+    construct_abstraction(
+        index,
+        polkadot_runtime_wrappers::evm::pallet_name_list().as_slice(),
+    )
 }
 
 fn construct_assets(index: &mut u32) -> proc_macro2::TokenStream {
-    let mut res = quote! {};
-    for (name, module) in polkadot_runtime_wrappers::assets::pallet_name_list() {
-        res.extend(construct_pallet(
-            index,
-            construct_ident(name),
-            construct_ident(module),
-        ));
-    }
-    res
+    construct_abstraction(
+        index,
+        polkadot_runtime_wrappers::assets::pallet_name_list().as_slice(),
+    )
 }
 
 fn construct_system(index: &mut u32) -> proc_macro2::TokenStream {
+    construct_abstraction(
+        index,
+        polkadot_runtime_wrappers::system::pallet_name_list().as_slice(),
+    )
+}
+
+fn construct_abstraction(index: &mut u32, pallets: &[(&str, &str)]) -> proc_macro2::TokenStream {
     let mut res = quote! {};
-    for (name, module) in polkadot_runtime_wrappers::system::pallet_name_list() {
+    for (name, module) in pallets {
         res.extend(construct_pallet(
             index,
             construct_ident(name),

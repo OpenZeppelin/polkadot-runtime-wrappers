@@ -1,6 +1,49 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::Ident;
+use syn::{Ident, Item};
+
+use super::fetch_ident;
+
+#[derive(Debug)]
+pub struct AssetAPIFields {
+    pub transaction_payment: Ident,
+    pub balance: Ident,
+    pub call: Ident,
+}
+
+impl TryFrom<&[Item]> for AssetAPIFields {
+    type Error = &'static str;
+    fn try_from(value: &[Item]) -> Result<Self, Self::Error> {
+        let mut transaction_payment = None;
+        let mut call = None;
+        let mut balance = None;
+
+        for item in value {
+            match item {
+                Item::Type(ty) => {
+                    if ty.ident == "TransactionPayment" {
+                        transaction_payment = Some(fetch_ident(&ty.ty))
+                    } else if ty.ident == "RuntimeCall" {
+                        call = Some(fetch_ident(&ty.ty))
+                    } else if ty.ident == "Balance" {
+                        balance = Some(fetch_ident(&ty.ty))
+                    }
+                }
+                _ => (),
+            }
+        }
+
+        let transaction_payment =
+            transaction_payment.ok_or("`type TransactionPayment` not specified, but required")?;
+        let balance = balance.ok_or("`type Balance` not specified, but required")?;
+        let call = call.ok_or("`type RuntimeCall` not specified, but required")?;
+        Ok(AssetAPIFields {
+            transaction_payment,
+            balance,
+            call,
+        })
+    }
+}
 
 pub fn assets_apis(
     runtime: &Ident,
