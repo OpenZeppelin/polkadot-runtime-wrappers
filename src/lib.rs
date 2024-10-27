@@ -42,9 +42,11 @@ pub trait AssetsConfig {
     type AssetAccountDeposit;
     type AssetDeposit;
     type AssetId;
+    type AssetType;
     type BenchmarkHelper = ();
     type CreateOrigin;
     type ForceOrigin;
+    type ForeignAssetModifierOrigin;
 }
 
 pub trait GovernanceConfig {
