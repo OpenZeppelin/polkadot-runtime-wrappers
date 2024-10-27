@@ -13,6 +13,7 @@ use sp_version::RuntimeVersion;
 
 pub trait SystemConfig {
     type AccountId;
+    type Lookup;
     type SS58Prefix;
     type Version: Get<RuntimeVersion>;
     type ExistentialDeposit;

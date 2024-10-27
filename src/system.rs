@@ -72,7 +72,7 @@ macro_rules! impl_openzeppelin_system {
             type Hash = Hash;
             /// The lookup mechanism to get account ID from whatever is passed in
             /// dispatchers.
-            type Lookup = AccountIdLookup<Self::AccountId, ()>;
+            type Lookup = <$t as SystemConfig>::Lookup;
             /// The maximum number of consumers allowed on a single account.
             type MaxConsumers = <$t as SystemConfig>::MaxConsumers;
             /// The index type for storing how many extrinsics an account has signed.
