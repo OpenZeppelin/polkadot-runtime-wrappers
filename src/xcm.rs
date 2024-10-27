@@ -167,7 +167,7 @@ macro_rules! impl_openzeppelin_xcm {
             // ^ Disable dispatchable execute on the XCM pallet.
             // Needs to be `Everything` for local testing.
             type XcmExecutor = XcmExecutor<XcmExecutorConfig>;
-            type XcmReserveTransferFilter = Nothing;
+            type XcmReserveTransferFilter = Everything;
             type XcmRouter = XcmRouter;
             type XcmTeleportFilter = Nothing;
 
