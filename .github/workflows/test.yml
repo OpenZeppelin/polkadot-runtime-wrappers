@@ -1,0 +1,57 @@
+name: test
+# This is the main CI workflow that runs the test suite on all pushes to main
+# and all pull requests. It runs the following jobs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# If new code is pushed to a PR branch, then cancel in progress workflows for
+# that PR. Ensures that we don't waste CI time, and returns results quicker.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  SCCACHE_GHA_ENABLED: "true"
+  SCCACHE_CACHE_SIZE: "50GB"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v4
+
+      - name: Install Protoc
+        #The action queries the GitHub API to fetch releases data, to avoid rate limiting, pass the default token
+        uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: install rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Run sccache
+        uses: mozilla-actions/sccache-action@v0.0.4
+
+      - name: "Install nextest"
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
+
+      - name: Run tests
+        run: cargo nextest run --release
