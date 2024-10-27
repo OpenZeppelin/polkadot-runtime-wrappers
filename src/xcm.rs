@@ -106,7 +106,7 @@ macro_rules! impl_openzeppelin_xcm {
             type HrmpChannelClosingHandler = ();
             type HrmpNewChannelOpenRequestHandler = ();
             /// Please, keep these two configs (`IsReserve` and `IsTeleporter`) mutually exclusive
-            type IsReserve = NativeAsset;
+            type IsReserve = <$t as XcmConfig>::Reserves;
             type IsTeleporter = ();
             type MaxAssetsIntoHolding = MaxAssetsIntoHolding;
             type MessageExporter = ();

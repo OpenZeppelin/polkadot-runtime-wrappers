@@ -78,6 +78,7 @@ pub trait XcmConfig {
     type XcmOriginToTransactDispatchOrigin;
     type FeeManager;
     type Trader;
+    type Reserves;
     type MessageQueueHeapSize;
     type MessageQueueMaxStale;
     type MessageQueueServiceWeight;
