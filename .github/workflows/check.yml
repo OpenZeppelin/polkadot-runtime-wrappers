@@ -45,7 +45,7 @@ jobs:
         with:
           submodules: true
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@nightly
         with:
           components: clippy
       - name: cargo fmt
