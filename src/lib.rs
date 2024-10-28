@@ -47,6 +47,9 @@ pub trait AssetsConfig {
     type CreateOrigin;
     type ForceOrigin;
     type ForeignAssetModifierOrigin;
+    type AssetRegistrar;
+    type AssetRegistrarMetadata;
+    type WeightToFee;
 }
 
 pub trait GovernanceConfig {
