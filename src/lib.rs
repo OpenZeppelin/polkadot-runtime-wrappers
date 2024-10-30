@@ -19,6 +19,7 @@ pub trait SystemConfig {
     type ExistentialDeposit;
     type ScheduleOrigin;
     type PreimageOrigin;
+    type ProxyType;
     type MaxConsumers = ConstU32<16>;
     type MaxSignatories = ConstU32<100>;
     type MaxPendingProxies = ConstU32<32>;

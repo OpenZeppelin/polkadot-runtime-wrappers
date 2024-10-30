@@ -155,51 +155,6 @@ macro_rules! impl_openzeppelin_system {
             pub const AnnouncementDepositFactor: Balance = deposit(0, 66);
         }
 
-        /// The type used to represent the kinds of proxying allowed.
-        /// If you are adding new pallets, consider adding new ProxyType variant
-        #[derive(
-            Copy,
-            Clone,
-            Decode,
-            Default,
-            Encode,
-            Eq,
-            MaxEncodedLen,
-            Ord,
-            PartialEq,
-            PartialOrd,
-            RuntimeDebug,
-            TypeInfo,
-        )]
-        pub enum ProxyType {
-            /// Allows to proxy all calls
-            #[default]
-            Any,
-            /// Allows all non-transfer calls
-            NonTransfer,
-            /// Allows to finish the proxy
-            CancelProxy,
-            /// Allows to operate with collators list (invulnerables, candidates, etc.)
-            Collator,
-        }
-
-        impl InstanceFilter<RuntimeCall> for ProxyType {
-            fn filter(&self, c: &RuntimeCall) -> bool {
-                match self {
-                    ProxyType::Any => true,
-                    ProxyType::NonTransfer => !matches!(c, RuntimeCall::Balances { .. }),
-                    ProxyType::CancelProxy => matches!(
-                        c,
-                        RuntimeCall::Proxy(pallet_proxy::Call::reject_announcement { .. })
-                            | RuntimeCall::Multisig { .. }
-                    ),
-                    ProxyType::Collator => {
-                        matches!(c, RuntimeCall::CollatorSelection { .. } | RuntimeCall::Multisig { .. })
-                    }
-                }
-            }
-        }
-
         impl pallet_proxy::Config for Runtime {
             type AnnouncementDepositBase = AnnouncementDepositBase;
             type AnnouncementDepositFactor = AnnouncementDepositFactor;
@@ -209,7 +164,7 @@ macro_rules! impl_openzeppelin_system {
             type MaxProxies = <$t as SystemConfig>::MaxProxies;
             type ProxyDepositBase = ProxyDepositBase;
             type ProxyDepositFactor = ProxyDepositFactor;
-            type ProxyType = ProxyType;
+            type ProxyType = <$t as SystemConfig>::ProxyType;
             type RuntimeCall = RuntimeCall;
             type RuntimeEvent = RuntimeEvent;
             /// Rerun benchmarks if you are making changes to runtime configuration.
