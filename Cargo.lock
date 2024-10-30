@@ -1498,6 +1498,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08d65885ee38876c4f86fa503fb49d7b507c2b62552df7c70b2fce627e06381"
 
 [[package]]
+name = "openzeppelin-polkadot-wrappers"
+version = "0.0.1"
+dependencies = [
+ "frame-support",
+ "scale-info",
+ "sp-std",
+ "sp-version",
+]
+
+[[package]]
 name = "overload"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1619,16 +1629,6 @@ checksum = "f950b2377845cebe5cf8b5165cb3cc1a5e0fa5cfa3e1f7f55707d8fd82e0a7b7"
 dependencies = [
  "der",
  "spki",
-]
-
-[[package]]
-name = "polkadot-runtime-wrappers"
-version = "0.0.1"
-dependencies = [
- "frame-support",
- "scale-info",
- "sp-std",
- "sp-version",
 ]
 
 [[package]]

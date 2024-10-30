@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-runtime-wrappers"
+name = "openzeppelin-polkadot-wrappers"
 authors = [ "OpenZeppelin" ]
 description = "Wrappers with Sensible Defaults for constructing Polkadot Parachain Runtimes"
 edition = "2021"
