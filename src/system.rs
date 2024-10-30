@@ -117,7 +117,7 @@ macro_rules! impl_openzeppelin_system {
             type MinimumPeriod = ConstU64<0>;
             /// A timestamp: milliseconds since the unix epoch.
             type Moment = u64;
-            type OnTimestampSet = Aura;
+            type OnTimestampSet = <$t as SystemConfig>::OnTimestampSet;
             /// Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = weights::pallet_timestamp::WeightInfo<Runtime>;
         }

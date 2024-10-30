@@ -6,9 +6,10 @@ pub mod consensus;
 pub mod evm;
 pub mod governance;
 pub mod system;
+pub mod tanssi;
 pub mod xcm;
 
-use frame_support::traits::{ConstU32, Get};
+use frame_support::traits::{ConstU32, Get, OnTimestampSet};
 use sp_version::RuntimeVersion;
 
 pub trait SystemConfig {
@@ -19,7 +20,7 @@ pub trait SystemConfig {
     type ExistentialDeposit;
     type ScheduleOrigin;
     type PreimageOrigin;
-    type ProxyType;
+    type OnTimestampSet: OnTimestampSet<u64>;
     type MaxConsumers = ConstU32<16>;
     type MaxSignatories = ConstU32<100>;
     type MaxPendingProxies = ConstU32<32>;
@@ -134,3 +135,5 @@ pub trait EvmConfig {
     type Erc20XcmBridgeTransferGasLimit;
     type LocationToH160;
 }
+
+pub trait TanssiConfig {}
