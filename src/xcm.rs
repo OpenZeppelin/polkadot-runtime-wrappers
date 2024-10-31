@@ -29,7 +29,7 @@ macro_rules! impl_openzeppelin_xcm {
 
         parameter_types! {
             /// The asset ID for the asset that we use to pay for message delivery fees.
-            pub FeeAssetId: AssetId = AssetId(Location::parent());
+            pub FeeAssetId: cumulus_primitives_core::AssetId = cumulus_primitives_core::AssetId(Location::parent());
             /// The base fee for the message delivery fees. Kusama is based for the reference.
             pub const ToSiblingBaseDeliveryFee: u128 = CENTS.saturating_mul(3);
         }
