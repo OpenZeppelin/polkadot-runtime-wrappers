@@ -3,8 +3,8 @@ use syn::ItemStruct;
 
 pub enum ConstructAbstractions {
     Assets,
-    XCM,
-    EVM,
+    Xcm,
+    Evm,
     System,
     Governance,
     Consensus,
@@ -42,9 +42,9 @@ impl TryFrom<Ident> for ConstructAbstractions {
         if "Assets".eq_ignore_ascii_case(&value.to_string()) {
             Ok(ConstructAbstractions::Assets)
         } else if "XCM".eq_ignore_ascii_case(&value.to_string()) {
-            Ok(ConstructAbstractions::XCM)
+            Ok(ConstructAbstractions::Xcm)
         } else if "EVM".eq_ignore_ascii_case(&value.to_string()) {
-            Ok(ConstructAbstractions::EVM)
+            Ok(ConstructAbstractions::Evm)
         } else if "System".eq_ignore_ascii_case(&value.to_string()) {
             Ok(ConstructAbstractions::System)
         } else if "Governance".eq_ignore_ascii_case(&value.to_string()) {
@@ -60,7 +60,7 @@ impl TryFrom<Ident> for ConstructAbstractions {
 pub enum APIAbstractions {
     Benchmarks,
     System,
-    EVM,
+    Evm,
     Consensus,
     Assets,
 }
@@ -73,7 +73,7 @@ impl TryFrom<Ident> for APIAbstractions {
         } else if "Assets".eq_ignore_ascii_case(&value.to_string()) {
             Ok(APIAbstractions::Assets)
         } else if "EVM".eq_ignore_ascii_case(&value.to_string()) {
-            Ok(APIAbstractions::EVM)
+            Ok(APIAbstractions::Evm)
         } else if "System".eq_ignore_ascii_case(&value.to_string()) {
             Ok(APIAbstractions::System)
         } else if "Consensus".eq_ignore_ascii_case(&value.to_string()) {

@@ -19,17 +19,14 @@ impl TryFrom<&[Item]> for EVMAPIFields {
         let mut ethereum = None;
 
         for item in value {
-            match item {
-                Item::Type(ty) => {
-                    if ty.ident == "RuntimeCall" {
-                        call = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "Executive" {
-                        executive = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "Ethereum" {
-                        ethereum = Some(fetch_ident(&ty.ty))
-                    }
+            if let Item::Type(ty) = item {
+                if ty.ident == "RuntimeCall" {
+                    call = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "Executive" {
+                    executive = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "Ethereum" {
+                    ethereum = Some(fetch_ident(&ty.ty))
                 }
-                _ => (),
             }
         }
 
@@ -53,13 +50,6 @@ pub fn evm_apis(
     ethereum: &Ident,
 ) -> TokenStream {
     quote::quote! {
-        use pallet_ethereum::{
-            Call::transact, Transaction as EthereumTransaction, TransactionAction, TransactionData,
-            TransactionStatus,
-        };
-        use pallet_evm::{Account as EVMAccount, FeeCalculator, Runner};
-        use sp_core::{H160, H256, U256};
-
         impl fp_rpc::EthereumRuntimeRPCApi<#block> for #runtime {
             /// Returns runtime defined pallet_evm::ChainId.
             fn chain_id() -> u64 {
@@ -67,47 +57,49 @@ pub fn evm_apis(
             }
 
             /// Returns pallet_evm::Accounts by address.
-            fn account_basic(address: H160) -> EVMAccount {
+            fn account_basic(address: sp_core::H160) -> pallet_evm::Account {
                 let (account, _) = pallet_evm::Pallet::<#runtime>::account_basic(&address);
                 account
             }
 
             /// Returns FixedGasPrice::min_gas_price
-            fn gas_price() -> U256 {
+            fn gas_price() -> sp_core::U256 {
+                use pallet_evm::FeeCalculator;
                 let (gas_price, _) = <#runtime as pallet_evm::Config>::FeeCalculator::min_gas_price();
                 gas_price
             }
 
             /// For a given account address, returns pallet_evm::AccountCodes.
-            fn account_code_at(address: H160) -> Vec<u8> {
+            fn account_code_at(address: sp_core::H160) -> sp_std::prelude::Vec<u8> {
                 pallet_evm::AccountCodes::<#runtime>::get(address)
             }
 
             /// Returns the converted FindAuthor::find_author authority id.
-            fn author() -> H160 {
+            fn author() -> sp_core::H160 {
                 <pallet_evm::Pallet<#runtime>>::find_author()
             }
 
             /// For a given account address and index, returns pallet_evm::AccountStorages.
-            fn storage_at(address: H160, index: U256) -> H256 {
+            fn storage_at(address: sp_core::H160, index: sp_core::U256) -> sp_core::H256 {
                 let mut tmp = [0u8; 32];
                 index.to_big_endian(&mut tmp);
-                pallet_evm::AccountStorages::<#runtime>::get(address, H256::from_slice(&tmp[..]))
+                pallet_evm::AccountStorages::<#runtime>::get(address, sp_core::H256::from_slice(&tmp[..]))
             }
 
             /// Returns a frame_ethereum::call response.
             fn call(
-                from: H160,
-                to: H160,
-                data: Vec<u8>,
-                value: U256,
-                gas_limit: U256,
-                max_fee_per_gas: Option<U256>,
-                max_priority_fee_per_gas: Option<U256>,
-                nonce: Option<U256>,
+                from: sp_core::H160,
+                to: sp_core::H160,
+                data: sp_std::prelude::Vec<u8>,
+                value: sp_core::U256,
+                gas_limit: sp_core::U256,
+                max_fee_per_gas: Option<sp_core::U256>,
+                max_priority_fee_per_gas: Option<sp_core::U256>,
+                nonce: Option<sp_core::U256>,
                 estimate: bool,
-                access_list: Option<Vec<(H160, Vec<H256>)>>,
+                access_list: Option<sp_std::prelude::Vec<(sp_core::H160, sp_std::prelude::Vec<sp_core::H256>)>>,
             ) -> Result<pallet_evm::CallInfo, sp_runtime::DispatchError> {
+                use pallet_evm::Runner;
                 let config = if estimate {
                     let mut config = <#runtime as pallet_evm::Config>::config().clone();
                     config.estimate = true;
@@ -117,8 +109,8 @@ pub fn evm_apis(
                 };
 
                 let gas_limit = gas_limit.min(u64::MAX.into());
-                let transaction_data = TransactionData::new(
-                    TransactionAction::Call(to),
+                let transaction_data = pallet_ethereum::TransactionData::new(
+                    pallet_ethereum::TransactionAction::Call(to),
                     data.clone(),
                     nonce.unwrap_or_default(),
                     gas_limit,
@@ -151,16 +143,17 @@ pub fn evm_apis(
 
             /// Returns a frame_ethereum::create response.
             fn create(
-                from: H160,
-                data: Vec<u8>,
-                value: U256,
-                gas_limit: U256,
-                max_fee_per_gas: Option<U256>,
-                max_priority_fee_per_gas: Option<U256>,
-                nonce: Option<U256>,
+                from: sp_core::H160,
+                data: sp_std::prelude::Vec<u8>,
+                value: sp_core::U256,
+                gas_limit: sp_core::U256,
+                max_fee_per_gas: Option<sp_core::U256>,
+                max_priority_fee_per_gas: Option<sp_core::U256>,
+                nonce: Option<sp_core::U256>,
                 estimate: bool,
-                access_list: Option<Vec<(H160, Vec<H256>)>>,
+                access_list: Option<sp_std::prelude::Vec<(sp_core::H160, sp_std::prelude::Vec<sp_core::H256>)>>,
             ) -> Result<pallet_evm::CreateInfo, sp_runtime::DispatchError> {
+                use pallet_evm::Runner;
                 let config = if estimate {
                     let mut config = <#runtime as pallet_evm::Config>::config().clone();
                     config.estimate = true;
@@ -169,8 +162,8 @@ pub fn evm_apis(
                     None
                 };
 
-                let transaction_data = TransactionData::new(
-                    TransactionAction::Create,
+                let transaction_data = pallet_ethereum::TransactionData::new(
+                    pallet_ethereum::TransactionAction::Create,
                     data.clone(),
                     nonce.unwrap_or_default(),
                     gas_limit,
@@ -201,7 +194,7 @@ pub fn evm_apis(
             }
 
             /// Return the current transaction status.
-            fn current_transaction_statuses() -> Option<Vec<TransactionStatus>> {
+            fn current_transaction_statuses() -> Option<sp_std::prelude::Vec<pallet_ethereum::TransactionStatus>> {
                 pallet_ethereum::CurrentTransactionStatuses::<#runtime>::get()
             }
 
@@ -211,15 +204,15 @@ pub fn evm_apis(
             }
 
             /// Return the current receipts.
-            fn current_receipts() -> Option<Vec<pallet_ethereum::Receipt>> {
+            fn current_receipts() -> Option<sp_std::prelude::Vec<pallet_ethereum::Receipt>> {
                 pallet_ethereum::CurrentReceipts::<#runtime>::get()
             }
 
             /// Return all the current data for a block in a single runtime call.
             fn current_all() -> (
                 Option<pallet_ethereum::Block>,
-                Option<Vec<pallet_ethereum::Receipt>>,
-                Option<Vec<TransactionStatus>>
+                Option<sp_std::prelude::Vec<pallet_ethereum::Receipt>>,
+                Option<sp_std::prelude::Vec<pallet_ethereum::TransactionStatus>>
             ) {
                 (
                     pallet_ethereum::CurrentBlock::<#runtime>::get(),
@@ -230,12 +223,13 @@ pub fn evm_apis(
 
             /// Receives a `Vec<OpaqueExtrinsic>` and filters out all the non-ethereum transactions.
             fn extrinsic_filter(
-                xts: Vec<<#block as BlockT>::Extrinsic>,
-            ) -> Vec<EthereumTransaction> {
+                xts: sp_std::prelude::Vec<<#block as sp_runtime::traits::Block>::Extrinsic>,
+            ) -> sp_std::prelude::Vec<pallet_ethereum::Transaction> {
+                use pallet_ethereum::Call::transact;
                 xts.into_iter().filter_map(|xt| match xt.0.function {
                     #runtime_call::Ethereum(transact { transaction }) => Some(transaction),
                     _ => None
-                }).collect::<Vec<EthereumTransaction>>()
+                }).collect::<sp_std::prelude::Vec<pallet_ethereum::Transaction>>()
             }
 
             /// Return the elasticity multiplier.
@@ -249,8 +243,8 @@ pub fn evm_apis(
 
             /// Return the pending block.
             fn pending_block(
-                xts: Vec<<#block as BlockT>::Extrinsic>,
-            ) -> (Option<pallet_ethereum::Block>, Option<Vec<TransactionStatus>>) {
+                xts: sp_std::prelude::Vec<<#block as sp_runtime::traits::Block>::Extrinsic>,
+            ) -> (Option<pallet_ethereum::Block>, Option<sp_std::prelude::Vec<pallet_ethereum::TransactionStatus>>) {
                 for ext in xts.into_iter() {
                     let _ = #executive::apply_extrinsic(ext);
                 }
@@ -263,14 +257,14 @@ pub fn evm_apis(
                 )
             }
 
-            fn initialize_pending_block(header: &<#block as BlockT>::Header) {
+            fn initialize_pending_block(header: &<#block as sp_runtime::traits::Block>::Header) {
                 #executive::initialize_block(header);
             }
         }
 
         impl fp_rpc::ConvertTransactionRuntimeApi<#block> for #runtime {
             /// Converts an ethereum transaction into a transaction suitable for the runtime.
-            fn convert_transaction(transaction: EthereumTransaction) -> <#block as BlockT>::Extrinsic {
+            fn convert_transaction(transaction: pallet_ethereum::Transaction) -> <#block as sp_runtime::traits::Block>::Extrinsic {
                 UncheckedExtrinsic::new_unsigned(
                     pallet_ethereum::Call::<#runtime>::transact { transaction }.into(),
                 )

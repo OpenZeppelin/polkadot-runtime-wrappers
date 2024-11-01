@@ -19,17 +19,14 @@ impl TryFrom<&[Item]> for AssetAPIFields {
         let mut balance = None;
 
         for item in value {
-            match item {
-                Item::Type(ty) => {
-                    if ty.ident == "TransactionPayment" {
-                        transaction_payment = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "RuntimeCall" {
-                        call = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "Balance" {
-                        balance = Some(fetch_ident(&ty.ty))
-                    }
+            if let Item::Type(ty) = item {
+                if ty.ident == "TransactionPayment" {
+                    transaction_payment = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "RuntimeCall" {
+                    call = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "Balance" {
+                    balance = Some(fetch_ident(&ty.ty))
                 }
-                _ => (),
             }
         }
 
@@ -57,18 +54,18 @@ pub fn assets_apis(
             for #runtime
         {
             fn query_info(
-                uxt: <#block as BlockT>::Extrinsic,
+                uxt: <#block as sp_runtime::traits::Block>::Extrinsic,
                 len: u32,
             ) -> pallet_transaction_payment_rpc_runtime_api::RuntimeDispatchInfo<#balance> {
                 #transaction_payment::query_info(uxt, len)
             }
             fn query_fee_details(
-                uxt: <#block as BlockT>::Extrinsic,
+                uxt: <#block as sp_runtime::traits::Block>::Extrinsic,
                 len: u32,
             ) -> pallet_transaction_payment::FeeDetails<#balance> {
                 #transaction_payment::query_fee_details(uxt, len)
             }
-            fn query_weight_to_fee(weight: Weight) -> #balance {
+            fn query_weight_to_fee(weight: frame_support::weights::Weight) -> #balance {
                 #transaction_payment::weight_to_fee(weight)
             }
             fn query_length_to_fee(length: u32) -> #balance {
@@ -95,7 +92,7 @@ pub fn assets_apis(
             ) -> pallet_transaction_payment::FeeDetails<#balance> {
                 #transaction_payment::query_call_fee_details(call, len)
             }
-            fn query_weight_to_fee(weight: Weight) -> #balance {
+            fn query_weight_to_fee(weight: frame_support::weights::Weight) -> #balance {
                 #transaction_payment::weight_to_fee(weight)
             }
             fn query_length_to_fee(length: u32) -> #balance {

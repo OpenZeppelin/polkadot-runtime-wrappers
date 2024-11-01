@@ -17,7 +17,7 @@ pub fn fetch_ident(ty: &Type) -> Ident {
         Type::Path(p) => p
             .path
             .get_ident()
-            .expect(&format!("Wrong type received: {:?}", p))
+            .unwrap_or_else(|| panic!("Wrong type received: {:?}", p))
             .clone(),
         _ => panic!("Wrong type received: {:?}", ty),
     }

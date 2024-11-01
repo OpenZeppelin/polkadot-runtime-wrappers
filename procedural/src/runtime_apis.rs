@@ -82,23 +82,7 @@ pub fn impl_openzeppelin_runtime_apis(input: TokenStream) -> TokenStream {
     }
 
     let expanded = quote! {
-        use sp_api::impl_runtime_apis;
-        use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-        use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
-        use frame_support::{
-            genesis_builder_helper::{build_state, get_preset},
-            weights::Weight,
-        };
-        use sp_runtime::{
-            traits::Block as BlockT,
-            transaction_validity::{TransactionSource, TransactionValidity},
-            ApplyExtrinsicResult,
-        };
-
-        use sp_std::prelude::Vec;
-        use sp_version::RuntimeVersion;
-
-        impl_runtime_apis! {
+        sp_api::impl_runtime_apis! {
             #inner
         }
     };
@@ -118,7 +102,7 @@ fn construct_abstraction(
         .expect("`mod assets` does not have any content.");
 
     match abstraction {
-        APIAbstractions::EVM => {
+        APIAbstractions::Evm => {
             let EVMAPIFields {
                 call,
                 executive,
@@ -172,6 +156,7 @@ fn construct_abstraction(
                 account_id,
                 nonce,
                 genesis,
+                runtime_block_weights,
             } = SystemAPIFields::try_from(content.as_slice())
                 .expect("Error while parsing system config");
 
@@ -185,6 +170,7 @@ fn construct_abstraction(
                 &account_id,
                 &nonce,
                 &genesis,
+                &runtime_block_weights,
             )
         }
 

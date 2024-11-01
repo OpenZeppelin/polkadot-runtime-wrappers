@@ -262,7 +262,7 @@ macro_rules! impl_openzeppelin_system {
     };
 }
 
-pub const PALLET_NAMES: [(&'static str, &'static str); 10] = [
+pub const PALLET_NAMES: [(&str, &str); 10] = [
     ("System", "frame_system"),
     ("Timestamp", "pallet_timestamp"),
     ("ParachainInfo", "parachain_info"),

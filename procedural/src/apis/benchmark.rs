@@ -12,6 +12,8 @@ pub struct AbstractionState {
 
 pub struct BenchmarkAPIFields {
     pub all_pallets_with_system: Ident,
+    pub parachain_system: Ident,
+    pub system: Ident,
     pub xcm_fields: Option<XCMBenchmarkAPIFields>,
 }
 
@@ -20,26 +22,34 @@ impl TryFrom<&[Item]> for BenchmarkAPIFields {
 
     fn try_from(value: &[Item]) -> Result<Self, Self::Error> {
         let mut all_pallets_with_system = None;
+        let mut parachain_system = None;
+        let mut system = None;
 
         for item in value {
-            match item {
-                Item::Type(ty) => {
-                    if ty.ident == "AllPalletsWithSystem" {
-                        all_pallets_with_system = Some(fetch_ident(&ty.ty))
-                    }
+            if let Item::Type(ty) = item {
+                if ty.ident == "AllPalletsWithSystem" {
+                    all_pallets_with_system = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "ParachainSystem" {
+                    parachain_system = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "System" {
+                    system = Some(fetch_ident(&ty.ty))
                 }
-                _ => (),
             }
         }
 
         let all_pallets_with_system = all_pallets_with_system
             .ok_or("type `AllPalletsWithSystem` not specified, but required")?;
+        let parachain_system =
+            parachain_system.ok_or("type `ParachainSystem` not specified, but required")?;
+        let system = system.ok_or("type `System` not specified, but required")?;
         let xcm_fields = XCMBenchmarkAPIFields::try_from(value)
             .map_err(|e| println!("{e:?}"))
             .ok();
 
         Ok(BenchmarkAPIFields {
             all_pallets_with_system,
+            parachain_system,
+            system,
             xcm_fields,
         })
     }
@@ -51,7 +61,6 @@ pub struct XCMBenchmarkAPIFields {
     pub asset_type: Ident,
     pub runtime_origin: Ident,
     pub relay_location: Ident,
-    pub parachain_system: Ident,
     pub existential_deposit: Ident,
     pub asset_id: Ident,
     pub xcm_config: Ident,
@@ -59,6 +68,7 @@ pub struct XCMBenchmarkAPIFields {
     pub cents: Ident,
     pub fee_asset_id: Ident,
     pub transaction_byte_fee: Ident,
+    pub address: Ident,
 }
 
 impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
@@ -69,7 +79,6 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
         let mut asset_type = None;
         let mut runtime_origin = None;
         let mut relay_location = None;
-        let mut parachain_system = None;
         let mut existential_deposit = None;
         let mut asset_id = None;
         let mut xcm_config = None;
@@ -77,39 +86,37 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
         let mut cents = None;
         let mut fee_asset_id = None;
         let mut transaction_byte_fee = None;
+        let mut address = None;
 
         for item in value {
-            match item {
-                Item::Type(ty) => {
-                    if ty.ident == "Assets" {
-                        assets = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "AssetManager" {
-                        asset_manager = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "AssetType" {
-                        asset_type = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "RuntimeOrigin" {
-                        runtime_origin = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "RelayLocation" {
-                        relay_location = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "ParachainSystem" {
-                        parachain_system = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "ExistentialDeposit" {
-                        existential_deposit = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "AssetId" {
-                        asset_id = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "XCMConfig" {
-                        xcm_config = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "AccountId" {
-                        account_id = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "Cents" {
-                        cents = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "FeeAssetId" {
-                        fee_asset_id = Some(fetch_ident(&ty.ty))
-                    } else if ty.ident == "TransactionByteFee" {
-                        transaction_byte_fee = Some(fetch_ident(&ty.ty))
-                    }
+            if let Item::Type(ty) = item {
+                if ty.ident == "Assets" {
+                    assets = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "AssetManager" {
+                    asset_manager = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "AssetType" {
+                    asset_type = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "RuntimeOrigin" {
+                    runtime_origin = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "RelayLocation" {
+                    relay_location = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "ExistentialDeposit" {
+                    existential_deposit = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "AssetId" {
+                    asset_id = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "XCMConfig" {
+                    xcm_config = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "AccountId" {
+                    account_id = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "Cents" {
+                    cents = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "FeeAssetId" {
+                    fee_asset_id = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "TransactionByteFee" {
+                    transaction_byte_fee = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "Address" {
+                    address = Some(fetch_ident(&ty.ty))
                 }
-                _ => (),
             }
         }
 
@@ -121,8 +128,6 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
             runtime_origin.ok_or("type `RuntimeOrigin` not specified, but required")?;
         let relay_location =
             relay_location.ok_or("type `RelayLocation` not specified, but required")?;
-        let parachain_system =
-            parachain_system.ok_or("type `ParachainSystem` not specified, but required")?;
         let existential_deposit =
             existential_deposit.ok_or("type `ExistentialDeposit` not specified, but required")?;
         let asset_id = asset_id.ok_or("type `AssetId` not specified, but required")?;
@@ -132,6 +137,7 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
         let fee_asset_id = fee_asset_id.ok_or("type `FeeAssetId` not specified, but required")?;
         let transaction_byte_fee =
             transaction_byte_fee.ok_or("type `TransactionByteFee` not specified, but required")?;
+        let address = address.ok_or("type `Address` not specified, but required")?;
 
         Ok(XCMBenchmarkAPIFields {
             assets,
@@ -139,7 +145,6 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
             asset_type,
             runtime_origin,
             relay_location,
-            parachain_system,
             existential_deposit,
             asset_id,
             xcm_config,
@@ -147,6 +152,7 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
             cents,
             fee_asset_id,
             transaction_byte_fee,
+            address,
         })
     }
 }
@@ -168,6 +174,8 @@ pub fn construct_benchmarking_api(
 
     let BenchmarkAPIFields {
         all_pallets_with_system,
+        system,
+        parachain_system,
         xcm_fields,
     } = api_fields;
 
@@ -177,7 +185,6 @@ pub fn construct_benchmarking_api(
         asset_type,
         runtime_origin,
         relay_location,
-        parachain_system,
         existential_deposit,
         asset_id,
         xcm_config,
@@ -185,6 +192,7 @@ pub fn construct_benchmarking_api(
         cents,
         fee_asset_id,
         transaction_byte_fee,
+        address,
     }) = xcm_fields
     {
         xcm_metadata = construct_xcm_metadata_benchmarking();
@@ -195,7 +203,7 @@ pub fn construct_benchmarking_api(
             asset_type,
             runtime_origin,
             relay_location,
-            parachain_system,
+            &parachain_system,
             existential_deposit,
             asset_id,
             xcm_config,
@@ -203,6 +211,7 @@ pub fn construct_benchmarking_api(
             cents,
             fee_asset_id,
             transaction_byte_fee,
+            address,
         );
     }
 
@@ -210,17 +219,18 @@ pub fn construct_benchmarking_api(
         #[cfg(feature = "runtime-benchmarks")]
         impl frame_benchmarking::Benchmark<Block> for #runtime {
             fn benchmark_metadata(extra: bool) -> (
-                Vec<frame_benchmarking::BenchmarkList>,
-                Vec<frame_support::traits::StorageInfo>,
+                sp_std::prelude::Vec<frame_benchmarking::BenchmarkList>,
+                sp_std::prelude::Vec<frame_support::traits::StorageInfo>,
             ) {
                 use frame_benchmarking::{Benchmarking, BenchmarkList};
                 use frame_support::traits::StorageInfoTrait;
                 use frame_system_benchmarking::Pallet as SystemBench;
+                use crate::*;
 
                 #xcm_metadata
                 #consensus_metadata
 
-                let mut list = Vec::<BenchmarkList>::new();
+                let mut list = sp_std::prelude::Vec::<BenchmarkList>::new();
                 list_benchmarks!(list, extra);
 
                 let storage_info = #all_pallets_with_system::storage_info();
@@ -229,9 +239,29 @@ pub fn construct_benchmarking_api(
 
             fn dispatch_benchmark(
                 config: frame_benchmarking::BenchmarkConfig
-            ) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, sp_runtime::RuntimeString> {
+            ) -> Result<sp_std::prelude::Vec<frame_benchmarking::BenchmarkBatch>, sp_runtime::RuntimeString> {
                 use frame_benchmarking::{BenchmarkError, Benchmarking, BenchmarkBatch};
                 use frame_system_benchmarking::Pallet as SystemBench;
+                use pallet_xcm::benchmarking::Pallet as PalletXcmExtrinsicsBenchmark;
+
+                use crate::{*, types::*, configs::*};
+
+                #[cfg(feature = "runtime-benchmarks")]
+                impl frame_system_benchmarking::Config for #runtime {
+                    fn setup_set_code_requirements(
+                        code: &sp_std::vec::Vec<u8>,
+                    ) -> Result<(), BenchmarkError> {
+                        #parachain_system::initialize_for_set_code_benchmark(code.len() as u32);
+                        Ok(())
+                    }
+
+                    fn verify_set_code() {
+                        #system::assert_last_event(
+                            cumulus_pallet_parachain_system::Event::<#runtime>::ValidationFunctionStored
+                                .into(),
+                        );
+                    }
+                }
 
                 #xcm_dispatch
                 #consensus_dispatch
@@ -239,7 +269,7 @@ pub fn construct_benchmarking_api(
                 use frame_support::traits::WhitelistedStorageKeys;
                 let whitelist = #all_pallets_with_system::whitelisted_storage_keys();
 
-                let mut batches = Vec::<BenchmarkBatch>::new();
+                let mut batches = sp_std::prelude::Vec::<BenchmarkBatch>::new();
                 let params = (&config, &whitelist);
                 add_benchmarks!(params, batches);
 
@@ -269,6 +299,7 @@ fn construct_xcm_metadata_benchmarking() -> proc_macro2::TokenStream {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn construct_xcm_dispatch_benchmarking(
     runtime: &Ident,
     assets: Ident,
@@ -276,7 +307,7 @@ fn construct_xcm_dispatch_benchmarking(
     asset_type: Ident,
     runtime_origin: Ident,
     relay_location: Ident,
-    parachain_system: Ident,
+    parachain_system: &Ident,
     existential_deposit: Ident,
     asset_id: Ident,
     xcm_config: Ident,
@@ -284,11 +315,11 @@ fn construct_xcm_dispatch_benchmarking(
     cents: Ident,
     fee_asset_id: Ident,
     transaction_byte_fee: Ident,
+    address: Ident,
 ) -> proc_macro2::TokenStream {
     quote! {
         use cumulus_primitives_core::ParaId;
         use frame_support::parameter_types;
-        use pallet_xcm::benchmarking::Pallet as PalletXcmExtrinsicsBenchmark;
         use xcm::latest::prelude::{Asset, AssetId as XcmAssetId, Assets as AssetList, Fungible, Location, Parachain, Parent, ParentThen, PalletInstance, GeneralIndex};
 
         parameter_types! {
@@ -340,11 +371,11 @@ fn construct_xcm_dispatch_benchmarking(
 
                 let local_asset_id: #asset_id = asset_type.clone().into();
                 let manager_id = #asset_manager::account_id();
-                let _ = #assets::force_create(#runtime_origin::root(), local_asset_id.clone().into(), sp_runtime::MultiAddress::Id(manager_id.clone()), true, 1);
+                let _ = #assets::force_create(#runtime_origin::root(), local_asset_id.clone().into(), #address::from(manager_id.clone()), true, 1);
                 let _ = #assets::mint(
                     RawOrigin::Signed(manager_id.clone()).into(),
                     local_asset_id.into(),
-                    sp_runtime::MultiAddress::Id(who),
+                    #address::from(who),
                     InitialTransferAssetAmount::get(),
                 );
                 #asset_manager::set_asset_type_asset_id(asset_type.clone(), local_asset_id.into());
@@ -361,11 +392,11 @@ fn construct_xcm_dispatch_benchmarking(
                     ()
                 >(true, initial_asset_amount);
 
-                let asset_id_u128: u128 = asset_id.into();
+                let local_asset_id: #asset_id = asset_id.into();
                 let self_reserve = Location {
                     parents: 0,
                     interior: [
-                        PalletInstance(<#assets as PalletInfoAccess>::index() as u8), GeneralIndex(asset_id_u128)
+                        PalletInstance(<#assets as PalletInfoAccess>::index() as u8), GeneralIndex(local_asset_id as u128)
                     ].into()
                 };
 
@@ -373,7 +404,7 @@ fn construct_xcm_dispatch_benchmarking(
                     return None;
                 };
                 let asset_type = #asset_type::Xcm(location_v3);
-                #asset_manager::set_asset_type_asset_id(asset_type.clone(), asset_id_u128);
+                #asset_manager::set_asset_type_asset_id(asset_type.clone(), local_asset_id);
 
                 let asset = Asset {
                     fun: Fungible(#existential_deposit::get()),
@@ -397,12 +428,12 @@ fn construct_xcm_dispatch_benchmarking(
                     ()
                 >(true, initial_asset_amount);
 
-                let asset_id_u128: u128 = asset_id.into();
+                let local_asset_id: #asset_id = asset_id.into();
 
                 let self_reserve = Location {
                     parents:0,
                     interior: [
-                        PalletInstance(<#assets as PalletInfoAccess>::index() as u8), GeneralIndex(asset_id_u128)
+                        PalletInstance(<#assets as PalletInfoAccess>::index() as u8), GeneralIndex(local_asset_id as u128)
                     ].into()
                 };
 
@@ -410,7 +441,7 @@ fn construct_xcm_dispatch_benchmarking(
                     return None;
                 };
                 let asset_type = #asset_type::Xcm(location_v3);
-                #asset_manager::set_asset_type_asset_id(asset_type.clone(), asset_id_u128);
+                #asset_manager::set_asset_type_asset_id(asset_type.clone(), local_asset_id);
 
                 let destination: xcm::v4::Location = Parent.into();
 
@@ -420,7 +451,7 @@ fn construct_xcm_dispatch_benchmarking(
                 let fee_asset: Asset = (self_reserve.clone(), fee_amount).into();
                 let transfer_asset: Asset = (self_reserve.clone(), asset_amount).into();
 
-                let assets: cumulus_primitives_core::Assets = vec![fee_asset.clone(), transfer_asset].into();
+                let assets: cumulus_primitives_core::Assets = sp_std::vec![fee_asset.clone(), transfer_asset].into();
                 let fee_index: u32 = 0;
 
                 let who = frame_benchmarking::whitelisted_caller();
@@ -428,7 +459,7 @@ fn construct_xcm_dispatch_benchmarking(
                 let verify: Box<dyn FnOnce()> = Box::new(move || {
                     // verify balance after transfer, decreased by
                     // transferred amount (and delivery fees)
-                    assert!(#assets::balance(asset_id_u128, &who) <= initial_asset_amount - fee_amount);
+                    assert!(#assets::balance(local_asset_id, &who) <= initial_asset_amount - fee_amount);
                 });
 
                 Some((assets, fee_index, destination, verify))
@@ -448,7 +479,7 @@ fn construct_xcm_dispatch_benchmarking(
                 let asset_type = #asset_type::Xcm(location_v3);
                 let local_asset_id: #asset_id = asset_type.clone().into();
                 let manager_id = #asset_manager::account_id();
-                let _ = #assets::force_create(#runtime_origin::root(), local_asset_id.clone().into(), sp_runtime::MultiAddress::Id(manager_id), true, 1);
+                let _ = #assets::force_create(#runtime_origin::root(), local_asset_id.clone().into(), #address::from(manager_id), true, 1);
                 #asset_manager::set_asset_type_asset_id(asset_type.clone(), local_asset_id);
                 asset
             }

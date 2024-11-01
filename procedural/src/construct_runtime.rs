@@ -72,16 +72,13 @@ fn parse_abstraction(
         ConstructAbstractions::Assets => (construct_assets(index), None),
         ConstructAbstractions::Consensus => (construct_consensus(index), None),
         ConstructAbstractions::Governance => (construct_governance(index), None),
-        ConstructAbstractions::XCM => (construct_xcm(index), None),
-        ConstructAbstractions::EVM => (construct_evm(index), None),
+        ConstructAbstractions::Xcm => (construct_xcm(index), None),
+        ConstructAbstractions::Evm => (construct_evm(index), None),
     }
 }
 
 fn construct_xcm(index: &mut u32) -> proc_macro2::TokenStream {
-    construct_abstraction(
-        index,
-        &openzeppelin_polkadot_wrappers::xcm::PALLET_NAMES,
-    )
+    construct_abstraction(index, &openzeppelin_polkadot_wrappers::xcm::PALLET_NAMES)
 }
 
 fn construct_governance(index: &mut u32) -> proc_macro2::TokenStream {
@@ -99,24 +96,15 @@ fn construct_consensus(index: &mut u32) -> proc_macro2::TokenStream {
 }
 
 fn construct_evm(index: &mut u32) -> proc_macro2::TokenStream {
-    construct_abstraction(
-        index,
-        &openzeppelin_polkadot_wrappers::evm::PALLET_NAMES,
-    )
+    construct_abstraction(index, &openzeppelin_polkadot_wrappers::evm::PALLET_NAMES)
 }
 
 fn construct_assets(index: &mut u32) -> proc_macro2::TokenStream {
-    construct_abstraction(
-        index,
-        &openzeppelin_polkadot_wrappers::assets::PALLET_NAMES,
-    )
+    construct_abstraction(index, &openzeppelin_polkadot_wrappers::assets::PALLET_NAMES)
 }
 
 fn construct_system(index: &mut u32) -> proc_macro2::TokenStream {
-    construct_abstraction(
-        index,
-        &openzeppelin_polkadot_wrappers::system::PALLET_NAMES,
-    )
+    construct_abstraction(index, &openzeppelin_polkadot_wrappers::system::PALLET_NAMES)
 }
 
 fn construct_abstraction(index: &mut u32, pallets: &[(&str, &str)]) -> proc_macro2::TokenStream {
