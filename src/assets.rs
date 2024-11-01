@@ -80,7 +80,7 @@ macro_rules! impl_openzeppelin_assets {
     };
 }
 
-pub const PALLET_NAMES: [(&'static str, &'static str); 3] = [
+pub const PALLET_NAMES: [(&str, &str); 3] = [
     ("Assets", "pallet_assets"),
     ("TransactionPayment", "pallet_transaction_payment"),
     ("AssetManager", "pallet_asset_manager"),

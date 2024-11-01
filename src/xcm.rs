@@ -242,9 +242,12 @@ macro_rules! impl_openzeppelin_xcm {
     };
 }
 
-pub const PALLET_NAMES: [(&'static str, &'static str); 4] = [
+pub const PALLET_NAMES: [(&str, &str); 7] = [
     ("MessageQueue", "pallet_message_queue"),
     ("XcmpQueue", "cumulus_pallet_xcmp_queue"),
     ("PolkadotXcm", "pallet_xcm"),
     ("CumulusXcm", "cumulus_pallet_xcm"),
+    ("XcmWeightTrader", "pallet_xcm_weight_trader"),
+    ("XTokens", "orml_xtokens"),
+    ("XcmTransactor", "pallet_xcm_transactor"),
 ];
