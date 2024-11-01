@@ -178,5 +178,66 @@ macro_rules! impl_openzeppelin_xcm {
             type RuntimeEvent = RuntimeEvent;
             type XcmExecutor = XcmExecutor<XcmExecutorConfig>;
         }
+
+        impl pallet_xcm_weight_trader::Config for Runtime {
+            type AccountIdToLocation = <$t as XcmConfig>::AccountIdToLocation;
+            type AddSupportedAssetOrigin = <$t as XcmConfig>::AddSupportedAssetOrigin;
+            type AssetLocationFilter = <$t as XcmConfig>::AssetFeesFilter;
+            type AssetTransactor = <$t as XcmConfig>::AssetTransactors;
+            type Balance = Balance;
+            type EditSupportedAssetOrigin = <$t as XcmConfig>::EditSupportedAssetOrigin;
+            type NativeLocation = <$t as XcmConfig>::SelfReserve;
+            #[cfg(feature = "runtime-benchmarks")]
+            type NotFilteredLocation = <$t as XcmConfig>::RelayLocation;
+            type PauseSupportedAssetOrigin = <$t as XcmConfig>::PauseSupportedAssetOrigin;
+            type RemoveSupportedAssetOrigin = <$t as XcmConfig>::RemoveSupportedAssetOrigin;
+            type ResumeSupportedAssetOrigin = <$t as XcmConfig>::ResumeSupportedAssetOrigin;
+            type RuntimeEvent = RuntimeEvent;
+            type WeightInfo = weights::pallet_xcm_weight_trader::WeightInfo<Runtime>;
+            type WeightToFee = <$t as XcmConfig>::WeightToFee;
+            type XcmFeesAccount = <$t as XcmConfig>::XcmFeesAccount;
+        }
+
+        impl orml_xtokens::Config for Runtime {
+            type AccountIdToLocation = <$t as XcmConfig>::AccountIdToLocation;
+            type Balance = Balance;
+            type BaseXcmWeight = <$t as XcmConfig>::BaseXcmWeight;
+            type CurrencyId = <$t as XcmConfig>::CurrencyId;
+            type CurrencyIdConvert = <$t as XcmConfig>::CurrencyIdToLocation;
+            type LocationsFilter = Everything;
+            type MaxAssetsForTransfer = <$t as XcmConfig>::MaxAssetsForTransfer;
+            type MinXcmFee = <$t as XcmConfig>::ParachainMinFee;
+            type RateLimiter = ();
+            type RateLimiterId = ();
+            type ReserveProvider = <$t as XcmConfig>::ReserveProviders;
+            type RuntimeEvent = RuntimeEvent;
+            type SelfLocation = <$t as XcmConfig>::SelfLocation;
+            type UniversalLocation = <$t as XcmConfig>::UniversalLocation;
+            type Weigher = <$t as XcmConfig>::XcmWeigher;
+            // TODO: use direct paths and do not expose
+            type XcmExecutor = XcmExecutor<XcmConfig>;
+        }
+
+        impl pallet_xcm_transactor::Config for Runtime {
+            type AccountIdToLocation = <$t as XcmConfig>::AccountIdToLocation;
+            type AssetTransactor = <$t as XcmConfig>::AssetTransactors;
+            type Balance = Balance;
+            type BaseXcmWeight = <$t as XcmConfig>::BaseXcmWeight;
+            type CurrencyId = <$t as XcmConfig>::CurrencyId;
+            type CurrencyIdToLocation = <$t as XcmConfig>::CurrencyIdToLocation;
+            type DerivativeAddressRegistrationOrigin = <$t as XcmConfig>::DerivativeAddressRegistrationOrigin;
+            type HrmpManipulatorOrigin = <$t as XcmConfig>::HrmpManipulatorOrigin;
+            type HrmpOpenOrigin = <$t as XcmConfig>::HrmpOpenOrigin;
+            type MaxHrmpFee = <$t as XcmConfig>::MaxHrmpRelayFee;
+            type ReserveProvider = <$t as XcmConfig>::ReserveProvider;
+            type RuntimeEvent = RuntimeEvent;
+            type SelfLocation = <$t as XcmConfig>::SelfLocation;
+            type SovereignAccountDispatcherOrigin = <$t as XcmConfig>::SovereignAccountDispatcherOrigin;
+            type Transactor = <$t as XcmConfig>::Transactors;
+            type UniversalLocation = <$t as XcmConfig>::UniversalLocation;
+            type Weigher = <$t as XcmConfig>::XcmWeigher;
+            type WeightInfo = weights::pallet_xcm_transactor::WeightInfo<Runtime>;
+            type XcmSender = <$t as XcmConfig>::XcmSender;
+        }
     };
 }

@@ -94,6 +94,34 @@ pub trait XcmConfig {
     type XcmAdminOrigin;
     type MaxActiveOutboundChannels = ConstU32<128>;
     type MaxPageSize = ConstU32<{ 1 << 16 }>;
+    type MaxAssetsForTransfer;
+    type ParachainMinFee;
+    type ReserveProviders;
+    type AccountIdToLocation;
+    type BaseXcmWeight;
+    type CurrencyId;
+    type CurrencyIdToLocation;
+    type DerivativeAddressRegistrationOrigin;
+    type HrmpManipulatorOrigin;
+    type HrmpOpenOrigin;
+    type MaxHrmpRelayFee;
+    type ReserveProvider;
+    type SelfLocation;
+    type SovereignAccountDispatcherOrigin;
+    type Transactors;
+    type UniversalLocation;
+    type XcmWeigher;
+    type XcmSender;
+    type AddSupportedAssetOrigin;
+    type AssetFeesFilter;
+    type EditSupportedAssetOrigin;
+    type SelfReserve;
+    type RelayLocation;
+    type PauseSupportedAssetOrigin;
+    type RemoveSupportedAssetOrigin;
+    type ResumeSupportedAssetOrigin;
+    type WeightToFee;
+    type XcmFeesAccount;
 }
 
 pub trait EvmConfig {
