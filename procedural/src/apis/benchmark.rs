@@ -326,7 +326,7 @@ fn construct_xcm_dispatch_benchmarking(
             pub const RandomParaId: ParaId = ParaId::new(43211234);
             pub ExistentialDepositAsset: Option<Asset> = Some((
                 #relay_location::get(),
-                #existential_deposit::get()
+                <#existential_deposit as sp_core::Get<u128>>::get()
             ).into());
             /// The base fee for the message delivery fees. Kusama is based for the reference.
             pub const ToParentBaseDeliveryFee: u128 = #cents.saturating_mul(3);
@@ -407,7 +407,7 @@ fn construct_xcm_dispatch_benchmarking(
                 #asset_manager::set_asset_type_asset_id(asset_type.clone(), local_asset_id);
 
                 let asset = Asset {
-                    fun: Fungible(#existential_deposit::get()),
+                    fun: Fungible(<#existential_deposit as sp_core::Get<u128>>::get()),
                     id: XcmAssetId(self_reserve.into())
                 }.into();
                 Some((
@@ -446,7 +446,7 @@ fn construct_xcm_dispatch_benchmarking(
                 let destination: xcm::v4::Location = Parent.into();
 
                 // set up fee asset
-                let fee_amount: u128 = <#runtime as pallet_balances::Config>::ExistentialDeposit::get();
+                let fee_amount: u128 = <#existential_deposit as sp_core::Get<u128>>::get();
                 let asset_amount: u128 = 10;
                 let fee_asset: Asset = (self_reserve.clone(), fee_amount).into();
                 let transfer_asset: Asset = (self_reserve.clone(), asset_amount).into();
@@ -471,7 +471,7 @@ fn construct_xcm_dispatch_benchmarking(
                 let asset_id = XcmAssetId(location.clone());
                 let asset = Asset {
                     id: asset_id.clone(),
-                    fun: Fungible(#existential_deposit::get()),
+                    fun: Fungible(<#existential_deposit as sp_core::Get<u128>>::get()),
                 };
                 let Some(location_v3) = xcm::v3::Location::try_from(location).ok() else {
                     return asset;
