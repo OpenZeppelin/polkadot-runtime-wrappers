@@ -69,7 +69,8 @@ macro_rules! impl_openzeppelin_consensus {
             // pallet_session ends the session after a fixed period of blocks.
             // The first session will have length of Offset,
             // and the following sessions will have length of Period.
-            // This may prove nonsensical if Offset >= Period.
+            // By setting Offset to zero we allow the chain to start processing blocks immediately.
+            // And then rotate parachain validators every 6 hours.
             pub const Period: u32 = 6 * HOURS;
             pub const Offset: u32 = 0;
         }
