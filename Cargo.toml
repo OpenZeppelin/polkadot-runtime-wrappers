@@ -1,12 +1,12 @@
 [package]
 name = "openzeppelin-polkadot-wrappers"
 authors = [ "OpenZeppelin" ]
-description = "Wrappers with Sensible Defaults for constructing Polkadot Parachain Runtimes"
+description = "Wrappers with sensible defaults for constructing Polkadot Parachain Runtimes"
 edition = "2021"
 license = "GPL-3.0-only"
 repository = "https://github.com/OpenZeppelin/polkadot-runtime-wrappers"
 readme = "README.md"
-version = "0.0.1"
+version = "0.1.0"
 
 [dependencies]
 frame-support = { git = "https://github.com/paritytech/polkadot-sdk", default-features = false, tag = "polkadot-stable2407-1" }
