@@ -69,6 +69,7 @@ pub struct XCMBenchmarkAPIFields {
     pub fee_asset_id: Ident,
     pub transaction_byte_fee: Ident,
     pub address: Ident,
+    pub balances: Ident,
 }
 
 impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
@@ -87,6 +88,7 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
         let mut fee_asset_id = None;
         let mut transaction_byte_fee = None;
         let mut address = None;
+        let mut balances = None;
 
         for item in value {
             if let Item::Type(ty) = item {
@@ -116,6 +118,8 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
                     transaction_byte_fee = Some(fetch_ident(&ty.ty))
                 } else if ty.ident == "Address" {
                     address = Some(fetch_ident(&ty.ty))
+                } else if ty.ident == "Balances" {
+                    balances = Some(fetch_ident(&ty.ty))
                 }
             }
         }
@@ -138,6 +142,7 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
         let transaction_byte_fee =
             transaction_byte_fee.ok_or("type `TransactionByteFee` not specified, but required")?;
         let address = address.ok_or("type `Address` not specified, but required")?;
+        let balances = balances.ok_or("type `Balances` not specified, but required")?;
 
         Ok(XCMBenchmarkAPIFields {
             assets,
@@ -153,6 +158,7 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
             fee_asset_id,
             transaction_byte_fee,
             address,
+            balances
         })
     }
 }
@@ -316,6 +322,7 @@ fn construct_xcm_dispatch_benchmarking(
     fee_asset_id: Ident,
     transaction_byte_fee: Ident,
     address: Ident,
+    balances: Ident,
 ) -> proc_macro2::TokenStream {
     quote! {
         use cumulus_primitives_core::ParaId;
@@ -368,6 +375,11 @@ fn construct_xcm_dispatch_benchmarking(
                     return None;
                 };
                 let asset_type = #asset_type::Xcm(location_v3);
+
+                let balance = 3001070000000;
+                let who = frame_benchmarking::whitelisted_caller();
+                let _ =
+                    <#balances as frame_support::traits::Currency<_>>::make_free_balance_be(&who, balance);
 
                 let local_asset_id: #asset_id = asset_type.clone().into();
                 let manager_id = #asset_manager::account_id();
