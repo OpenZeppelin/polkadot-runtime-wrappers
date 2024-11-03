@@ -199,6 +199,7 @@ pub fn construct_benchmarking_api(
         fee_asset_id,
         transaction_byte_fee,
         address,
+        balances,
     }) = xcm_fields
     {
         xcm_metadata = construct_xcm_metadata_benchmarking();
@@ -218,6 +219,7 @@ pub fn construct_benchmarking_api(
             fee_asset_id,
             transaction_byte_fee,
             address,
+            balances,
         );
     }
 
