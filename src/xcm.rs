@@ -209,13 +209,12 @@ macro_rules! impl_openzeppelin_xcm {
             type MinXcmFee = <$t as XcmConfig>::ParachainMinFee;
             type RateLimiter = ();
             type RateLimiterId = ();
-            type ReserveProvider = <$t as XcmConfig>::ReserveProviders;
+            type ReserveProvider = <$t as XcmConfig>::XtokensReserveProviders;
             type RuntimeEvent = RuntimeEvent;
             type SelfLocation = <$t as XcmConfig>::SelfLocation;
             type UniversalLocation = <$t as XcmConfig>::UniversalLocation;
             type Weigher = <$t as XcmConfig>::XcmWeigher;
-            // TODO: use direct paths and do not expose
-            type XcmExecutor = XcmExecutor<XcmConfig>;
+            type XcmExecutor = XcmExecutor<XcmExecutorConfig>;
         }
 
         impl pallet_xcm_transactor::Config for Runtime {
@@ -228,8 +227,8 @@ macro_rules! impl_openzeppelin_xcm {
             type DerivativeAddressRegistrationOrigin = <$t as XcmConfig>::DerivativeAddressRegistrationOrigin;
             type HrmpManipulatorOrigin = <$t as XcmConfig>::HrmpManipulatorOrigin;
             type HrmpOpenOrigin = <$t as XcmConfig>::HrmpOpenOrigin;
-            type MaxHrmpFee = <$t as XcmConfig>::MaxHrmpRelayFee;
-            type ReserveProvider = <$t as XcmConfig>::ReserveProvider;
+            type MaxHrmpFee = xcm_builder::Case<<$t as XcmConfig>::MaxHrmpRelayFee>;
+            type ReserveProvider = <$t as XcmConfig>::TransactorReserveProvider;
             type RuntimeEvent = RuntimeEvent;
             type SelfLocation = <$t as XcmConfig>::SelfLocation;
             type SovereignAccountDispatcherOrigin = <$t as XcmConfig>::SovereignAccountDispatcherOrigin;

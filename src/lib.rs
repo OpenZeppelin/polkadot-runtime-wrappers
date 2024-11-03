@@ -96,7 +96,7 @@ pub trait XcmConfig {
     type MaxPageSize = ConstU32<{ 1 << 16 }>;
     type MaxAssetsForTransfer;
     type ParachainMinFee;
-    type ReserveProviders;
+    type XtokensReserveProviders;
     type AccountIdToLocation;
     type BaseXcmWeight;
     type CurrencyId;
@@ -105,7 +105,7 @@ pub trait XcmConfig {
     type HrmpManipulatorOrigin;
     type HrmpOpenOrigin;
     type MaxHrmpRelayFee;
-    type ReserveProvider;
+    type TransactorReserveProvider;
     type SelfLocation;
     type SovereignAccountDispatcherOrigin;
     type Transactors;
