@@ -44,7 +44,7 @@ macro_rules! impl_openzeppelin_assets {
             type AssetIdParameter = parity_scale_codec::Compact<<$t as AssetsConfig>::AssetId>;
             type Balance = Balance;
             #[cfg(feature = "runtime-benchmarks")]
-            type BenchmarkHelper = ();
+            type BenchmarkHelper = BenchmarkHelper;
             type CallbackHandle = ();
             type CreateOrigin = <$t as AssetsConfig>::CreateOrigin;
             type Currency = Balances;
