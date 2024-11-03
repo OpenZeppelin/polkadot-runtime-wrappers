@@ -1,4 +1,17 @@
-//! Consensus pallet grouping wrapper
+//! This macro sets up the necessary configurations for the following pallets:
+//! - `pallet_authorship`
+//! - `pallet_aura`
+//! - `cumulus_pallet_aura_ext`
+//! - `pallet_collator_selection`
+//! - `pallet_session`
+//!
+//! # Parameters
+//! - `$t`: A type that implements the `ConsensusConfig` trait, providing the necessary associated types
+//!   and configurations.
+//!
+//! # Important
+//! Rerun benchmarks if making changes to runtime configuration, as weight calculations
+//! may need to be updated.
 
 #[macro_export]
 macro_rules! impl_openzeppelin_consensus {

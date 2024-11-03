@@ -1,4 +1,17 @@
-//! Assets pallet groupings wrapper
+//! Implements the OpenZeppelin assets configuration for a Runtime.
+//!
+//! This macro sets up the necessary configurations for the following pallets:
+//! - `pallet_assets`
+//! - `pallet_transaction_payment`
+//! - `pallet_asset_manager`
+//!
+//! # Parameters
+//! - `$t`: A type that implements the `AssetsConfig` trait, providing the necessary associated types
+//!   and configurations.
+//!
+//! # Important
+//! Rerun benchmarks if making changes to runtime configuration, as weight calculations
+//! may need to be updated.
 
 #[macro_export]
 macro_rules! impl_openzeppelin_assets {

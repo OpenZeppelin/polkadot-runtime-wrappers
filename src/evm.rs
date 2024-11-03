@@ -1,3 +1,19 @@
+//! Implements the OpenZeppelin EVM configuration for a Runtime.
+//!
+//! This macro sets up the necessary configurations for the following pallets:
+//! - `pallet_ethereum`
+//! - `pallet_evm`
+//! - `pallet_evm_chain_id`
+//! - `pallet_base_fee`
+//!
+//! # Parameters
+//! - `$t`: A type that implements the `EvmConfig` trait, providing the necessary associated types
+//!   and configurations.
+//!
+//! # Important
+//! Rerun benchmarks if making changes to runtime configuration, as weight calculations
+//! may need to be updated.
+
 #[macro_export]
 macro_rules! impl_openzeppelin_evm {
     ($t:ty) => {

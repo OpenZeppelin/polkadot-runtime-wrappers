@@ -1,4 +1,21 @@
-//! XCM pallet groupings wrapper
+//! Implements the OpenZeppelin XCM configuration for a Runtime.
+//!
+//! This macro sets up the necessary configurations for the following pallets:
+//! - `pallet_message_queue`
+//! - `cumulus_pallet_xcmp_queue`
+//! - `pallet_xcm`
+//! - `cumulus_pallet_xcm`
+//! - `pallet_xcm_weight_trader`
+//! - `orml_xtokens`
+//! - `pallet_xcm_transactor`
+//!
+//! # Parameters
+//! - `$t`: A type that implements the `XcmConfig` trait, providing the necessary associated types
+//!   and configurations for cross-chain messaging functionality.
+//!
+//! # Important
+//! Rerun benchmarks if making changes to runtime configuration, as weight calculations
+//! may need to be updated.
 
 #[macro_export]
 macro_rules! impl_openzeppelin_xcm {

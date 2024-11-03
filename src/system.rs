@@ -1,4 +1,24 @@
-//! System pallet groupings wrapper
+//! Implements the OpenZeppelin system configuration for a Runtime.
+//!
+//! This macro sets up the necessary configurations for the following pallets:
+//! - `frame_system`
+//! - `pallet_timestamp`
+//! - `parachain_info`
+//! - `pallet_scheduler`
+//! - `pallet_preimage`
+//! - `pallet_proxy`
+//! - `pallet_balances`
+//! - `pallet_utility`
+//! - `cumulus_pallet_parachain_system`
+//! - `pallet_multisig`
+//!
+//! # Parameters
+//! - `$t`: A type that implements the `SystemConfig` trait, providing the necessary associated types
+//!   and configurations for core system functionality.
+//!
+//! # Important
+//! Rerun benchmarks if making changes to runtime configuration, as weight calculations
+//! may need to be updated.
 
 #[macro_export]
 macro_rules! impl_openzeppelin_system {
