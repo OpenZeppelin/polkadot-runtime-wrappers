@@ -123,7 +123,7 @@ Here are a few ways `polkadot-runtime-wrappers` simplifies parachain configurati
 
 ## Security
 
-Refer tou our [Security Policy](./SECURITY.MD) for more details.
+Refer to our [Security Policy](./SECURITY.MD) for more details.
 
 ## Contributing
 
