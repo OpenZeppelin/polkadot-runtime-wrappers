@@ -5,6 +5,7 @@
 //! - `pallet_evm`
 //! - `pallet_evm_chain_id`
 //! - `pallet_base_fee`
+//! - `pallet_erc20_xcm_bridge`
 //!
 //! # Parameters
 //! - `$t`: A type that implements the `EvmConfig` trait, providing the necessary associated types
