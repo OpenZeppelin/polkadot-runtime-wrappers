@@ -21,7 +21,7 @@ Then, import the necessary macros in your runtime configuration file.
 
 ## Usage
 
-The macros are intended to streamline runtime configuration for Polkadot parachains. Here’s a basic example from the EVM parachain runtime maintained in `[openzeppelin/polkadot-runtime-templates](https://github.com/OpenZeppelin/polkadot-runtime-templates)`:
+The macros are intended to streamline runtime configuration for Polkadot parachains. Here’s a basic example from the EVM parachain runtime maintained in [`openzeppelin/polkadot-runtime-templates`](https://github.com/OpenZeppelin/polkadot-runtime-templates):
 
 ```rust, ignore
 use openzeppelin_polkadot_wrappers::{impl_openzeppelin_system, SystemConfig};
@@ -39,7 +39,7 @@ impl SystemConfig for OpenZeppelinRuntime {
 impl_openzeppelin_system!(OpenZeppelinRuntime);
 ```
 
-The `openzeppelin_polkadot_wrappers::impl_openzeppelin_system` macro call expands to implement the system grouping pallets for the Runtime by using the user configuration specified in the `openzeppelin_polkadot_wrappers::SystemConfig` implementation by `OpenZeppelinRuntime`:
+The `impl_openzeppelin_system!` macro call takes as input the user configuration specified in the `SystemConfig` implementation by `OpenZeppelinRuntime`. The macro call expands to implement the system grouping pallets for the Runtime:
 - `frame_system`
 - `pallet_timestamp`
 - `parachain_info`
@@ -51,7 +51,7 @@ The `openzeppelin_polkadot_wrappers::impl_openzeppelin_system` macro call expand
 - `cumulus_pallet_parachain_system`
 - `pallet_multisig`
 
-There are also macros for the following pallet groupings:
+Here are the other pallet groupings:
 - Assets
 - Consensus
 - EVM
@@ -113,11 +113,11 @@ Here are a few ways `polkadot-runtime-wrappers` simplifies parachain configurati
 
 This project is maintained by [OpenZeppelin](https://openzeppelin.com/) with the goal of providing a secure and reliable library of smart contract components for the ecosystem. We address security through risk management in various areas such as engineering and open source best practices, scoping and API design, multi-layered review processes, and incident response preparedness.
 
-The security policy is detailed in [SECURITY.md](./SECURITY.MD) as well, and specifies how you can report security vulnerabilities. 
+The security policy is detailed in [`SECURITY.md`](./SECURITY.MD) as well, and specifies how you can report security vulnerabilities. 
 
 ## Contributing
 
-Contributions are welcome! Please see our [CONTRIBUTING.md](./CONTRIBUTING.MD) for guidelines.
+Contributions are welcome! Please see our [`CONTRIBUTING.md`](./CONTRIBUTING.MD) for guidelines.
 
 ## License
 
