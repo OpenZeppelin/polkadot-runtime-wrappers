@@ -23,7 +23,7 @@ Pallet index assignment is hidden from this API. If you want to use it, please c
 * `Consensus` -- `pallet_authorship`, `pallet_aura`, `cumulus_pallet_aura_ext`, `pallet_collator_selection`
 * `Governance` -- `pallet_sudo`, `pallet_treasury`, `pallet_conviction_voting`, `pallet_whitelist`, `pallet_custom_origins`, `pallet_referenda`
 * `XCM` -- `pallet_message_queue`, `cumulus_pallet_xcmp_queue`, `pallet_xcm`, `cumulus_pallet_xcm`, `pallet_xcm_transactor`, `orml_xtokens`, `pallet_xcm_weight_trader`
-* `EVM` -- `pallet_ethereum`, `pallet_evm`, `pallet_base_fee`, `pallet_evm_chain_id`
+* `EVM` -- `pallet_ethereum`, `pallet_evm`, `pallet_base_fee`, `pallet_evm_chain_id`, `pallet_erc20_xcm_bridge`
 
 ### `impl_runtime_apis!`
 
