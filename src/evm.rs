@@ -94,8 +94,20 @@ macro_rules! impl_openzeppelin_evm {
             type Threshold = BaseFeeThreshold;
         }
 
+        parameter_types! {
+            // This is the relative view of erc20 assets.
+            // Identified by this prefix + AccountKey20(contractAddress)
+            // We use the RELATIVE multilocation
+            pub Erc20XcmBridgePalletLocation: Location = Location {
+                parents:0,
+                interior: [
+                    PalletInstance(<Erc20XcmBridge as frame_support::traits::PalletInfoAccess>::index() as u8)
+                ].into()
+            };
+        }
+
         impl pallet_erc20_xcm_bridge::Config for Runtime {
-            type AccountIdConverter = LocationToH160;
+            type AccountIdConverter = <$t as EvmConfig>::LocationToH160;
             type Erc20MultilocationPrefix = Erc20XcmBridgePalletLocation;
             type Erc20TransferGasLimit = <$t as EvmConfig>::Erc20XcmBridgeTransferGasLimit;
             type EvmRunner = pallet_evm::runner::stack::Runner<Self>;
