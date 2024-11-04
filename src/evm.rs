@@ -101,7 +101,7 @@ macro_rules! impl_openzeppelin_evm {
             pub Erc20XcmBridgePalletLocation: Location = Location {
                 parents:0,
                 interior: [
-                    PalletInstance(<Erc20XcmBridge as PalletInfoAccess>::index() as u8)
+                    PalletInstance(<Erc20XcmBridge as frame_support::traits::PalletInfoAccess>::index() as u8)
                 ].into()
             };
         }
