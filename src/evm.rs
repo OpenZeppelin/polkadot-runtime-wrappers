@@ -92,5 +92,12 @@ macro_rules! impl_openzeppelin_evm {
             type RuntimeEvent = RuntimeEvent;
             type Threshold = BaseFeeThreshold;
         }
+
+        impl pallet_erc20_xcm_bridge::Config for Runtime {
+            type AccountIdConverter = LocationToH160;
+            type Erc20MultilocationPrefix = Erc20XcmBridgePalletLocation;
+            type Erc20TransferGasLimit = <$t as EvmConfig>::Erc20XcmBridgeTransferGasLimit;
+            type EvmRunner = pallet_evm::runner::stack::Runner<Self>;
+        }
     };
 }

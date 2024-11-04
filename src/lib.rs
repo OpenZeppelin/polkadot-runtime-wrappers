@@ -131,4 +131,5 @@ pub trait EvmConfig {
     type WithdrawOrigin;
     type PrecompilesType;
     type PrecompilesValue;
+    type Erc20XcmBridgeTransferGasLimit;
 }
