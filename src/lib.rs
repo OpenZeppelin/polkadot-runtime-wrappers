@@ -132,4 +132,5 @@ pub trait EvmConfig {
     type PrecompilesType;
     type PrecompilesValue;
     type Erc20XcmBridgeTransferGasLimit;
+    type LocationToH160;
 }
