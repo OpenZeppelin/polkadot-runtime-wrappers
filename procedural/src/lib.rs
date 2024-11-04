@@ -64,6 +64,7 @@ mod runtime_apis;
 ///     * `pallet_evm`
 ///     * `pallet_base_fee`
 ///     * `pallet_evm_chain_id`
+///     * `pallet_erc20_xcm_bridge`
 #[proc_macro_attribute]
 pub fn openzeppelin_construct_runtime(_: TokenStream, tokens: TokenStream) -> TokenStream {
     construct_runtime::construct_openzeppelin_runtime(tokens)
