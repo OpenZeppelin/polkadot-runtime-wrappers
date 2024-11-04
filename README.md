@@ -2,7 +2,12 @@
 
 `polkadot-runtime-wrappers` is a set of Rust macros designed to streamline the configuration of Polkadot Parachain Runtimes. These macros reduce the lines of code (LOC) necessary for configuring a secure and optimized runtime, providing a balance between customizability and ease of use.
 
+> [!WARNING]
+> This project has not been audited yet.
+> Do not use in production.
+
 Features:
+
 - Reduced LOC: Minimize boilerplate by using macros to handle repetitive configurations.
 - Sensible Defaults: Default configurations that meet most standard use cases, ensuring security and functionality without requiring extensive customization.
 - High Configurability: Enable advanced users to customize runtime configurations, offering flexible settings without sacrificing simplicity for common setups.
@@ -14,12 +19,15 @@ To use `polkadot-runtime-wrappers`, add it to your Cargo.toml file:
 
 ```toml
 [dependencies]
-openzeppelin-polkadot-wrappers = "0.1.0"
+openzeppelin-polkadot-wrappers = { git = "https://github.com/OpenZeppelin/polkadot-runtime-wrappers", tag = "v0.1.0" }
 ```
 
 Then, import the necessary macros in your runtime configuration file.
 
 ## Usage
+
+> [!NOTE]
+> For examples of how to use the wrappers, see the polkadot-runtime-templates [repository](https://github.com/OpenZeppelin/polkadot-runtime-templates).
 
 The macros are intended to streamline runtime configuration for Polkadot parachains. Here’s a basic example from the EVM parachain runtime maintained in [`openzeppelin/polkadot-runtime-templates`](https://github.com/OpenZeppelin/polkadot-runtime-templates):
 
@@ -40,6 +48,7 @@ impl_openzeppelin_system!(OpenZeppelinRuntime);
 ```
 
 The `impl_openzeppelin_system!` macro call takes as input the user configuration specified in the `SystemConfig` implementation by `OpenZeppelinRuntime`. The macro call expands to implement the system grouping pallets for the Runtime:
+
 - `frame_system`
 - `pallet_timestamp`
 - `parachain_info`
@@ -52,6 +61,7 @@ The `impl_openzeppelin_system!` macro call takes as input the user configuration
 - `pallet_multisig`
 
 Here are the other pallet groupings:
+
 - Assets
 - Consensus
 - EVM
@@ -59,6 +69,7 @@ Here are the other pallet groupings:
 - XCM
 
 Here are their configurations in the EVM parachain runtime:
+
 ```rust, ignore
 use openzeppelin_polkadot_wrappers::{
     impl_openzeppelin_assets, impl_openzeppelin_consensus, impl_openzeppelin_evm,
@@ -105,15 +116,14 @@ impl_openzeppelin_evm!(OpenZeppelinRuntime);
 ```
 
 Here are a few ways `polkadot-runtime-wrappers` simplifies parachain configuration:
+
 - Basic Setup: Only a few LOC required to get a secure, functioning runtime.
 - Advanced Configuration: Customize each aspect of the runtime by passing additional parameters to the macros.
 - Default Overrides: Override defaults for specific settings while letting the wrapper handle the rest.
 
 ## Security
 
-This project is maintained by [OpenZeppelin](https://openzeppelin.com/) with the goal of providing a secure and reliable library of smart contract components for the ecosystem. We address security through risk management in various areas such as engineering and open source best practices, scoping and API design, multi-layered review processes, and incident response preparedness.
-
-The security policy is detailed in [`SECURITY.md`](./SECURITY.MD) as well, and specifies how you can report security vulnerabilities. 
+Refer tou our [Security Policy](./SECURITY.MD) for more details.
 
 ## Contributing
 
