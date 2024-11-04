@@ -1,119 +1,118 @@
 # polkadot-runtime-wrappers
 
-Wrappers with sensible defaults for constructing Polkadot Parachain Runtimes
+`polkadot-runtime-wrappers` is a set of Rust macros designed to streamline the configuration of Polkadot Parachain Runtimes. These macros reduce the lines of code (LOC) necessary for configuring a secure and optimized runtime, providing a balance between customizability and ease of use.
 
+Features:
+- Reduced LOC: Minimize boilerplate by using macros to handle repetitive configurations.
+- Sensible Defaults: Default configurations that meet most standard use cases, ensuring security and functionality without requiring extensive customization.
+- High Configurability: Enable advanced users to customize runtime configurations, offering flexible settings without sacrificing simplicity for common setups.
+- Security-Focused: Built with security in mind, ensuring that configurations adhere to best practices for Polkadot parachains.
 
-## Example: EVM Parachain Template 
+## Installation
 
-Example usage may be found in both runtime templates in `[openzeppelin/polkadot-runtime-templates]()`.
+To use `polkadot-runtime-wrappers`, add it to your Cargo.toml file:
 
-The configuration of the EVM Parachain Template at the time that this README was written is posted below:
+```toml
+[dependencies]
+openzeppelin-polkadot-wrappers = "0.1.0"
+```
+
+Then, import the necessary macros in your runtime configuration file.
+
+## Usage
+
+The macros are intended to streamline runtime configuration for Polkadot parachains. Here’s a basic example from the EVM parachain runtime maintained in `[openzeppelin/polkadot-runtime-templates](https://github.com/OpenZeppelin/polkadot-runtime-templates)`:
 
 ```rust, ignore
-// OpenZeppelin runtime wrappers configuration
+use openzeppelin_polkadot_wrappers::{impl_openzeppelin_system, SystemConfig};
+
 pub struct OpenZeppelinRuntime;
 impl SystemConfig for OpenZeppelinRuntime {
+    // Basic configuration options:
     type AccountId = AccountId;
     type ExistentialDeposit = ConstU128<EXISTENTIAL_DEPOSIT>;
-    type Lookup = IdentityLookup<AccountId>;
     type PreimageOrigin = EnsureRoot<AccountId>;
-    type ProxyType = ProxyType;
-    type SS58Prefix = ConstU16<42>;
     type ScheduleOrigin = EnsureRoot<AccountId>;
     type Version = Version;
+    //...
 }
+impl_openzeppelin_system!(OpenZeppelinRuntime);
+```
+
+The `openzeppelin_polkadot_wrappers::impl_openzeppelin_system` macro call expands to implement the system grouping pallets for the Runtime by using the user configuration specified in the `openzeppelin_polkadot_wrappers::SystemConfig` implementation by `OpenZeppelinRuntime`:
+- `frame_system`
+- `pallet_timestamp`
+- `parachain_info`
+- `pallet_scheduler`
+- `pallet_preimage`
+- `pallet_proxy`
+- `pallet_balances`
+- `pallet_utility`
+- `cumulus_pallet_parachain_system`
+- `pallet_multisig`
+
+There are also macros for the following pallet groupings:
+- Assets
+- Consensus
+- EVM
+- Governance
+- XCM
+
+Here are their example configs in the EVM parachain runtime:
+```rust, ignore
+use openzeppelin_polkadot_wrappers::{
+    impl_openzeppelin_assets, impl_openzeppelin_consensus, impl_openzeppelin_evm,
+    impl_openzeppelin_governance, impl_openzeppelin_xcm, AssetsConfig,
+    ConsensusConfig, EvmConfig, GovernanceConfig, XcmConfig,
+};
+//...other imported types used in the configuration
+
 impl ConsensusConfig for OpenZeppelinRuntime {
     type CollatorSelectionUpdateOrigin = CollatorSelectionUpdateOrigin;
+    // Some types may be left unassigned to use defaults
 }
 impl GovernanceConfig for OpenZeppelinRuntime {
     type ConvictionVoteLockingPeriod = ConstU32<{ 7 * DAYS }>;
     type DispatchWhitelistedOrigin = EitherOf<EnsureRoot<AccountId>, WhitelistedCaller>;
-    type ReferendaAlarmInterval = ConstU32<1>;
-    type ReferendaCancelOrigin = EnsureRoot<AccountId>;
-    type ReferendaKillOrigin = EnsureRoot<AccountId>;
-    type ReferendaSlash = Treasury;
-    type ReferendaSubmissionDeposit = ConstU128<{ 3 * CENTS }>;
-    type ReferendaSubmitOrigin = EnsureSigned<AccountId>;
-    type ReferendaUndecidingTimeout = ConstU32<{ 14 * DAYS }>;
-    type TreasuryInteriorLocation = TreasuryInteriorLocation;
-    type TreasuryPalletId = TreasuryPalletId;
-    type TreasuryPayoutSpendPeriod = ConstU32<{ 30 * DAYS }>;
-    type TreasuryRejectOrigin = EitherOfDiverse<EnsureRoot<AccountId>, Treasurer>;
-    type TreasurySpendOrigin = TreasurySpender;
-    type TreasurySpendPeriod = ConstU32<{ 6 * DAYS }>;
-    type WhitelistOrigin = EnsureRoot<AccountId>;
+    //...
 }
 impl XcmConfig for OpenZeppelinRuntime {
-    type AccountIdToLocation = AccountIdToLocation<AccountId>;
-    type AddSupportedAssetOrigin = EnsureRoot<AccountId>;
-    type AssetFeesFilter = AssetFeesFilter;
-    type AssetTransactors = AssetTransactors;
     type BaseXcmWeight = BaseXcmWeight;
-    type CurrencyId = CurrencyId;
-    type CurrencyIdToLocation = CurrencyIdToLocation<AsAssetType<AssetId, AssetType, AssetManager>>;
-    type DerivativeAddressRegistrationOrigin = EnsureRoot<AccountId>;
-    type EditSupportedAssetOrigin = EnsureRoot<AccountId>;
-    type FeeManager = FeeManager;
-    type HrmpManipulatorOrigin = EnsureRoot<AccountId>;
-    type HrmpOpenOrigin = EnsureRoot<AccountId>;
     type LocalOriginToLocation = LocalOriginToLocation;
     type LocationToAccountId = LocationToAccountId;
-    type MaxAssetsForTransfer = MaxAssetsForTransfer;
-    type MaxHrmpRelayFee = MaxHrmpRelayFee;
     type MessageQueueHeapSize = ConstU32<{ 64 * 1024 }>;
     type MessageQueueMaxStale = ConstU32<8>;
-    type MessageQueueServiceWeight = MessageQueueServiceWeight;
-    type ParachainMinFee = ParachainMinFee;
-    type PauseSupportedAssetOrigin = EnsureRoot<AccountId>;
-    type RelayLocation = RelayLocation;
-    type RemoveSupportedAssetOrigin = EnsureRoot<AccountId>;
-    type Reserves = Reserves;
-    type ResumeSupportedAssetOrigin = EnsureRoot<AccountId>;
-    type SelfLocation = SelfLocation;
-    type SelfReserve = SelfReserve;
-    type SovereignAccountDispatcherOrigin = EnsureRoot<AccountId>;
-    type Trader = pallet_xcm_weight_trader::Trader<Runtime>;
-    type TransactorReserveProvider = AbsoluteAndRelativeReserve<SelfLocationAbsolute>;
-    type Transactors = Transactors;
-    type UniversalLocation = UniversalLocation;
-    type WeightToFee = WeightToFee;
-    type XcmAdminOrigin = EnsureRoot<AccountId>;
-    type XcmFeesAccount = TreasuryAccount;
-    type XcmOriginToTransactDispatchOrigin = XcmOriginToTransactDispatchOrigin;
-    type XcmSender = XcmRouter;
-    type XcmWeigher = XcmWeigher;
-    type XcmpQueueControllerOrigin = EnsureRoot<AccountId>;
-    type XcmpQueueMaxInboundSuspended = ConstU32<1000>;
-    type XtokensReserveProviders = ReserveProviders;
+    //...
 }
 impl EvmConfig for OpenZeppelinRuntime {
     type AddressMapping = IdentityAddressMapping;
     type CallOrigin = EnsureAccountId20;
-    type Erc20XcmBridgeTransferGasLimit = Erc20XcmBridgeTransferGasLimit;
-    type FindAuthor = FindAuthorSession<Aura>;
     type PrecompilesType = OpenZeppelinPrecompiles<Runtime>;
     type PrecompilesValue = PrecompilesValue;
-    type WithdrawOrigin = EnsureAccountId20;
+    //...
 }
 impl AssetsConfig for OpenZeppelinRuntime {
-    type ApprovalDeposit = ConstU128<MILLICENTS>;
-    type AssetAccountDeposit = ConstU128<{ deposit(1, 16) }>;
     type AssetDeposit = ConstU128<{ 10 * CENTS }>;
-    type AssetId = AssetId;
-    type AssetRegistrar = AssetRegistrar;
-    type AssetRegistrarMetadata = AssetRegistrarMetadata;
-    type AssetType = AssetType;
-    #[cfg(feature = "runtime-benchmarks")]
-    type BenchmarkHelper = BenchmarkHelper;
-    type CreateOrigin = AsEnsureOriginWithArg<EnsureSigned<AccountId>>;
+    type AssetId = u128;
     type ForceOrigin = EnsureRoot<AccountId>;
-    type ForeignAssetModifierOrigin = EnsureRoot<AccountId>;
-    type WeightToFee = WeightToFee;
+    //...
 }
 impl_openzeppelin_assets!(OpenZeppelinRuntime);
-impl_openzeppelin_system!(OpenZeppelinRuntime);
 impl_openzeppelin_consensus!(OpenZeppelinRuntime);
 impl_openzeppelin_governance!(OpenZeppelinRuntime);
 impl_openzeppelin_xcm!(OpenZeppelinRuntime);
 impl_openzeppelin_evm!(OpenZeppelinRuntime);
 ```
+
+Here are a few ways `polkadot-runtime-wrappers` simplifies parachain configuration:
+- Basic Setup: Only a few LOC required to get a secure, functioning runtime.
+- Advanced Configuration: Customize each aspect of the runtime by passing additional parameters to the macros.
+- Default Overrides: Override defaults for specific settings while letting the wrapper handle the rest.
+
+## Contributing
+
+Contributions are welcome! Please see our [CONTRIBUTING.md](./CONTRIBUTING.MD) for guidelines.
+
+## License
+
+This project is licensed under the GPLv3 License. See the [LICENSE](./LICENSE.md) file for more information.
