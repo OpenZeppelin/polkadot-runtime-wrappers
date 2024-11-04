@@ -58,7 +58,7 @@ There are also macros for the following pallet groupings:
 - Governance
 - XCM
 
-Here are their example configs in the EVM parachain runtime:
+Here are their configurations in the EVM parachain runtime:
 ```rust, ignore
 use openzeppelin_polkadot_wrappers::{
     impl_openzeppelin_assets, impl_openzeppelin_consensus, impl_openzeppelin_evm,
@@ -109,10 +109,16 @@ Here are a few ways `polkadot-runtime-wrappers` simplifies parachain configurati
 - Advanced Configuration: Customize each aspect of the runtime by passing additional parameters to the macros.
 - Default Overrides: Override defaults for specific settings while letting the wrapper handle the rest.
 
+## Security
+
+This project is maintained by [OpenZeppelin](https://openzeppelin.com/) with the goal of providing a secure and reliable library of smart contract components for the ecosystem. We address security through risk management in various areas such as engineering and open source best practices, scoping and API design, multi-layered review processes, and incident response preparedness.
+
+The security policy is detailed in [SECURITY.md](./SECURITY.MD) as well, and specifies how you can report security vulnerabilities. 
+
 ## Contributing
 
 Contributions are welcome! Please see our [CONTRIBUTING.md](./CONTRIBUTING.MD) for guidelines.
 
 ## License
 
-This project is licensed under the GPLv3 License. See the [LICENSE](./LICENSE.md) file for more information.
+This project is licensed under the GPLv3 License. See the [LICENSE](./LICENSE) file for more information.
