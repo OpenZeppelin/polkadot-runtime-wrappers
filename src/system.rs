@@ -261,3 +261,16 @@ macro_rules! impl_openzeppelin_system {
         }
     };
 }
+
+pub const PALLET_NAMES: [(&str, &str); 10] = [
+    ("System", "frame_system"),
+    ("Timestamp", "pallet_timestamp"),
+    ("ParachainInfo", "parachain_info"),
+    ("Scheduler", "pallet_scheduler"),
+    ("Preimage", "pallet_preimage"),
+    ("Proxy", "pallet_proxy"),
+    ("Balances", "pallet_balances"),
+    ("Utility", "pallet_utility"),
+    ("ParachainSystem", "cumulus_pallet_parachain_system"),
+    ("Multisig", "pallet_multisig"),
+];

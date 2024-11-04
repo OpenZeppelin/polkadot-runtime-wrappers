@@ -1,0 +1,19 @@
+[package]
+name = "openzeppelin-polkadot-wrappers-proc"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "openzeppelin_polkadot_wrappers_proc"
+path = "src/lib.rs"
+proc-macro = true
+
+[dependencies]
+openzeppelin-polkadot-wrappers = { path = "../" }
+darling = "0.20.10"
+proc-macro2 = "1.0.87"
+quote = "1.0.37"
+syn = "2.0.79"
+
+[features]
+async-backing = []
