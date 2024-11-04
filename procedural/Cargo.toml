@@ -1,10 +1,10 @@
 [package]
-name = "openzeppelin-procedural"
+name = "openzeppelin-polkadot-wrappers-proc"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "openzeppelin_procedural"
+name = "openzeppelin_polkadot_wrappers_proc"
 path = "src/lib.rs"
 proc-macro = true
 
