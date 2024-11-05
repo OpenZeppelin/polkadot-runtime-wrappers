@@ -8,18 +8,29 @@ pub mod governance;
 pub mod system;
 pub mod xcm;
 
-use frame_support::traits::{ConstU32, Get};
+use frame_system::EnsureRoot;
+use frame_support::traits::{ConstU16, ConstU32, Get};
 use sp_version::RuntimeVersion;
 
-pub trait SystemConfig {
+pub trait SystemWeight {
+    type Timestamp = ();
+    type Scheduler = ();
+    type Preimage = ();
+    type Proxy = ();
+    type Multisig = ();
+    type ParachainSystem = ();
+    type DbWeight;
+}
+
+pub trait SystemConfig: SystemWeight {
     type AccountId;
     type Lookup;
-    type SS58Prefix;
-    type Version: Get<RuntimeVersion>;
     type ExistentialDeposit;
-    type ScheduleOrigin;
-    type PreimageOrigin;
     type ProxyType;
+    type Version: Get<RuntimeVersion>;
+    type SS58Prefix = ConstU16<42>;
+    type ScheduleOrigin = EnsureRoot<Self::AccountId>;
+    type PreimageOrigin = EnsureRoot<Self::AccountId>;
     type MaxConsumers = ConstU32<16>;
     type MaxSignatories = ConstU32<100>;
     type MaxPendingProxies = ConstU32<32>;
