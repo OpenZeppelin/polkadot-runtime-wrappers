@@ -8,8 +8,8 @@ pub mod governance;
 pub mod system;
 pub mod xcm;
 
-use frame_system::EnsureRoot;
 use frame_support::traits::{ConstU16, ConstU32, Get};
+use frame_system::EnsureRoot;
 use sp_version::RuntimeVersion;
 
 pub trait SystemWeight {
