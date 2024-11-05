@@ -38,7 +38,7 @@ macro_rules! impl_openzeppelin_assets {
 
         impl pallet_assets::Config for Runtime {
             type ApprovalDeposit = <$t as AssetsConfig>::ApprovalDeposit;
-            type AssetAccountDeposit = <$t as AssetsConfig>::ApprovalDeposit;
+            type AssetAccountDeposit = <$t as AssetsConfig>::AssetAccountDeposit;
             type AssetDeposit = <$t as AssetsConfig>::AssetDeposit;
             type AssetId = <$t as AssetsConfig>::AssetId;
             type AssetIdParameter = parity_scale_codec::Compact<<$t as AssetsConfig>::AssetId>;
