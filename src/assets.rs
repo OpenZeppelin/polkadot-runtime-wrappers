@@ -56,8 +56,7 @@ macro_rules! impl_openzeppelin_assets {
             type RemoveItemsLimit = RemoveItemsLimit;
             type RuntimeEvent = RuntimeEvent;
             type StringLimit = StringLimit;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_assets::WeightInfo<Runtime>;
+            type WeightInfo = <$t as AssetsWeight>::Assets;
         }
 
         parameter_types! {
@@ -87,8 +86,7 @@ macro_rules! impl_openzeppelin_assets {
             type ForeignAssetModifierOrigin = <$t as AssetsConfig>::ForeignAssetModifierOrigin;
             type ForeignAssetType = <$t as AssetsConfig>::AssetType;
             type RuntimeEvent = RuntimeEvent;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_asset_manager::WeightInfo<Runtime>;
+            type WeightInfo = <$t as AssetsWeight>::AssetManager;
         }
     };
 }

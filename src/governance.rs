@@ -22,8 +22,7 @@ macro_rules! impl_openzeppelin_governance {
         impl pallet_sudo::Config for Runtime {
             type RuntimeCall = RuntimeCall;
             type RuntimeEvent = RuntimeEvent;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_sudo::WeightInfo<Runtime>;
+            type WeightInfo = <$t as GovernanceWeight>::Sudo;
         }
 
         #[cfg(feature = "runtime-benchmarks")]
@@ -57,8 +56,7 @@ macro_rules! impl_openzeppelin_governance {
             type SpendFunds = <$t as GovernanceConfig>::TreasurySpendFunds;
             type SpendOrigin = <$t as GovernanceConfig>::TreasurySpendOrigin;
             type SpendPeriod = <$t as GovernanceConfig>::TreasurySpendPeriod;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_treasury::WeightInfo<Runtime>;
+            type WeightInfo = <$t as GovernanceWeight>::Treasury;
         }
 
         impl pallet_conviction_voting::Config for Runtime {
@@ -71,8 +69,7 @@ macro_rules! impl_openzeppelin_governance {
             type Polls = Referenda;
             type RuntimeEvent = RuntimeEvent;
             type VoteLockingPeriod = <$t as GovernanceConfig>::ConvictionVoteLockingPeriod;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_conviction_voting::WeightInfo<Runtime>;
+            type WeightInfo = <$t as GovernanceWeight>::ConvictionVoting;
         }
 
         impl pallet_whitelist::Config for Runtime {
@@ -80,8 +77,7 @@ macro_rules! impl_openzeppelin_governance {
             type Preimages = Preimage;
             type RuntimeCall = RuntimeCall;
             type RuntimeEvent = RuntimeEvent;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_whitelist::WeightInfo<Runtime>;
+            type WeightInfo = <$t as GovernanceWeight>::Whitelist;
             type WhitelistOrigin = <$t as GovernanceConfig>::WhitelistOrigin;
         }
 
@@ -109,8 +105,7 @@ macro_rules! impl_openzeppelin_governance {
             type Tracks = tracks::TracksInfo;
             type UndecidingTimeout = <$t as GovernanceConfig>::ReferendaUndecidingTimeout;
             type Votes = pallet_conviction_voting::VotesOf<Runtime>;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_referenda::WeightInfo<Runtime>;
+            type WeightInfo = <$t as GovernanceWeight>::Referenda;
         }
     };
 }
