@@ -32,7 +32,7 @@ Then, import the necessary macros in your runtime configuration file.
 The macros are intended to streamline runtime configuration for Polkadot parachains. Here’s a basic example from the EVM parachain runtime maintained in the [Polkadot runtime templates](https://github.com/OpenZeppelin/polkadot-runtime-templates):
 
 ```rust, ignore
-use openzeppelin_polkadot_abstractions::{impl_openzeppelin_system, SystemConfig};
+use openzeppelin_pallet_abstractions::{impl_openzeppelin_system, SystemConfig};
 
 pub struct OpenZeppelinRuntime;
 impl SystemConfig for OpenZeppelinRuntime {
@@ -71,7 +71,7 @@ Here are the other pallet groupings:
 Here are their configurations in the EVM parachain runtime:
 
 ```rust, ignore
-use openzeppelin_polkadot_abstractions::{
+use openzeppelin_pallet_abstractions::{
     impl_openzeppelin_assets, impl_openzeppelin_consensus, impl_openzeppelin_evm,
     impl_openzeppelin_governance, impl_openzeppelin_xcm, AssetsConfig,
     ConsensusConfig, EvmConfig, GovernanceConfig, XcmConfig,
