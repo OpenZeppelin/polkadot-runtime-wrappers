@@ -20,6 +20,8 @@ pub trait SystemConfig {
     type ExistentialDeposit;
     type ScheduleOrigin;
     type PreimageOrigin;
+    type ProxyType;
+    type ConsensusHook;
     type OnTimestampSet: OnTimestampSet<u64>;
     type MaxConsumers = ConstU32<16>;
     type MaxSignatories = ConstU32<100>;

@@ -38,14 +38,13 @@ pub fn tanssi_apis(
     session_keys: &Ident,
 ) -> TokenStream {
     let mut res = quote! {};
-
     res.extend(quote! {
         impl sp_session::SessionKeys<#block> for #runtime {
-            fn generate_session_keys(seed: Option<Vec<u8>>) -> Vec<u8> {
+            fn generate_session_keys(seed: Option<sp_std::prelude::Vec<u8>>) -> sp_std::prelude::Vec<u8> {
                 #session_keys::generate(seed)
             }
 
-            fn decode_session_keys(encoded: Vec<u8>) -> Option<Vec<(Vec<u8>, KeyTypeId)>> {
+            fn decode_session_keys(encoded: sp_std::prelude::Vec<u8>) -> Option<sp_std::prelude::Vec<(sp_std::prelude::Vec<u8>, sp_core::crypto::KeyTypeId)>> {
                 #session_keys::decode_into_raw_public_keys(&encoded)
             }
         }

@@ -229,7 +229,7 @@ macro_rules! impl_openzeppelin_system {
             type CheckAssociatedRelayNumber = RelayNumberStrictlyIncreases;
             #[cfg(feature = "async-backing")]
             type CheckAssociatedRelayNumber = RelayNumberMonotonicallyIncreases;
-            type ConsensusHook = ConsensusHook;
+            type ConsensusHook = <$t as SystemConfig>::ConsensusHook;
             type DmpQueue = frame_support::traits::EnqueueWithOrigin<MessageQueue, RelayOrigin>;
             type OnSystemEvent = ();
             type OutboundXcmpMessageSource = XcmpQueue;

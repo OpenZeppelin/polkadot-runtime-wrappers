@@ -62,15 +62,15 @@ fn parse_abstraction(
     match abstraction_name {
         ConstructAbstractions::System => (
             construct_system(index),
-            Some(quote! {
-                cumulus_pallet_parachain_system::register_validate_block! {
-                    Runtime = Runtime,
-                    BlockExecutor = cumulus_pallet_aura_ext::BlockExecutor::<Runtime, Executive>,
-                }
-            }),
+            None,
         ),
         ConstructAbstractions::Assets => (construct_assets(index), None),
-        ConstructAbstractions::Consensus => (construct_consensus(index), None),
+        ConstructAbstractions::Consensus => (construct_consensus(index), Some(quote! {
+            cumulus_pallet_parachain_system::register_validate_block! {
+                Runtime = Runtime,
+                BlockExecutor = cumulus_pallet_aura_ext::BlockExecutor::<Runtime, Executive>,
+            }
+        })),
         ConstructAbstractions::Governance => (construct_governance(index), None),
         ConstructAbstractions::Xcm => (construct_xcm(index), None),
         ConstructAbstractions::Evm => (construct_evm(index), None),
@@ -119,7 +119,7 @@ fn construct_xcm(index: &mut u32) -> proc_macro2::TokenStream {
 fn construct_tanssi(index: &mut u32) -> proc_macro2::TokenStream {
     construct_abstraction(
         index,
-        polkadot_runtime_wrappers::tanssi::pallet_name_list().as_slice(),
+        &openzeppelin_polkadot_wrappers::tanssi::PALLET_NAMES,
     )
 }
 
