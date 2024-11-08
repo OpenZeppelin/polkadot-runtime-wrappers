@@ -5,7 +5,7 @@ mod construct_runtime;
 mod models;
 mod runtime_apis;
 
-/// Construct runtime macro wrapper
+/// Construct runtime macro abstraction
 /// This macro allows to construct runtime operating with abstractions as long as with pallets. 
 /// It allows you omit the pallet indexes -- they will be assigned in ascending order. 
 /// This API may change in future releases, it is not yet stabilised.
@@ -70,7 +70,7 @@ pub fn openzeppelin_construct_runtime(_: TokenStream, tokens: TokenStream) -> To
     construct_runtime::construct_openzeppelin_runtime(tokens)
 }
 
-/// Runtime API macro wrapper
+/// Runtime API macro abstraction
 /// This macro wraps the `impl_runtime_api` macro and provides our implementations of them.
 /// It also works in the same groupings as our abstractions pallets and to get the runtime API implementations you only need to provide some types.
 /// 
