@@ -1,7 +1,7 @@
 use crate::{
     apis::{
         self, fetch_ident, AbstractionState, AssetAPIFields, BenchmarkAPIFields,
-        ConsensusAPIFields, EVMAPIFields, SystemAPIFields,
+        ConsensusAPIFields, EVMAPIFields, SystemAPIFields, TanssiAPIFields,
     },
     models::APIAbstractions,
 };
@@ -173,13 +173,16 @@ fn construct_abstraction(
                 &runtime_block_weights,
             )
         }
-
         APIAbstractions::Benchmarks => {
             let api_fields = BenchmarkAPIFields::try_from(content.as_slice())
                 .expect("Error while parsing benchmarking config");
 
             state.benchmark_fields = Some(api_fields);
             quote! {}
+        }
+        APIAbstractions::Tanssi => {
+            let TanssiAPIFields { session_keys } = TanssiAPIFields::try_from(content.as_slice()).expect("Error while parsing Tanssi config");
+            apis::tanssi_apis(runtime, block, &session_keys)
         }
     }
 }

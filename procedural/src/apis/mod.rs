@@ -3,12 +3,14 @@ mod benchmark;
 mod consensus;
 mod evm;
 mod system;
+mod tanssi;
 
 pub use assets::*;
 pub use benchmark::*;
 pub use consensus::*;
 pub use evm::*;
 pub use system::*;
+pub use tanssi::*;
 
 use syn::{Ident, Type};
 

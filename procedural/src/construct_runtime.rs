@@ -62,23 +62,65 @@ fn parse_abstraction(
     match abstraction_name {
         ConstructAbstractions::System => (
             construct_system(index),
-            Some(quote! {
-                cumulus_pallet_parachain_system::register_validate_block! {
-                    Runtime = Runtime,
-                    BlockExecutor = cumulus_pallet_aura_ext::BlockExecutor::<Runtime, Executive>,
-                }
-            }),
+            None,
         ),
         ConstructAbstractions::Assets => (construct_assets(index), None),
-        ConstructAbstractions::Consensus => (construct_consensus(index), None),
+        ConstructAbstractions::Consensus => (construct_consensus(index), Some(quote! {
+            cumulus_pallet_parachain_system::register_validate_block! {
+                Runtime = Runtime,
+                BlockExecutor = cumulus_pallet_aura_ext::BlockExecutor::<Runtime, Executive>,
+            }
+        })),
         ConstructAbstractions::Governance => (construct_governance(index), None),
         ConstructAbstractions::Xcm => (construct_xcm(index), None),
         ConstructAbstractions::Evm => (construct_evm(index), None),
+        ConstructAbstractions::Tanssi => (
+            construct_tanssi(index),
+            Some(quote! {
+                #[allow(dead_code)]
+                struct CheckInherents;
+
+                #[allow(deprecated)]
+                impl cumulus_pallet_parachain_system::CheckInherents<Block> for CheckInherents {
+                    fn check_inherents(
+                        block: &Block,
+                        relay_state_proof: &cumulus_pallet_parachain_system::RelayChainStateProof,
+                    ) -> sp_inherents::CheckInherentsResult {
+                        let relay_chain_slot = relay_state_proof
+                            .read_slot()
+                            .expect("Could not read the relay chain slot from the proof");
+
+                        let inherent_data =
+                            cumulus_primitives_timestamp::InherentDataProvider::from_relay_chain_slot_and_duration(
+                                relay_chain_slot,
+                                sp_std::time::Duration::from_secs(6),
+                            )
+                            .create_inherent_data()
+                            .expect("Could not create the timestamp inherent data");
+
+                        inherent_data.check_extrinsics(block)
+                    }
+                }
+
+                cumulus_pallet_parachain_system::register_validate_block! {
+                    Runtime = Runtime,
+                    BlockExecutor = pallet_author_inherent::BlockExecutor::<Runtime, Executive>,
+                    CheckInherents = CheckInherents
+                }
+            }),
+        ),
     }
 }
 
 fn construct_xcm(index: &mut u32) -> proc_macro2::TokenStream {
     construct_abstraction(index, &openzeppelin_pallet_abstractions::xcm::PALLET_NAMES)
+}
+
+fn construct_tanssi(index: &mut u32) -> proc_macro2::TokenStream {
+    construct_abstraction(
+        index,
+        &openzeppelin_polkadot_wrappers::tanssi::PALLET_NAMES,
+    )
 }
 
 fn construct_governance(index: &mut u32) -> proc_macro2::TokenStream {
