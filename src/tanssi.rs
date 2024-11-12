@@ -1,6 +1,6 @@
 
 #[macro_export]
-macro_rules! impl_tanssi {
+macro_rules! impl_openzeppelin_tanssi {
     () => {
         impl pallet_author_inherent::Config for Runtime {
             type AuthorId = nimbus_primitives::NimbusId;
