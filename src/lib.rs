@@ -138,4 +138,3 @@ pub trait EvmConfig {
     type LocationToH160;
 }
 
-pub trait TanssiConfig {}
