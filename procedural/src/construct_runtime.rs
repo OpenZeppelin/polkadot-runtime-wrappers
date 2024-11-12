@@ -119,7 +119,7 @@ fn construct_xcm(index: &mut u32) -> proc_macro2::TokenStream {
 fn construct_tanssi(index: &mut u32) -> proc_macro2::TokenStream {
     construct_abstraction(
         index,
-        &openzeppelin_polkadot_wrappers::tanssi::PALLET_NAMES,
+        &openzeppelin_pallet_abstractions::tanssi::PALLET_NAMES,
     )
 }
 
