@@ -14,25 +14,11 @@ pub enum ConstructAbstractions {
 #[derive(Debug)]
 pub enum ConversionError {
     UnknownAbstraction,
-    NoAbstractionAttribute,
 }
 
 impl TryFrom<ItemStruct> for ConstructAbstractions {
     type Error = ConversionError;
     fn try_from(value: ItemStruct) -> Result<Self, Self::Error> {
-        let is_pallet = value.attrs.iter().any(|f| {
-            let Ok(path) = f.meta.require_path_only() else {
-                return false;
-            };
-            let Ok(ident) = path.require_ident() else {
-                return false;
-            };
-            ident == "abstraction"
-        });
-        if !is_pallet {
-            return Err(ConversionError::NoAbstractionAttribute);
-        }
-
         ConstructAbstractions::try_from(value.ident)
     }
 }

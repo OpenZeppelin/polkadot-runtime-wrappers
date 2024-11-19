@@ -7,7 +7,6 @@ We have made an abstraction over the `construct_runtime!`. The macro itself has 
 ```rust
 #[openzeppelin_construct_runtime]
 mod runtime {
-    #[abstraction]
     struct System; // Available names are System, Consensus, XCM, Assets, Governance, EVM.
     #[pallet]
     type Pallet = pallet_crate; // It mimics the second version of construct runtime macro, but without the pallet_index assignment
