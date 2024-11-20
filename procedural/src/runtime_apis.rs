@@ -181,7 +181,8 @@ fn construct_abstraction(
             quote! {}
         }
         APIAbstractions::Tanssi => {
-            let TanssiAPIFields { session_keys } = TanssiAPIFields::try_from(content.as_slice()).expect("Error while parsing Tanssi config");
+            let TanssiAPIFields { session_keys } = TanssiAPIFields::try_from(content.as_slice())
+                .expect("Error while parsing Tanssi config");
             apis::tanssi_apis(runtime, block, &session_keys)
         }
     }

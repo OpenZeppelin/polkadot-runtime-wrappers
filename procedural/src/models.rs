@@ -8,7 +8,7 @@ pub enum ConstructAbstractions {
     System,
     Governance,
     Consensus,
-    Tanssi
+    Tanssi,
 }
 
 #[derive(Debug)]
@@ -52,7 +52,7 @@ pub enum APIAbstractions {
     Evm,
     Consensus,
     Assets,
-    Tanssi
+    Tanssi,
 }
 
 impl TryFrom<Ident> for APIAbstractions {
