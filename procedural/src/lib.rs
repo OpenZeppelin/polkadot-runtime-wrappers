@@ -83,7 +83,6 @@ pub fn openzeppelin_construct_runtime(_: TokenStream, tokens: TokenStream) -> To
 ///     // block type
 ///     type Block = Block;
 ///
-///     #[abstraction]
 ///     mod assets {
 ///         type TransactionPayment = TransactionPayment;
 ///         type RuntimeCall = RuntimeCall;

@@ -32,20 +32,7 @@ pub fn impl_openzeppelin_runtime_apis(input: TokenStream) -> TokenStream {
                     block = Some(fetch_ident(&ty.ty));
                 }
             }
-            Item::Mod(m) => {
-                let is_abstraction = m.attrs.iter().any(|f| {
-                    let Ok(path) = f.meta.require_path_only() else {
-                        return false;
-                    };
-                    let Ok(ident) = path.require_ident() else {
-                        return false;
-                    };
-                    ident == "abstraction"
-                });
-                if is_abstraction {
-                    abstractions.push(m)
-                }
-            }
+            Item::Mod(m) => abstractions.push(m),
             Item::Impl(im) => {
                 inner.extend(im.to_token_stream());
             }

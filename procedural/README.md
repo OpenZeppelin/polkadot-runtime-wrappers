@@ -37,7 +37,6 @@ mod apis {
     // block type 
     type Block = Block;
 
-    #[abstraction]
     mod assets {
         type TransactionPayment = TransactionPayment;
         type RuntimeCall = RuntimeCall;
