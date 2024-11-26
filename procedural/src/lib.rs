@@ -7,7 +7,7 @@ mod runtime_apis;
 
 /// Construct runtime macro abstraction
 /// This macro allows to construct runtime operating with abstractions as long as with pallets.
-/// It allows you omit the pallet indexes -- they will be assigned in ascending order.
+/// It allows you omit the pallet indices such that they are assigned in ascending order.
 /// This API may change in future releases, it is not yet stabilised.
 ///
 /// Example:
