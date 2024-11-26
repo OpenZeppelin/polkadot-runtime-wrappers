@@ -4,7 +4,7 @@ There are many ways to contribute to this project.
 
 ## Opening an issue
 
-You can [open an issue](https://github.com/OpenZeppelin/polkadot-runtime-wrappers/issues/new/choose) to suggest a feature or report a bug.
+You can [open an issue](https://github.com/OpenZeppelin/openzeppelin-pallet-abstractions/issues/new/choose) to suggest a feature or report a bug.
 
 Before opening an issue, be sure to search through the existing open and closed
 issues, and consider posting a comment in one of those instead.
@@ -27,4 +27,4 @@ Make sure to run linter and tests to make sure your pull request is good before 
 If you're looking for a good place to start, look for issues labelled
 ["good first issue"].
 
-["good first issue"]: https://github.com/OpenZeppelin/polkadot-runtime-wrappers/labels/good%20first%20issue!
+["good first issue"]: https://github.com/OpenZeppelin/openzeppelin-pallet-abstractions/labels/good%20first%20issue!

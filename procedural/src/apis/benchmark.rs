@@ -158,7 +158,7 @@ impl TryFrom<&[Item]> for XCMBenchmarkAPIFields {
             fee_asset_id,
             transaction_byte_fee,
             address,
-            balances
+            balances,
         })
     }
 }

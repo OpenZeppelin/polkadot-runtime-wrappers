@@ -6,9 +6,10 @@ pub mod consensus;
 pub mod evm;
 pub mod governance;
 pub mod system;
+pub mod tanssi;
 pub mod xcm;
 
-use frame_support::traits::{ConstU32, Get};
+use frame_support::traits::{ConstU32, Get, OnTimestampSet};
 use sp_version::RuntimeVersion;
 
 pub trait SystemConfig {
@@ -20,6 +21,8 @@ pub trait SystemConfig {
     type ScheduleOrigin;
     type PreimageOrigin;
     type ProxyType;
+    type ConsensusHook;
+    type OnTimestampSet: OnTimestampSet<u64>;
     type MaxConsumers = ConstU32<16>;
     type MaxSignatories = ConstU32<100>;
     type MaxPendingProxies = ConstU32<32>;

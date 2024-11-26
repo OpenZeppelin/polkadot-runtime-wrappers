@@ -1,6 +1,6 @@
-# polkadot-runtime-wrappers
+# OpenZeppelin Pallet Abstractions
 
-`polkadot-runtime-wrappers` is a set of Rust macros designed to streamline the configuration of Polkadot Parachain Runtimes. These macros reduce the lines of code (LOC) necessary for configuring a secure and optimized runtime, providing a balance between customizability and ease of use.
+This repository contains a set of Rust macros designed to streamline the configuration of Polkadot Parachain Runtimes. These macros reduce the lines of code (LOC) necessary for configuring a secure and optimized runtime, providing a balance between customizability and ease of use.
 
 > [!WARNING]
 > This project has not been audited yet.
@@ -15,11 +15,11 @@ Features:
 
 ## Installation
 
-To use `polkadot-runtime-wrappers`, add it to your Cargo.toml file:
+To use `openzeppelin-pallet-abstractions`, add it to your Cargo.toml file:
 
 ```toml
 [dependencies]
-openzeppelin-polkadot-wrappers = { git = "https://github.com/OpenZeppelin/polkadot-runtime-wrappers", tag = "v0.1.0" }
+openzeppelin-pallet-abstractions = { git = "https://github.com/OpenZeppelin/openzeppelin-pallet-abstractions", tag = "v0.1.0" }
 ```
 
 Then, import the necessary macros in your runtime configuration file.
@@ -27,12 +27,12 @@ Then, import the necessary macros in your runtime configuration file.
 ## Usage
 
 > [!NOTE]
-> For examples of how to use the wrappers, see the polkadot-runtime-templates [repository](https://github.com/OpenZeppelin/polkadot-runtime-templates).
+> For examples of how to use the abstractions, see the [Polkadot runtime templates](https://github.com/OpenZeppelin/polkadot-runtime-templates).
 
-The macros are intended to streamline runtime configuration for Polkadot parachains. Here’s a basic example from the EVM parachain runtime maintained in [`openzeppelin/polkadot-runtime-templates`](https://github.com/OpenZeppelin/polkadot-runtime-templates):
+The macros are intended to streamline runtime configuration for Polkadot parachains. Here’s a basic example from the EVM parachain runtime maintained in the [Polkadot runtime templates](https://github.com/OpenZeppelin/polkadot-runtime-templates):
 
 ```rust, ignore
-use openzeppelin_polkadot_wrappers::{impl_openzeppelin_system, SystemConfig};
+use openzeppelin_pallet_abstractions::{impl_openzeppelin_system, SystemConfig};
 
 pub struct OpenZeppelinRuntime;
 impl SystemConfig for OpenZeppelinRuntime {
@@ -71,7 +71,7 @@ Here are the other pallet groupings:
 Here are their configurations in the EVM parachain runtime:
 
 ```rust, ignore
-use openzeppelin_polkadot_wrappers::{
+use openzeppelin_pallet_abstractions::{
     impl_openzeppelin_assets, impl_openzeppelin_consensus, impl_openzeppelin_evm,
     impl_openzeppelin_governance, impl_openzeppelin_xcm, AssetsConfig,
     ConsensusConfig, EvmConfig, GovernanceConfig, XcmConfig,
@@ -115,15 +115,15 @@ impl_openzeppelin_xcm!(OpenZeppelinRuntime);
 impl_openzeppelin_evm!(OpenZeppelinRuntime);
 ```
 
-Here are a few ways `polkadot-runtime-wrappers` simplifies parachain configuration:
+Here are a few ways `openzeppelin-pallet-abstractions` simplifies parachain configuration:
 
 - Basic Setup: Only a few LOC required to get a secure, functioning runtime.
 - Advanced Configuration: Customize each aspect of the runtime by passing additional parameters to the macros.
-- Default Overrides: Override defaults for specific settings while letting the wrapper handle the rest.
+- Default Overrides: Override defaults for specific settings while letting the abstractions handle the rest.
 
 ## Security
 
-Refer tou our [Security Policy](./SECURITY.MD) for more details.
+Refer to our [Security Policy](./SECURITY.MD) for more details.
 
 ## Contributing
 
