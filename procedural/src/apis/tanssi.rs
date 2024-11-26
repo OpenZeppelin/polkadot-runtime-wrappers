@@ -32,11 +32,7 @@ impl TryFrom<&[Item]> for TanssiAPIFields {
     }
 }
 
-pub fn tanssi_apis(
-    runtime: &Ident,
-    block: &Ident,
-    session_keys: &Ident,
-) -> TokenStream {
+pub fn tanssi_apis(runtime: &Ident, block: &Ident, session_keys: &Ident) -> TokenStream {
     let mut res = quote! {};
     res.extend(quote! {
         impl sp_session::SessionKeys<#block> for #runtime {

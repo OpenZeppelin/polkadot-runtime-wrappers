@@ -60,17 +60,17 @@ fn parse_abstraction(
     let abstraction_name = ConstructAbstractions::try_from(item).expect("Wrong Struct");
 
     match abstraction_name {
-        ConstructAbstractions::System => (
-            construct_system(index),
-            None,
-        ),
+        ConstructAbstractions::System => (construct_system(index), None),
         ConstructAbstractions::Assets => (construct_assets(index), None),
-        ConstructAbstractions::Consensus => (construct_consensus(index), Some(quote! {
-            cumulus_pallet_parachain_system::register_validate_block! {
-                Runtime = Runtime,
-                BlockExecutor = cumulus_pallet_aura_ext::BlockExecutor::<Runtime, Executive>,
-            }
-        })),
+        ConstructAbstractions::Consensus => (
+            construct_consensus(index),
+            Some(quote! {
+                cumulus_pallet_parachain_system::register_validate_block! {
+                    Runtime = Runtime,
+                    BlockExecutor = cumulus_pallet_aura_ext::BlockExecutor::<Runtime, Executive>,
+                }
+            }),
+        ),
         ConstructAbstractions::Governance => (construct_governance(index), None),
         ConstructAbstractions::Xcm => (construct_xcm(index), None),
         ConstructAbstractions::Evm => (construct_evm(index), None),
@@ -142,11 +142,17 @@ fn construct_evm(index: &mut u32) -> proc_macro2::TokenStream {
 }
 
 fn construct_assets(index: &mut u32) -> proc_macro2::TokenStream {
-    construct_abstraction(index, &openzeppelin_pallet_abstractions::assets::PALLET_NAMES)
+    construct_abstraction(
+        index,
+        &openzeppelin_pallet_abstractions::assets::PALLET_NAMES,
+    )
 }
 
 fn construct_system(index: &mut u32) -> proc_macro2::TokenStream {
-    construct_abstraction(index, &openzeppelin_pallet_abstractions::system::PALLET_NAMES)
+    construct_abstraction(
+        index,
+        &openzeppelin_pallet_abstractions::system::PALLET_NAMES,
+    )
 }
 
 fn construct_abstraction(index: &mut u32, pallets: &[(&str, &str)]) -> proc_macro2::TokenStream {
