@@ -58,7 +58,7 @@ macro_rules! impl_openzeppelin_assets {
             #[cfg(feature = "runtime-benchmarks")]
             type BenchmarkHelper = BenchmarkHelper;
             type CallbackHandle = ();
-            // Standard asset class creation is only allowed if the origin attempting it and the 
+            // Standard asset class creation is only allowed if the origin attempting it and the
             // asset class are in this set.
             type CreateOrigin = <$t as AssetsConfig>::CreateOrigin;
             type Currency = Balances;
@@ -83,10 +83,9 @@ macro_rules! impl_openzeppelin_assets {
         }
 
         impl pallet_transaction_payment::Config for Runtime {
-            // There are two possible mechanisms available: slow and fast adjusting.
-            // With slow adjusting fees stay almost constant in short periods of time, changing only in long term.
-            // It may lead to long inclusion times during spikes, therefore tipping is enabled.
-            // With fast adjusting fees change rapidly, but fixed for all users at each block (no tipping)
+            // Fees stay almost constant over the short term and adjust slowly over time.
+            // Spikes in transaction volume in the short term lead to long transaction inclusion times so tipping is allowed
+            // to enable prioritization in proportion to tip amount.
             type FeeMultiplierUpdate = SlowAdjustingFeeUpdate<Self>;
             // Convert a length value into a deductible fee based on the currency type.
             type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
