@@ -6,24 +6,24 @@ pub mod consensus;
 pub mod evm;
 pub mod governance;
 pub mod system;
+pub mod tanssi;
 pub mod weights;
 pub mod xcm;
-
-pub use weights::*;
-
-use frame_support::traits::{ConstU16, ConstU32, Get};
-use frame_system::EnsureRoot;
+use crate::weights::*;
+use frame_support::traits::{ConstU32, Get, OnTimestampSet};
 use sp_version::RuntimeVersion;
 
 pub trait SystemConfig: SystemWeight {
     type AccountId;
     type Lookup;
-    type ExistentialDeposit;
-    type ProxyType;
+    type SS58Prefix;
     type Version: Get<RuntimeVersion>;
-    type SS58Prefix = ConstU16<42>;
-    type ScheduleOrigin = EnsureRoot<Self::AccountId>;
-    type PreimageOrigin = EnsureRoot<Self::AccountId>;
+    type ExistentialDeposit;
+    type ScheduleOrigin;
+    type PreimageOrigin;
+    type ProxyType;
+    type ConsensusHook;
+    type OnTimestampSet: OnTimestampSet<u64>;
     type MaxConsumers = ConstU32<16>;
     type MaxSignatories = ConstU32<100>;
     type MaxPendingProxies = ConstU32<32>;
@@ -137,4 +137,9 @@ pub trait EvmConfig: EvmWeight {
     type PrecompilesValue;
     type Erc20XcmBridgeTransferGasLimit;
     type LocationToH160;
+}
+
+pub trait TanssiConfig: TanssiWeight {
+    type AuthorInherent;
+    type AuthoritiesNothing;
 }

@@ -1,13 +1,12 @@
-## OpenZeppelin Wrappers procedural macros
+# Openzeppelin Pallet Abstractions Procedural Macros
 
-### `construct_runtime!`
+## `construct_runtime!`
 
-We have made a wrapper over the `construct_runtime!` to support the abstractions. The macro itself have changed, supporting both abstractions and regular pallets:
+We have made an abstraction over the `construct_runtime!`. The macro itself has changed, supporting both abstractions and regular pallets:
 
 ```rust
 #[openzeppelin_construct_runtime]
 mod runtime {
-    #[abstraction]
     struct System; // Available names are System, Consensus, XCM, Assets, Governance, EVM.
     #[pallet]
     type Pallet = pallet_crate; // It mimics the second version of construct runtime macro, but without the pallet_index assignment
@@ -27,7 +26,7 @@ Pallet index assignment is hidden from this API. If you want to use it, please c
 
 ### `impl_runtime_apis!`
 
-We have also made a wrapper for `impl_runtime_apis!` macro. There is now a new macro where you only provide the types and structs:
+We have also made an abstraction for `impl_runtime_apis!` macro. There is now a new macro where you only provide the types and structs:
 
 ```rust
 #[openzeppelin_runtime_apis]
@@ -38,7 +37,6 @@ mod apis {
     // block type 
     type Block = Block;
 
-    #[abstraction]
     mod assets {
         type TransactionPayment = TransactionPayment;
         type RuntimeCall = RuntimeCall;

@@ -39,3 +39,8 @@ pub trait XcmWeight {
 pub trait EvmWeight {
     type Evm = ();
 }
+
+pub trait TanssiWeight {
+    type AuthorInherent = ();
+    type AuthoritiesNoting = ();
+}

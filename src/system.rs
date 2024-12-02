@@ -117,7 +117,8 @@ macro_rules! impl_openzeppelin_system {
             type MinimumPeriod = ConstU64<0>;
             /// A timestamp: milliseconds since the unix epoch.
             type Moment = u64;
-            type OnTimestampSet = Aura;
+            type OnTimestampSet = <$t as SystemConfig>::OnTimestampSet;
+            /// Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = <$t as SystemWeight>::Timestamp;
         }
 
@@ -223,7 +224,7 @@ macro_rules! impl_openzeppelin_system {
             type CheckAssociatedRelayNumber = RelayNumberStrictlyIncreases;
             #[cfg(feature = "async-backing")]
             type CheckAssociatedRelayNumber = RelayNumberMonotonicallyIncreases;
-            type ConsensusHook = ConsensusHook;
+            type ConsensusHook = <$t as SystemConfig>::ConsensusHook;
             type DmpQueue = frame_support::traits::EnqueueWithOrigin<MessageQueue, RelayOrigin>;
             type OnSystemEvent = ();
             type OutboundXcmpMessageSource = XcmpQueue;

@@ -1,10 +1,10 @@
 [package]
-name = "openzeppelin-polkadot-wrappers"
+name = "openzeppelin-pallet-abstractions"
 authors = [ "OpenZeppelin" ]
-description = "Wrappers with sensible defaults for constructing Polkadot Parachain Runtimes"
+description = "Abstractions that provide sensible defaults for constructing Polkadot parachain runtimes"
 edition = "2021"
 license = "GPL-3.0-only"
-repository = "https://github.com/OpenZeppelin/polkadot-runtime-wrappers"
+repository = "https://github.com/OpenZeppelin/openzeppelin-pallet-abstractions"
 readme = "README.md"
 version = "0.1.0"
 
