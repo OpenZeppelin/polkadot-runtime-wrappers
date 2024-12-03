@@ -143,3 +143,8 @@ pub trait TanssiConfig: TanssiWeight {
     type AuthorInherent;
     type AuthoritiesNothing;
 }
+
+#[test]
+fn example() {
+    assert_eq!(1 + 1, 2);
+}
