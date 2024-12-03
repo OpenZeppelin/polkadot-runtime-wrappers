@@ -57,8 +57,7 @@ macro_rules! impl_openzeppelin_evm {
             type RuntimeEvent = RuntimeEvent;
             type SuicideQuickClearLimit = SuicideQuickClearLimit;
             type Timestamp = Timestamp;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_evm::WeightInfo<Self>;
+            type WeightInfo = <$t as EvmWeight>::Evm;
             type WeightPerGas = WeightPerGas;
             type WithdrawOrigin = <$t as EvmConfig>::WithdrawOrigin;
         }

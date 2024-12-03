@@ -40,8 +40,7 @@ macro_rules! impl_openzeppelin_xcm {
             type RuntimeEvent = RuntimeEvent;
             type ServiceWeight = <$t as XcmConfig>::MessageQueueServiceWeight;
             type Size = u32;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_message_queue::WeightInfo<Runtime>;
+            type WeightInfo = <$t as XcmWeight>::MessageQueue;
         }
 
         parameter_types! {
@@ -62,8 +61,7 @@ macro_rules! impl_openzeppelin_xcm {
             type PriceForSiblingDelivery = PriceForSiblingParachainDelivery;
             type RuntimeEvent = RuntimeEvent;
             type VersionWrapper = ();
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::cumulus_pallet_xcmp_queue::WeightInfo<Runtime>;
+            type WeightInfo = <$t as XcmWeight>::XcmpQueue;
             // Enqueue XCMP messages from siblings for later processing.
             type XcmpQueue =
                 TransformOrigin<MessageQueue, AggregateMessageOrigin, ParaId, ParaIdToSibling>;
@@ -175,8 +173,7 @@ macro_rules! impl_openzeppelin_xcm {
             type TrustedLockers = ();
             type UniversalLocation = UniversalLocation;
             type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_xcm::WeightInfo<Runtime>;
+            type WeightInfo = <$t as XcmWeight>::Xcm;
             #[cfg(feature = "runtime-benchmarks")]
             type XcmExecuteFilter = Everything;
             #[cfg(not(feature = "runtime-benchmarks"))]
@@ -210,7 +207,7 @@ macro_rules! impl_openzeppelin_xcm {
             type RemoveSupportedAssetOrigin = <$t as XcmConfig>::RemoveSupportedAssetOrigin;
             type ResumeSupportedAssetOrigin = <$t as XcmConfig>::ResumeSupportedAssetOrigin;
             type RuntimeEvent = RuntimeEvent;
-            type WeightInfo = weights::pallet_xcm_weight_trader::WeightInfo<Runtime>;
+            type WeightInfo = <$t as XcmWeight>::XcmWeightTrader;
             type WeightToFee = <$t as XcmConfig>::WeightToFee;
             type XcmFeesAccount = <$t as XcmConfig>::XcmFeesAccount;
         }
@@ -252,7 +249,7 @@ macro_rules! impl_openzeppelin_xcm {
             type Transactor = <$t as XcmConfig>::Transactors;
             type UniversalLocation = <$t as XcmConfig>::UniversalLocation;
             type Weigher = <$t as XcmConfig>::XcmWeigher;
-            type WeightInfo = weights::pallet_xcm_transactor::WeightInfo<Runtime>;
+            type WeightInfo = <$t as XcmWeight>::XcmTransactor;
             type XcmSender = <$t as XcmConfig>::XcmSender;
         }
     };

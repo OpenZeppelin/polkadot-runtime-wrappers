@@ -61,8 +61,7 @@ macro_rules! impl_openzeppelin_consensus {
             type ValidatorId = <Self as frame_system::Config>::AccountId;
             type ValidatorIdOf = pallet_collator_selection::IdentityCollator;
             type ValidatorRegistration = Session;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_collator_selection::WeightInfo<Runtime>;
+            type WeightInfo = <$t as ConsensusWeight>::CollatorSelection;
         }
 
         parameter_types! {
@@ -87,8 +86,7 @@ macro_rules! impl_openzeppelin_consensus {
             type ValidatorId = <Self as frame_system::Config>::AccountId;
             // we don't have stash and controller, thus we don't need the convert as well.
             type ValidatorIdOf = pallet_collator_selection::IdentityCollator;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_session::WeightInfo<Runtime>;
+            type WeightInfo = <$t as ConsensusWeight>::Session;
         }
     };
 }

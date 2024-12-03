@@ -7,12 +7,13 @@ pub mod evm;
 pub mod governance;
 pub mod system;
 pub mod tanssi;
+pub mod weights;
 pub mod xcm;
-
+use crate::weights::*;
 use frame_support::traits::{ConstU32, Get, OnTimestampSet};
 use sp_version::RuntimeVersion;
 
-pub trait SystemConfig {
+pub trait SystemConfig: SystemWeight {
     type AccountId;
     type Lookup;
     type SS58Prefix;
@@ -32,7 +33,7 @@ pub trait SystemConfig {
     type MaxReserves = ConstU32<50>;
 }
 
-pub trait ConsensusConfig {
+pub trait ConsensusConfig: ConsensusWeight {
     type DisabledValidators = ();
     type MaxAuthorities = ConstU32<100_000>;
     type MaxCandidates = ConstU32<100>;
@@ -41,7 +42,7 @@ pub trait ConsensusConfig {
     type CollatorSelectionUpdateOrigin;
 }
 
-pub trait AssetsConfig {
+pub trait AssetsConfig: AssetsWeight {
     type ApprovalDeposit;
     type AssetAccountDeposit;
     type AssetDeposit;
@@ -56,7 +57,7 @@ pub trait AssetsConfig {
     type WeightToFee;
 }
 
-pub trait GovernanceConfig {
+pub trait GovernanceConfig: GovernanceWeight {
     type TreasuryBurn = ();
     type TreasurySpendFunds = ();
     type TreasuryBurnDestination = ();
@@ -81,7 +82,7 @@ pub trait GovernanceConfig {
     type ReferendaUndecidingTimeout;
 }
 
-pub trait XcmConfig {
+pub trait XcmConfig: XcmWeight {
     type LocationToAccountId;
     type LocalOriginToLocation;
     type AssetTransactors;
@@ -127,7 +128,7 @@ pub trait XcmConfig {
     type XcmFeesAccount;
 }
 
-pub trait EvmConfig {
+pub trait EvmConfig: EvmWeight {
     type AddressMapping;
     type FindAuthor;
     type CallOrigin;
@@ -136,4 +137,14 @@ pub trait EvmConfig {
     type PrecompilesValue;
     type Erc20XcmBridgeTransferGasLimit;
     type LocationToH160;
+}
+
+pub trait TanssiConfig: TanssiWeight {
+    type AuthorInherent;
+    type AuthoritiesNothing;
+}
+
+#[test]
+fn example() {
+    assert_eq!(1 + 1, 2);
 }

@@ -87,7 +87,7 @@ macro_rules! impl_openzeppelin_system {
             /// Block & extrinsics weights: base values and limits.
             type BlockWeights = RuntimeBlockWeights;
             /// The weight of database operations that the runtime can invoke.
-            type DbWeight = RocksDbWeight;
+            type DbWeight = <$t as SystemWeight>::DbWeight;
             /// The type for hashing blocks and tries.
             type Hash = Hash;
             /// The lookup mechanism to get account ID from whatever is passed in
@@ -119,7 +119,7 @@ macro_rules! impl_openzeppelin_system {
             type Moment = u64;
             type OnTimestampSet = <$t as SystemConfig>::OnTimestampSet;
             /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_timestamp::WeightInfo<Runtime>;
+            type WeightInfo = <$t as SystemWeight>::Timestamp;
         }
 
         impl parachain_info::Config for Runtime {}
@@ -140,8 +140,7 @@ macro_rules! impl_openzeppelin_system {
             type RuntimeEvent = RuntimeEvent;
             type RuntimeOrigin = RuntimeOrigin;
             type ScheduleOrigin = <$t as SystemConfig>::ScheduleOrigin;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_scheduler::WeightInfo<Runtime>;
+            type WeightInfo = <$t as SystemWeight>::Scheduler;
         }
 
         parameter_types! {
@@ -164,8 +163,7 @@ macro_rules! impl_openzeppelin_system {
             type Currency = Balances;
             type ManagerOrigin = <$t as SystemConfig>::PreimageOrigin;
             type RuntimeEvent = RuntimeEvent;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_preimage::WeightInfo<Runtime>;
+            type WeightInfo = <$t as SystemWeight>::Preimage;
         }
 
         parameter_types! {
@@ -187,8 +185,7 @@ macro_rules! impl_openzeppelin_system {
             type ProxyType = <$t as SystemConfig>::ProxyType;
             type RuntimeCall = RuntimeCall;
             type RuntimeEvent = RuntimeEvent;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_proxy::WeightInfo<Runtime>;
+            type WeightInfo = <$t as SystemWeight>::Proxy;
         }
 
         impl pallet_balances::Config for Runtime {
@@ -206,16 +203,14 @@ macro_rules! impl_openzeppelin_system {
             type RuntimeEvent = RuntimeEvent;
             type RuntimeFreezeReason = RuntimeFreezeReason;
             type RuntimeHoldReason = RuntimeHoldReason;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_balances::WeightInfo<Runtime>;
+            type WeightInfo = <$t as SystemWeight>::Balances;
         }
 
         impl pallet_utility::Config for Runtime {
             type PalletsOrigin = OriginCaller;
             type RuntimeCall = RuntimeCall;
             type RuntimeEvent = RuntimeEvent;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_utility::WeightInfo<Runtime>;
+            type WeightInfo = <$t as SystemWeight>::Utility;
         }
 
         parameter_types! {
@@ -237,8 +232,7 @@ macro_rules! impl_openzeppelin_system {
             type ReservedXcmpWeight = ReservedXcmpWeight;
             type RuntimeEvent = RuntimeEvent;
             type SelfParaId = parachain_info::Pallet<Runtime>;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::cumulus_pallet_parachain_system::WeightInfo<Runtime>;
+            type WeightInfo = <$t as SystemWeight>::ParachainSystem;
             type XcmpMessageHandler = XcmpQueue;
         }
 
@@ -256,8 +250,7 @@ macro_rules! impl_openzeppelin_system {
             type MaxSignatories = <$t as SystemConfig>::MaxSignatories;
             type RuntimeCall = RuntimeCall;
             type RuntimeEvent = RuntimeEvent;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
-            type WeightInfo = weights::pallet_multisig::WeightInfo<Runtime>;
+            type WeightInfo = <$t as SystemWeight>::Multisig;
         }
     };
 }

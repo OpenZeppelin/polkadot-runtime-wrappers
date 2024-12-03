@@ -919,6 +919,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "frame-system"
+version = "37.1.0"
+source = "git+https://github.com/paritytech/polkadot-sdk?tag=polkadot-stable2407-1#16b0fd09d9e9281c20ee0c1d8b87d011e3e3454e"
+dependencies = [
+ "cfg-if",
+ "docify",
+ "frame-support",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+ "sp-version",
+ "sp-weights",
+]
+
+[[package]]
 name = "fs-err"
 version = "2.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1534,6 +1554,7 @@ version = "0.1.0"
 dependencies = [
  "cumulus-primitives-core",
  "frame-support",
+ "frame-system",
  "scale-info",
  "sp-std",
  "sp-version",
