@@ -64,7 +64,7 @@ macro_rules! impl_openzeppelin_assets {
             type Currency = Balances;
             type Extra = ();
             // The origin which may forcibly create or destroy an asset or otherwise alter privileged
-		    // attributes.
+	// attributes.
             type ForceOrigin = <$t as AssetsConfig>::ForceOrigin;
             type Freezer = ();
             type MetadataDepositBase = MetadataDepositBase;
@@ -92,7 +92,7 @@ macro_rules! impl_openzeppelin_assets {
             // Handler for withdrawing, refunding and depositing the transaction fee.
             type OnChargeTransaction = pallet_transaction_payment::FungibleAdapter<Balances, ()>;
             // A fee multiplier for `Operational` extrinsics to compute "virtual tip" to boost their
-		    // `priority`
+		// `priority`
             type OperationalFeeMultiplier = OperationalFeeMultiplier;
             type RuntimeEvent = RuntimeEvent;
             type WeightToFee = <$t as AssetsConfig>::WeightToFee;

@@ -166,7 +166,7 @@ macro_rules! impl_openzeppelin_xcm {
             // Processes XCM transactions with rollback capability in case of failure.
             type TransactionalProcessor = FrameTransactionalProcessor;
             type UniversalAliases = Nothing;
-            // Defines the universal location for the XCM; teleporting is disabled here.
+            // Defines the universal location for the XCM.
             type UniversalLocation = UniversalLocation;
             // Provides weight measurement logic for XCM execution.
             type Weigher = FixedWeightBounds<UnitWeightCost, RuntimeCall, MaxInstructions>;

@@ -113,7 +113,7 @@ macro_rules! impl_openzeppelin_evm {
         parameter_types! {
             // This is the relative view of erc20 assets.
             // Identified by this prefix + AccountKey20(contractAddress)
-            // We use the RELATIVE multi-location
+            // We use the RELATIVE multilocation
             pub Erc20XcmBridgePalletLocation: Location = Location {
                 parents:0,
                 interior: [
