@@ -137,3 +137,8 @@ pub trait EvmConfig {
     type Erc20XcmBridgeTransferGasLimit;
     type LocationToH160;
 }
+
+#[test]
+fn example() {
+    assert_eq!(1 + 1, 2);
+}
