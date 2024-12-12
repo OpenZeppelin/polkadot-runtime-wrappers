@@ -7,6 +7,8 @@ pub trait SystemWeight {
     type Proxy = ();
     type Multisig = ();
     type ParachainSystem = ();
+    type Balances = ();
+    type Utility = ();
     type DbWeight;
 }
 
