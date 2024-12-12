@@ -9,7 +9,7 @@ pub mod system;
 pub mod tanssi;
 pub mod weights;
 pub mod xcm;
-use crate::weights::*;
+pub use crate::weights::*;
 use frame_support::traits::{ConstU32, Get, OnTimestampSet};
 use sp_version::RuntimeVersion;
 
@@ -23,6 +23,7 @@ pub trait SystemConfig: SystemWeight {
     type PreimageOrigin;
     type ProxyType;
     type ConsensusHook;
+    type SlotDuration;
     type OnTimestampSet: OnTimestampSet<u64>;
     type MaxConsumers = ConstU32<16>;
     type MaxSignatories = ConstU32<100>;

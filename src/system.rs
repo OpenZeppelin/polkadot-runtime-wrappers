@@ -114,7 +114,7 @@ macro_rules! impl_openzeppelin_system {
         }
 
         impl pallet_timestamp::Config for Runtime {
-            type MinimumPeriod = ConstU64<0>;
+            type MinimumPeriod = <$t as SystemConfig>::SlotDuration;
             /// A timestamp: milliseconds since the unix epoch.
             type Moment = u64;
             type OnTimestampSet = <$t as SystemConfig>::OnTimestampSet;
