@@ -9,7 +9,7 @@ pub mod system;
 pub mod tanssi;
 pub mod weights;
 pub mod xcm;
-use crate::weights::*;
+pub use crate::weights::*;
 use frame_support::traits::{ConstU32, Get, OnTimestampSet};
 use sp_version::RuntimeVersion;
 
