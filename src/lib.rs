@@ -23,6 +23,7 @@ pub trait SystemConfig: SystemWeight {
     type PreimageOrigin;
     type ProxyType;
     type ConsensusHook;
+    type SlotDuration;
     type OnTimestampSet: OnTimestampSet<u64>;
     type MaxConsumers = ConstU32<16>;
     type MaxSignatories = ConstU32<100>;
