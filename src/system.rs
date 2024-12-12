@@ -122,7 +122,7 @@ macro_rules! impl_openzeppelin_system {
             // The Config::OnTimestampSet configuration trait can be set to another pallet we want to notify that the
             // timestamp has been updated, as long as it implements OnTimestampSet.
             type OnTimestampSet = <$t as SystemConfig>::OnTimestampSet;
-            /// Rerun benchmarks if you are making changes to runtime configuration.
+            // Rerun benchmarks if you are making changes to runtime configuration.
             type WeightInfo = <$t as SystemWeight>::Timestamp;
         }
 
