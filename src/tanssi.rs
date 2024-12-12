@@ -1,12 +1,12 @@
 #[macro_export]
 macro_rules! impl_openzeppelin_tanssi {
-    () => {
+    ($t:ty) => {
         impl pallet_author_inherent::Config for Runtime {
             type AuthorId = nimbus_primitives::NimbusId;
             type AccountLookup = dp_consensus::NimbusLookUp;
             type CanAuthor = pallet_cc_authorities_noting::CanAuthor<Runtime>;
             type SlotBeacon = dp_consensus::AuraDigestSlotBeacon<Runtime>;
-            type WeightInfo = pallet_author_inherent::weights::SubstrateWeight<Runtime>;
+            type WeightInfo = <$t as TanssiWeight>::AuthorInherent;
         }
 
         impl pallet_cc_authorities_noting::Config for Runtime {
@@ -15,7 +15,7 @@ macro_rules! impl_openzeppelin_tanssi {
             type RelayChainStateProvider =
                 cumulus_pallet_parachain_system::RelaychainDataProvider<Self>;
             type AuthorityId = nimbus_primitives::NimbusId;
-            type WeightInfo = pallet_cc_authorities_noting::weights::SubstrateWeight<Runtime>;
+            type WeightInfo = <$t as TanssiWeight>::AuthoritiesNoting;
         }
     };
 }
